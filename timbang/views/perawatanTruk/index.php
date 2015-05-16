@@ -52,11 +52,22 @@ $this->endWidget();
         'template'=>'{summary}{pager}{items}{pager}',
 	'columns'=>array(
 		'id',
-		'kode',
-		'truk_id',
-		'tanggal',
+		array(
+                    'header' => 'Truk',
+                    'name' => 'truk_id',
+                    'value' => '$data->Truk->nama',
+                ),
+		array(
+                    'header' => 'Tanggal',
+                    'name' => 'tanggal',
+                    'value' => '$data->tanggalPerawatan',
+                ),
 		'keterangan',
-		'created_user_id',
+                array(
+                    'header' => 'Total',
+                    'name' => 'total',
+                    'value' => '$data->totalCredit',
+                ),
 		/*
 		'created',
 		'modified',

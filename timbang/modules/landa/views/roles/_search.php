@@ -10,13 +10,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     <div class="span6">
         <?php echo $form->textFieldRow($model, 'name', array('class' => 'span10', 'maxlength' => 255)); ?>
     </div>
-    <div class="span4">
-        <?php
-        echo $form->dropDownListRow(
-                $model, 'is_allow_login', array('0' => 'No', '1' => 'Yes'), array('empty' => t('choose', 'global'))
-        );
-        ?>
-    </div>
 </div>
 
 

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * This is the model class for table "piutang_det".
+ * This is the model class for table "bon_det".
  *
- * The followings are the available columns in table 'piutang_det':
+ * The followings are the available columns in table 'bon_det':
  * @property integer $id
- * @property integer $piutang_id
+ * @property integer $bon_id
  * @property string $tanggal
  * @property string $debet
  * @property string $credit
@@ -13,7 +13,7 @@
  * @property string $created
  * @property string $modified
  */
-class PiutangDet extends CActiveRecord {
+class BonDet extends CActiveRecord {
 
     public $sumTotal, $sumDebet, $sumCredit;
 
@@ -21,7 +21,7 @@ class PiutangDet extends CActiveRecord {
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'piutang_det';
+        return 'bon_det';
     }
 
     /**
@@ -31,12 +31,13 @@ class PiutangDet extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('piutang_id, created_user_id', 'numerical', 'integerOnly' => true),
+            array('id', 'required'),
+            array('id, bon_id, created_user_id', 'numerical', 'integerOnly' => true),
             array('debet, credit', 'length', 'max' => 20),
             array('tanggal, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, piutang_id, tanggal, debet, credit, created_user_id, created, modified', 'safe', 'on' => 'search'),
+            array('id, bon_id, tanggal, debet, credit, created_user_id, created, modified', 'safe', 'on' => 'search'),
         );
     }
 
@@ -47,7 +48,7 @@ class PiutangDet extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'Piutang' => array(self::BELONGS_TO, 'Piutang', 'piutang_id'),
+            'Bon' => array(self::BELONGS_TO, 'Bon', 'bon_id'),
         );
     }
 
@@ -57,7 +58,7 @@ class PiutangDet extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'piutang_id' => 'Piutang',
+            'bon_id' => 'Bon',
             'tanggal' => 'Tanggal',
             'debet' => 'Debet',
             'credit' => 'Credit',
@@ -85,7 +86,7 @@ class PiutangDet extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('piutang_id', $this->piutang_id);
+        $criteria->compare('bon_id', $this->bon_id);
         $criteria->compare('tanggal', $this->tanggal, true);
         $criteria->compare('debet', $this->debet, true);
         $criteria->compare('credit', $this->credit, true);
@@ -103,7 +104,7 @@ class PiutangDet extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return PiutangDet the static model class
+     * @return BonDet the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

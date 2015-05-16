@@ -144,6 +144,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     ),
 ));
 
+?>
 <script type="text/javascript">
 jQuery(document).on('click','#truk-grid a.btn.btn-small.ok',function() {
         if(!confirm('Anda yakin ingin mengembalikan data ini?')) return false;
@@ -157,3 +158,4 @@ jQuery(document).on('click','#truk-grid a.btn.btn-small.ok',function() {
         return false;
 });
 </script>
+<?php $this->endWidget();?>

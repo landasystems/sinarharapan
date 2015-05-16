@@ -110,3 +110,21 @@
     <?php $this->endWidget(); ?>
 
 </div>
+<script>
+    $("#Bon_sopir_id").on("change", function () {
+        //var name = $("#Registration_guest_user_id").val();
+        //  alert(name);
+
+        $.ajax({
+            url: "<?php echo url('sopir/getDetail'); ?>",
+            type: "POST",
+            data: {id: $(this).val()},
+            success: function (data) {
+
+                obj = JSON.parse(data);
+                $("#telepon").val(obj.telpon);
+                $("#alamat").val(obj.alamat);
+            }
+        });
+    });
+</script>

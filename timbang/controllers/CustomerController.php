@@ -53,10 +53,14 @@ class CustomerController extends Controller {
         $this->actionUpdate($id);
     }
 
-    /**
-     * Creates a new model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     */
+    public function actionGetDetail() {
+        $id = $_POST['id'];
+        $cust = Customer::model()->findByPk($id);
+        $return['alamat'] = $cust->alamat;
+        $return['telpon'] = landa()->hp($cust->telepon);
+        echo json_encode($return);
+    }
+
     public function actionCreate() {
         $model = new Customer;
 
@@ -130,7 +134,8 @@ class CustomerController extends Controller {
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -164,10 +169,10 @@ class CustomerController extends Controller {
         $criteria->compare('is_delete', $is_delete, true);
         $criteria->compare('telepon', $telepon, true);
         $criteria->compare('alamat', $alamat, true);
-        
+
         $model = Customer::model()->findAll($criteria);
-        
-         Yii::app()->request->sendFile('Data Customer -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+
+        Yii::app()->request->sendFile('Data Customer -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
                     'model' => $model
                         ), true)
         );

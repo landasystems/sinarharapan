@@ -52,6 +52,13 @@ class SopirController extends Controller {
         $_GET['v'] = true;
         $this->actionUpdate($id);
     }
+     public function actionGetDetail() {
+        $id = $_POST['id'];
+        $cust = Sopir::model()->findByPk($id);
+        $return['alamat'] = $cust->alamat;
+        $return['telpon'] = landa()->hp($cust->telepon);
+        echo json_encode($return);
+    }
 
     /**
      * Creates a new model.

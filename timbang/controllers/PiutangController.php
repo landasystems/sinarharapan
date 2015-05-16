@@ -39,6 +39,7 @@ class PiutangController extends Controller {
             )
         );
     }
+    
 
     /**
      * Displays a particular model.

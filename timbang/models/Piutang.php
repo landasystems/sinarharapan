@@ -65,7 +65,7 @@ class Piutang extends CActiveRecord {
                 ->from('piutang, piutang_det')
                 ->where('piutang.id = piutang_det.piutang_id and piutang.id = ' . $this->id)
                 ->queryRow();
-        $total = !empty($tot) ? $tot['total'] : 0;
+        $total = (isset($tot['total']) and !empty($tot['total'])) ? $tot['total'] : 0;
         return $total;
     }
 

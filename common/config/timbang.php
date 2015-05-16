@@ -8,8 +8,8 @@ $db = 'landa_timbang';
 $dbUser = 'root';
 $dbPwd = 'landak';
 //$dbPwd = ''; //local
-$client = 'timbang';
-$clientName = 'Sistem Informasi Pegawai Kab. Sampang';
+$client = 'sinarharapan';
+$clientName = 'CV Sinar Harapan';
 $menu = array();
 $rootUrl = 'http://localhost/sinarharapan/timbang/www/'.$client.'/';
 //===================================================================================

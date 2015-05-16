@@ -78,7 +78,8 @@ class BonController extends Controller {
     public function actionGetListSopir() {
         $name = $_GET["q"];
         $list = array();
-        $data = Sopir::model()->findAll(array('condition' => 'nama like "%' . $name . '%"', 'limit' => '10'));
+        $data = Sopir::model()->findAll(array('condition' => 'nama like "%' . $name . '%" and is_delete=0', 'limit' => '10'));
+       // $data->is_delete = 0;
         if (empty($data)) {
             $list[] = array("id" => "0", "text" => "No Results Found..");
         } else {

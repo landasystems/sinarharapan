@@ -53,8 +53,24 @@ class PerawatanTruk extends CActiveRecord {
         );
     }
 
+    public function getTotalDebet() {
+        $tot = Yii::app()->db->createCommand()
+                ->select('sum(perawatan_truk_det.debet) as totalDebet')
+                ->from('perawatan_truk_det, perawatan_truk')
+                ->where('perawatan_truk_det.perawatan_truk_id = perawatan_truk.id and perawatan_truk.id = ' . $this->id)
+                ->queryRow();
+        $total =  !empty($tot) ? $tot['totalDebet'] : 0;
+        return landa()->rp($total);
+    }
+    
     public function getTotalCredit() {
-        $detail = PerawatanTruk::model()->with('PerawatanTrukDet')->find(array('select' => 'sum(PerawatanTrukDet.credit)'));
+        $tot = Yii::app()->db->createCommand()
+                ->select('sum(perawatan_truk_det.credit) as totalCredit')
+                ->from('perawatan_truk_det, perawatan_truk')
+                ->where('perawatan_truk_det.perawatan_truk_id = perawatan_truk.id and perawatan_truk.id = ' . $this->id)
+                ->queryRow();
+        $total =  !empty($tot) ? $tot['totalCredit'] : 0;
+        return landa()->rp($total);
     }
 
     public function getTanggalPerawatan() {

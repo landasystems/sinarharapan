@@ -144,5 +144,16 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     ),
 ));
 
-$this->endWidget();
-?>
+<script type="text/javascript">
+jQuery(document).on('click','#truk-grid a.btn.btn-small.ok',function() {
+        if(!confirm('Anda yakin ingin mengembalikan data ini?')) return false;
+        jQuery('#truk-grid').yiiGridView('update', {
+                type: 'POST',
+                url: jQuery(this).attr('href'),
+                success: function(data) {
+                        jQuery('#truk-grid').yiiGridView('update');
+                },
+        });
+        return false;
+});
+</script>

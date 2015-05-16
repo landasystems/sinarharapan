@@ -109,7 +109,7 @@ class PerawatanTrukController extends Controller {
                         $detail->keterangan = $_POST['keteranganDet'][$i];
                         $detail->harga = $_POST['hargaDet'][$i];
                         $detail->qty = $_POST['jumlahDet'][$i];
-                        $detail->credit = $_POST['subTotalDet'][$i];
+                        $detail->debet = $_POST['subTotalDet'][$i];
                         $detail->save();
                     }
                 }
@@ -145,44 +145,23 @@ class PerawatanTrukController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-
+        $criteria = new CDbCriteria();
         $model = new PerawatanTruk('search');
         $model->unsetAttributes();  // clear any default values
 
         if (isset($_GET['PerawatanTruk'])) {
             $model->attributes = $_GET['PerawatanTruk'];
 
-
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
-            if (!empty($model->kode))
-                $criteria->addCondition('kode = "' . $model->kode . '"');
-
+             if (!empty($model->tanggal)) {
+                $dt = explode(" - ",$model->tanggal);
+                $start = $dt[0];
+                $end = $dt[1];
+                $criteria->addCondition('tanggal >= "'.$start.'" and tanggal <= "'.$end.'"');
+            }
 
             if (!empty($model->truk_id))
                 $criteria->addCondition('truk_id = "' . $model->truk_id . '"');
-
-
-            if (!empty($model->tanggal))
-                $criteria->addCondition('tanggal = "' . $model->tanggal . '"');
-
-
-            if (!empty($model->deskripsi))
-                $criteria->addCondition('deskripsi = "' . $model->deskripsi . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
+            
         }
 
         $this->render('index', array(

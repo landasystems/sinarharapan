@@ -119,17 +119,17 @@
                             );
                             ?>
                             <?php
-                            echo $form->datepickerRow(
-                                    $model, 'birth', array(
-                                'options' => array('language' => 'en', 'format' => 'yyyy-mm-dd'),
-                                'prepend' => '<i class="icon-calendar"></i>'
-                                    )
-                            );
+//                            echo $form->datepickerRow(
+//                                    $model, 'birth', array(
+//                                'options' => array('language' => 'en', 'format' => 'yyyy-mm-dd'),
+//                                'prepend' => '<i class="icon-calendar"></i>'
+//                                    )
+//                            );
                             ?>
                             <?php
-                            echo $form->textAreaRow(
-                                    $model, 'description', array('class' => 'span4', 'rows' => 5)
-                            );
+//                            echo $form->textAreaRow(
+//                                    $model, 'description', array('class' => 'span4', 'rows' => 5)
+//                            );
                             ?>
                             <?php // echo $form->textFieldRow($model, 'nationality', array('class' => 'span5', 'maxlength' => 30)); ?>
 

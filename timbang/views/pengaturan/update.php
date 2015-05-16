@@ -5,7 +5,7 @@
 //	$model->id,
 //);
 //}else{
-$this->setPageTitle('Edit Pengaturans | ID : '. $model->id);
+$this->setPageTitle('Edit Pengaturans');
 $this->breadcrumbs=array(
 	'Pengaturans'=>array('index'),
 	$model->id=>array('view','id'=>$model->id),

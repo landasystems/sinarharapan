@@ -1,30 +1,32 @@
 <?php
 
 /**
- * This is the model class for table "{{piutang}}".
+ * This is the model class for table "timbang".
  *
- * The followings are the available columns in table '{{piutang}}':
+ * The followings are the available columns in table 'timbang':
  * @property integer $id
  * @property integer $customer_id
- * @property string $jaminan
- * @property string $deskripsi
- * @property string $tanggal
- * @property string $type
- * @property integer $sub_total
- * @property double $bunga
+ * @property string $nomor_polisi
+ * @property string $produk
+ * @property string $tanggal_timbang1
+ * @property double $berat_timbang1
+ * @property string $tanggal_timbang2
+ * @property double $berat_timbang2
+ * @property double $rafaksi
+ * @property double $netto
+ * @property integer $harga
  * @property integer $total
- * @property string $status
  * @property integer $created_user_id
  * @property string $created
  * @property string $modified
  */
-class Piutang extends CActiveRecord {
+class Timbang extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return '{{piutang}}';
+        return 'timbang';
     }
 
     /**
@@ -34,16 +36,14 @@ class Piutang extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('customer_id, sub_total, total, created_user_id', 'numerical', 'integerOnly' => true),
-            array('bunga', 'numerical'),
-            array('jaminan', 'length', 'max' => 150),
-            array('deskripsi', 'length', 'max' => 255),
-            array('type', 'length', 'max' => 5),
-//            array('status', 'length', 'max' => 11),
-            array('tanggal, created, modified', 'safe'),
+            array('customer_id, harga, total, created_user_id', 'numerical', 'integerOnly' => true),
+            array('berat_timbang1, berat_timbang2, rafaksi, netto', 'numerical'),
+            array('nomor_polisi', 'length', 'max' => 25),
+            array('produk', 'length', 'max' => 45),
+            array('tanggal_timbang1, tanggal_timbang2, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, customer_id, jaminan, deskripsi, tanggal, type,jumlah_pupuk, sub_total, bunga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
+            array('id, customer_id, nomor_polisi, produk, tanggal_timbang1, berat_timbang1, tanggal_timbang2, berat_timbang2, rafaksi, netto, harga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
         );
     }
 
@@ -55,7 +55,6 @@ class Piutang extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'Customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
-            'Pengaturan' => array(self::BELONGS_TO, 'Pengaturan', 'bunga'),
         );
     }
 
@@ -66,14 +65,16 @@ class Piutang extends CActiveRecord {
         return array(
             'id' => 'ID',
             'customer_id' => 'Customer',
-            'jaminan' => 'Jaminan',
-            'deskripsi' => 'Keterangan',
-            'tanggal' => 'Tanggal',
-            'type' => 'Pinjaman',
-            'sub_total' => 'Jumlah',
-            'bunga' => 'Bunga',
+            'nomor_polisi' => 'Plat Nomor',
+            'produk' => 'Produk',
+            'tanggal_timbang1' => 'Tanggal Timbang1',
+            'berat_timbang1' => 'Berat Timbang1',
+            'tanggal_timbang2' => 'Tanggal Timbang2',
+            'berat_timbang2' => 'Berat Timbang2',
+            'rafaksi' => 'Rafaksi',
+            'netto' => 'Netto',
+            'harga' => 'Harga',
             'total' => 'Total',
-//            'status' => 'Status',
             'created_user_id' => 'Created User',
             'created' => 'Created',
             'modified' => 'Modified',
@@ -99,14 +100,16 @@ class Piutang extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('customer_id', $this->customer_id);
-        $criteria->compare('jaminan', $this->jaminan, true);
-        $criteria->compare('deskripsi', $this->deskripsi, true);
-        $criteria->compare('tanggal', $this->tanggal, true);
-        $criteria->compare('type', $this->type, true);
-        $criteria->compare('sub_total', $this->sub_total);
-        $criteria->compare('bunga', $this->bunga);
+        $criteria->compare('nomor_polisi', $this->nomor_polisi, true);
+        $criteria->compare('produk', $this->produk, true);
+        $criteria->compare('tanggal_timbang1', $this->tanggal_timbang1, true);
+        $criteria->compare('berat_timbang1', $this->berat_timbang1);
+        $criteria->compare('tanggal_timbang2', $this->tanggal_timbang2, true);
+        $criteria->compare('berat_timbang2', $this->berat_timbang2);
+        $criteria->compare('rafaksi', $this->rafaksi);
+        $criteria->compare('netto', $this->netto);
+        $criteria->compare('harga', $this->harga);
         $criteria->compare('total', $this->total);
-        $criteria->compare('jumlah_pupuk', $this->jumlah_pupuk, true);
         $criteria->compare('created_user_id', $this->created_user_id);
         $criteria->compare('created', $this->created, true);
         $criteria->compare('modified', $this->modified, true);
@@ -117,23 +120,29 @@ class Piutang extends CActiveRecord {
         ));
     }
 
-    public function getCustomer() {
-        return (!empty($this->Customer->nama)) ? $this->Customer->nama : '-';
-    }
-
-    public function arrPinjaman() {
-        $terpal = array('uang' => 'Uang', 'pupuk' => 'Pupuk');
-        return $terpal;
-    }
-
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Piutang the static model class
+     * @return Timbang the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+    protected function beforeValidate() {
+        if (empty($this->created_user_id)) {
+            $this->created_user_id = Yii::app()->user->id;
+            $this->modified = date("Y-m-d H:i:s");
+//            $this->modified_user_id = Yii::app()->user->id;
+        }
+        return parent::beforeValidate();
+    }
+    
+    public function getNamaCustomer(){
+        return (isset($this->Customer->nama)) ? $this->Customer->nama :'';
+    }
+    public function getTotalRp(){
+        return landa()->rp($this->total);
     }
 
 }

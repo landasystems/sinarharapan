@@ -1,30 +1,27 @@
 <?php
 
 /**
- * This is the model class for table "{{piutang}}".
+ * This is the model class for table "bon_det".
  *
- * The followings are the available columns in table '{{piutang}}':
+ * The followings are the available columns in table 'bon_det':
  * @property integer $id
- * @property integer $customer_id
- * @property string $jaminan
- * @property string $deskripsi
+ * @property integer $bon_id
  * @property string $tanggal
- * @property string $type
- * @property integer $sub_total
- * @property double $bunga
- * @property integer $total
- * @property string $status
+ * @property string $debet
+ * @property string $credit
  * @property integer $created_user_id
  * @property string $created
  * @property string $modified
  */
-class Piutang extends CActiveRecord {
+class BonDet extends CActiveRecord {
+
+    public $sumTotal, $sumDebet, $sumCredit;
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return '{{piutang}}';
+        return 'bon_det';
     }
 
     /**
@@ -34,16 +31,13 @@ class Piutang extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('customer_id, sub_total, total, created_user_id', 'numerical', 'integerOnly' => true),
-            array('bunga', 'numerical'),
-            array('jaminan', 'length', 'max' => 150),
-            array('deskripsi', 'length', 'max' => 255),
-            array('type', 'length', 'max' => 5),
-//            array('status', 'length', 'max' => 11),
+            array('id', 'required'),
+            array('id, bon_id, created_user_id', 'numerical', 'integerOnly' => true),
+            array('debet, credit', 'length', 'max' => 20),
             array('tanggal, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, customer_id, jaminan, deskripsi, tanggal, type,jumlah_pupuk, sub_total, bunga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
+            array('id, bon_id, tanggal, debet, credit, created_user_id, created, modified', 'safe', 'on' => 'search'),
         );
     }
 
@@ -54,8 +48,7 @@ class Piutang extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'Customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
-            'Pengaturan' => array(self::BELONGS_TO, 'Pengaturan', 'bunga'),
+            'Bon' => array(self::BELONGS_TO, 'Bon', 'bon_id'),
         );
     }
 
@@ -65,15 +58,10 @@ class Piutang extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'customer_id' => 'Customer',
-            'jaminan' => 'Jaminan',
-            'deskripsi' => 'Keterangan',
+            'bon_id' => 'Bon',
             'tanggal' => 'Tanggal',
-            'type' => 'Pinjaman',
-            'sub_total' => 'Jumlah',
-            'bunga' => 'Bunga',
-            'total' => 'Total',
-//            'status' => 'Status',
+            'debet' => 'Debet',
+            'credit' => 'Credit',
             'created_user_id' => 'Created User',
             'created' => 'Created',
             'modified' => 'Modified',
@@ -98,15 +86,10 @@ class Piutang extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('customer_id', $this->customer_id);
-        $criteria->compare('jaminan', $this->jaminan, true);
-        $criteria->compare('deskripsi', $this->deskripsi, true);
+        $criteria->compare('bon_id', $this->bon_id);
         $criteria->compare('tanggal', $this->tanggal, true);
-        $criteria->compare('type', $this->type, true);
-        $criteria->compare('sub_total', $this->sub_total);
-        $criteria->compare('bunga', $this->bunga);
-        $criteria->compare('total', $this->total);
-        $criteria->compare('jumlah_pupuk', $this->jumlah_pupuk, true);
+        $criteria->compare('debet', $this->debet, true);
+        $criteria->compare('credit', $this->credit, true);
         $criteria->compare('created_user_id', $this->created_user_id);
         $criteria->compare('created', $this->created, true);
         $criteria->compare('modified', $this->modified, true);
@@ -117,20 +100,11 @@ class Piutang extends CActiveRecord {
         ));
     }
 
-    public function getCustomer() {
-        return (!empty($this->Customer->nama)) ? $this->Customer->nama : '-';
-    }
-
-    public function arrPinjaman() {
-        $terpal = array('uang' => 'Uang', 'pupuk' => 'Pupuk');
-        return $terpal;
-    }
-
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Piutang the static model class
+     * @return BonDet the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

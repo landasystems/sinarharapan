@@ -79,8 +79,16 @@ class PiutangController extends Controller {
 
         if (isset($_POST['Piutang'])) {
             $model->attributes = $_POST['Piutang'];
-            if ($model->save())
+            $model->customer_id = $_POST['Piutang']['customer_id'];
+            $model->jumlah_pupuk = $_POST['Piutang']['jumlah_pupuk'];
+            if ($model->save()){
+                $pituangDet = new PiutangDet;
+                $pituangDet->piutang_id = $model->id;
+                $pituangDet->tanggal = $model->tanggal;
+                $pituangDet->debet= $model->total;
+                $pituangDet->save();
                 $this->redirect(array('view', 'id' => $model->id));
+        }
         }
 
         $this->render('create', array(
@@ -101,6 +109,9 @@ class PiutangController extends Controller {
 
         if (isset($_POST['Piutang'])) {
             $model->attributes = $_POST['Piutang'];
+            $model->customer_id = $_POST['Piutang']['customer_id'];
+            $model->jumlah_pupuk = $_POST['Piutang']['jumlah_pupuk'];
+            PiutangDet::model()->updateAll(array('debet'=>$_POST['Piutang']['total'],'tanggal'=>$_POST['Piutang']['tanggal']),'piutang_id='.$id);
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -119,11 +130,12 @@ class PiutangController extends Controller {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
             $this->loadModel($id)->delete();
-
+            PiutangDet::model()->deleteAll('piutang_id='.$id);
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -134,7 +146,17 @@ class PiutangController extends Controller {
         $criteria = new CDbCriteria();
         $model = new Piutang('search');
         $model->unsetAttributes();  // clear any default values
-
+        
+        if (isset($_POST['delete']) && isset($_POST['ceckbox'])) {
+            foreach ($_POST['ceckbox'] as $data) {
+                $a = $this->loadModel($data);
+                if (!empty($a)){
+                    $a->delete();
+                    PiutangDet::model()->deleteAll('piutang_id='.$data);
+                }
+            }
+            }
+           
         if (isset($_GET['Piutang'])) {
             $model->attributes = $_GET['Piutang'];
 

@@ -1,6 +1,6 @@
 <?php
 
-class GirikController extends Controller {
+class PerawatanTrukController extends Controller {
 
     public $breadcrumbs;
 
@@ -40,24 +40,6 @@ class GirikController extends Controller {
         );
     }
 
-    public function actionAmbilTruk() {
-        $id = $_POST['id'];
-        $data = '';
-        $truk = Truk::model()->findAll(array('condition' => 'sopir_id=' . $id));
-        $sopir = Sopir::model()->findByPk($id);
-        if (empty($truk)) {
-            $data = '<option>Tidak ada truk</option>';
-        } else {
-            foreach ($truk as $val) {
-                $data .= '<option value=' . $val->id . '>' . $val->merk . ' (' . $val->nomor_polisi . ')</option>';
-            }
-        }
-        $body['truk'] = $data;
-        $body['alamat'] = $sopir->alamat;
-        $body['telepon'] = landa()->hp($sopir->telepon);
-        echo json_encode($body);
-    }
-
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
@@ -76,15 +58,27 @@ class GirikController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Girik;
+        $model = new PerawatanTruk;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Girik'])) {
-            $model->attributes = $_POST['Girik'];
-            if ($model->save())
+        if (isset($_POST['PerawatanTruk'])) {
+            $model->attributes = $_POST['PerawatanTruk'];
+            if ($model->save()) {
+                for ($i = 0; $i <= count($_POST['keteranganDet']); $i++) {
+                    if (!empty($_POST['keteranganDet'][$i])) {
+                        $detail = new PerawatanTrukDet;
+                        $detail->perawatan_truk_id = $model->id;
+                        $detail->keterangan = $_POST['keteranganDet'][$i];
+                        $detail->harga = $_POST['hargaDet'][$i];
+                        $detail->qty = $_POST['jumlahDet'][$i];
+                        $detail->credit = $_POST['subTotalDet'][$i];
+                        $detail->save();
+                    }
+                }
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('create', array(
@@ -103,10 +97,24 @@ class GirikController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Girik'])) {
-            $model->attributes = $_POST['Girik'];
-            if ($model->save())
+        if (isset($_POST['PerawatanTruk'])) {
+            $model->attributes = $_POST['PerawatanTruk'];
+            $detail = PerawatanTrukDet::model()->deleteAll(array('condition' => 'perawatan_truk_id = ' . $id));
+
+            if ($model->save()) {
+                for ($i = 0; $i <= count($_POST['keteranganDet']); $i++) {
+                    if (!empty($_POST['keteranganDet'][$i])) {
+                        $detail = new PerawatanTrukDet;
+                        $detail->perawatan_truk_id = $model->id;
+                        $detail->keterangan = $_POST['keteranganDet'][$i];
+                        $detail->harga = $_POST['hargaDet'][$i];
+                        $detail->qty = $_POST['jumlahDet'][$i];
+                        $detail->credit = $_POST['subTotalDet'][$i];
+                        $detail->save();
+                    }
+                }
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('update', array(
@@ -123,6 +131,7 @@ class GirikController extends Controller {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
             $this->loadModel($id)->delete();
+            $detail = PerawatanTrukDet::model()->deleteAll(array('condition' => 'perawatan_truk_id = ' . $id));
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
@@ -136,50 +145,49 @@ class GirikController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $criteria = new CDbCriteria();
-        $model = new Girik('search');
+
+        $model = new PerawatanTruk('search');
         $model->unsetAttributes();  // clear any default values
 
-        if (isset($_GET['Girik'])) {
-            $model->attributes = $_GET['Girik'];
-
-            if (!empty($model->tanggal)) {
-                $dt = explode(" - ",$model->tanggal);
-                $start = $dt[0];
-                $end = $dt[1];
-                $criteria->addCondition('tanggal >= "'.$start.'" and <= "'.$end.'"');
-            }
-
-            if (!empty($model->nomor_girik))
-                $criteria->addCondition('nomor_girik = "' . $model->nomor_girik . '"');
+        if (isset($_GET['PerawatanTruk'])) {
+            $model->attributes = $_GET['PerawatanTruk'];
 
 
-            if (!empty($model->sopir_id))
-                $criteria->addCondition('sopir_id = "' . $model->sopir_id . '"');
+            if (!empty($model->id))
+                $criteria->addCondition('id = "' . $model->id . '"');
+
+
+            if (!empty($model->kode))
+                $criteria->addCondition('kode = "' . $model->kode . '"');
 
 
             if (!empty($model->truk_id))
                 $criteria->addCondition('truk_id = "' . $model->truk_id . '"');
-            
+
+
+            if (!empty($model->tanggal))
+                $criteria->addCondition('tanggal = "' . $model->tanggal . '"');
+
+
+            if (!empty($model->deskripsi))
+                $criteria->addCondition('deskripsi = "' . $model->deskripsi . '"');
+
+
+            if (!empty($model->created_user_id))
+                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
+
+
+            if (!empty($model->created))
+                $criteria->addCondition('created = "' . $model->created . '"');
+
+
+            if (!empty($model->modified))
+                $criteria->addCondition('modified = "' . $model->modified . '"');
         }
 
         $this->render('index', array(
             'model' => $model,
         ));
-    }
-
-    public function actionGetListSopir() {
-        $name = $_GET["q"];
-        $list = array();
-        $data = Sopir::model()->findAll(array('condition' => 'nama like "%' . $name . '%"', 'limit' => '10'));
-        if (empty($data)) {
-            $list[] = array("id" => "0", "text" => "No Results Found..");
-        } else {
-            foreach ($data as $val) {
-                $list[] = array("id" => $val->id, "text" => $val->nama);
-            }
-        }
-        echo json_encode($list);
     }
 
     /**
@@ -188,7 +196,7 @@ class GirikController extends Controller {
      * @param integer the ID of the model to be loaded
      */
     public function loadModel($id) {
-        $model = Girik::model()->findByPk($id);
+        $model = PerawatanTruk::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -199,7 +207,7 @@ class GirikController extends Controller {
      * @param CModel the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'girik-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'perawatan-truk-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

@@ -1,30 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "{{piutang}}".
+ * This is the model class for table "perawatan_truk".
  *
- * The followings are the available columns in table '{{piutang}}':
+ * The followings are the available columns in table 'perawatan_truk':
  * @property integer $id
- * @property integer $customer_id
- * @property string $jaminan
- * @property string $deskripsi
+ * @property string $kode
+ * @property string $truk_id
  * @property string $tanggal
- * @property string $type
- * @property integer $sub_total
- * @property double $bunga
- * @property integer $total
- * @property string $status
+ * @property string $deskripsi
  * @property integer $created_user_id
  * @property string $created
  * @property string $modified
  */
-class Piutang extends CActiveRecord {
+class PerawatanTruk extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return '{{piutang}}';
+        return 'perawatan_truk';
     }
 
     /**
@@ -34,16 +29,15 @@ class Piutang extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('customer_id, sub_total, total, created_user_id', 'numerical', 'integerOnly' => true),
-            array('bunga', 'numerical'),
-            array('jaminan', 'length', 'max' => 150),
-            array('deskripsi', 'length', 'max' => 255),
-            array('type', 'length', 'max' => 5),
-//            array('status', 'length', 'max' => 11),
+            array('created_user_id', 'numerical', 'integerOnly' => true),
+            array('truk_id,tanggal', 'required'),
+            array('kode', 'length', 'max' => 10),
+            array('truk_id', 'length', 'max' => 45),
+            array('keterangan', 'length', 'max' => 255),
             array('tanggal, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, customer_id, jaminan, deskripsi, tanggal, type,jumlah_pupuk, sub_total, bunga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
+            array('id, kode, truk_id, tanggal, keterangan, created_user_id, created, modified', 'safe', 'on' => 'search'),
         );
     }
 
@@ -54,9 +48,17 @@ class Piutang extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'Customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
-            'Pengaturan' => array(self::BELONGS_TO, 'Pengaturan', 'bunga'),
+            'Truk' => array(self::BELONGS_TO, 'Truk', 'truk_id'),
+            'PerawatanTrukDet' => array(self::HAS_MANY, 'PerawatanTrukDet', 'perawatan_truk_id'),
         );
+    }
+
+    public function getTotalCredit() {
+        $detail = PerawatanTruk::model()->with('PerawatanTrukDet')->find(array('select' => 'sum(PerawatanTrukDet.credit)'));
+    }
+
+    public function getTanggalPerawatan() {
+        return (!empty($this->tanggal)) ? date("d M Y", strtotime($this->tanggal)) : '-';
     }
 
     /**
@@ -65,15 +67,10 @@ class Piutang extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'customer_id' => 'Customer',
-            'jaminan' => 'Jaminan',
-            'deskripsi' => 'Keterangan',
+            'kode' => 'Kode',
+            'truk_id' => 'Truk',
             'tanggal' => 'Tanggal',
-            'type' => 'Pinjaman',
-            'sub_total' => 'Jumlah',
-            'bunga' => 'Bunga',
-            'total' => 'Total',
-//            'status' => 'Status',
+            'keterangan' => 'Keterangan',
             'created_user_id' => 'Created User',
             'created' => 'Created',
             'modified' => 'Modified',
@@ -97,19 +94,15 @@ class Piutang extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('id', $this->id);
-        $criteria->compare('customer_id', $this->customer_id);
-        $criteria->compare('jaminan', $this->jaminan, true);
-        $criteria->compare('deskripsi', $this->deskripsi, true);
-        $criteria->compare('tanggal', $this->tanggal, true);
-        $criteria->compare('type', $this->type, true);
-        $criteria->compare('sub_total', $this->sub_total);
-        $criteria->compare('bunga', $this->bunga);
-        $criteria->compare('total', $this->total);
-        $criteria->compare('jumlah_pupuk', $this->jumlah_pupuk, true);
-        $criteria->compare('created_user_id', $this->created_user_id);
-        $criteria->compare('created', $this->created, true);
-        $criteria->compare('modified', $this->modified, true);
+        if (!empty($this->tanggal)) {
+            $dt = explode(" - ", $this->tanggal);
+            $start = $dt[0];
+            $end = $dt[1];
+            $criteria->addCondition('tanggal >= "' . $start . '" and tanggal <= "' . $end . '"');
+        }
+
+        if (!empty($this->truk_id))
+            $criteria->addCondition('truk_id = "' . $this->truk_id . '"');
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -117,20 +110,11 @@ class Piutang extends CActiveRecord {
         ));
     }
 
-    public function getCustomer() {
-        return (!empty($this->Customer->nama)) ? $this->Customer->nama : '-';
-    }
-
-    public function arrPinjaman() {
-        $terpal = array('uang' => 'Uang', 'pupuk' => 'Pupuk');
-        return $terpal;
-    }
-
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Piutang the static model class
+     * @return PerawatanTruk the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

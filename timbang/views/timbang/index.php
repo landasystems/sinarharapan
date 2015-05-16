@@ -1,7 +1,7 @@
 <?php
-$this->setPageTitle('Pinjaman');
+$this->setPageTitle('Timbangs');
 $this->breadcrumbs = array(
-    'Pinjaman',
+    'Timbangs',
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -10,7 +10,7 @@ $('.search-button').click(function(){
     return false;
 });
 $('.search-form form').submit(function(){
-    $.fn.yiiGridView.update('piutang-grid', {
+    $.fn.yiiGridView.update('timbang-grid', {
         data: $(this).serialize()
     });
     return false;
@@ -44,6 +44,7 @@ $this->endWidget();
     ));
     ?>
 </div><!-- search-form -->
+
 <?php
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id' => 'chargeAdditional-form',
@@ -58,38 +59,51 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <button type="submit" name="delete" value="dd" style="margin-left: 10px;" class="btn btn-danger pull-right"><span class="icon16 brocco-icon-trashcan white"></span> Delete Checked</button>    
 <br>
 <br>
-
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
-    'id' => 'piutang-grid',
+    'id' => 'timbang-grid',
     'dataProvider' => $model->search(),
     'type' => 'striped bordered condensed',
-    'template' => '{items}{pager}{summary}',
+    'template' => '{summary}{pager}{items}{pager}',
     'columns' => array(
         array(
             'class' => 'CCheckBoxColumn',
             'selectableRows' => 2,
-            'htmlOptions' => array('style' => 'text-align:center;display:'),
-            'headerHtmlOptions' => array('style' => 'width:25px;text-align:center;display:'),
+//            'htmlOptions' => array('style' => 'text-align:center;display:' . $display),
+//            'headerHtmlOptions' => array('style' => 'width:25px;text-align:center;display:' . $display),
             'checkBoxHtmlOptions' => array(
                 'name' => 'ceckbox[]',
                 'value' => '$data->id',
             ),
         ),
         array(
+            'type' => 'raw',
+            'header'=>'Customer',
             'name' => 'customer_id',
-            'value' => '$data->customer',
+            'value' => '$data->namaCustomer',
         ),
-        
-        'jaminan',
-        'deskripsi',
-        'tanggal',
-        'type',
+        'nomor_polisi',
+        'produk',
+//        'netto',
+        array(
+            'type' => 'raw',
+            'header'=>'Netto (Kg)',
+            'name' => 'netto',
+            'value' => '$data->netto',
+        ),
+        array(
+            'type' => 'raw',
+            'header'=>'Total',
+            'name' => 'total',
+            'value' => '$data->totalRp',
+        ),
         /*
-          'sub_total',
-          'bunga',
+          'tanggal_timbang2',
+          'berat_timbang2',
+          'rafaksi',
+          'netto',
+          'harga',
           'total',
-          'status',
           'created_user_id',
           'created',
           'modified',

@@ -53,16 +53,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'type' => 'striped bordered condensed',
     'template' => '{items}{pager}{summary}',
     'columns' => array(
-          array(
-            'class' => 'CCheckBoxColumn',
-            'selectableRows' => 2,
-            'htmlOptions' => array('style' => 'text-align:center;display:'),
-            'headerHtmlOptions' => array('style' => 'width:25px;text-align:center;display:'),
-            'checkBoxHtmlOptions' => array(
-                'name' => 'ceckbox[]',
-                'value' => '$data->id',
-            ),
-        ),
+        
         array(
             'name' => 'sopir_id',
             'value' => '$data->sopir',

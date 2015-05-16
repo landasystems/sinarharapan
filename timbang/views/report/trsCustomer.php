@@ -1,7 +1,7 @@
 <?php
-$this->setPageTitle('Laporan Hutang Customer');
+$this->setPageTitle('Laporan Rekap Hutang Customer');
 $this->breadcrumbs = array(
-    'Laporan Hutang Customer',
+    'Laporan Rekap Hutang Customer',
 );
 ?>
 

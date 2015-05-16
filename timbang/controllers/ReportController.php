@@ -38,7 +38,7 @@ class ReportController extends Controller {
             }');
     }
 
-    public function actionHutCustomer() {
+    public function actionRekapHutCustomer() {
         $this->css();
         $model = new Piutang();
         if (isset($_POST['export']) && !empty($_POST['Piutang']['tanggal'])) {
@@ -59,16 +59,16 @@ class ReportController extends Controller {
         $this->render('trsCustomer', array('model' => $model));
     }
 
-    public function actionBonSopir() {
+    public function actionRekapBonSopir() {
         $this->css();
         $model = new Bon();
-        if (isset($_POST['export']) && !empty($_POST['Piutang']['tanggal'])) {
+        if (isset($_POST['export']) && !empty($_POST['Bon']['tanggal'])) {
             $tanggal = explode('-', $_POST['Bon']['tanggal']);
             $start = $tanggal[0];
             $end = $tanggal[1];
             $sopir = (isset($_POST['Bon']['sopir_id'])) ? $_POST['Bon']['sopir_id'] : '';
             $export = 1;
-            Yii::app()->request->sendFile('Rekap Hutang Customer - ' . date('dmY') . '.xls', $this->renderPartial('_trsCustomer', array(
+            Yii::app()->request->sendFile('Rekap Bon Sopir - ' . date('dmY') . '.xls', $this->renderPartial('_bonSopir', array(
                         'model' => $model,
                         'start' => $start,
                         'end' => $end,

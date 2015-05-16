@@ -1,7 +1,7 @@
 <div id="printArea">
     <table width="100%">
         <tr>
-            <td  style="text-align: center" colspan="6"><h2>Laporan Hutang Customer</h2>
+            <td  style="text-align: center" colspan="6"><h2>Laporan Rekap Hutang Customer</h2>
                 <h4><?php echo date('d M Y', strtotime($start)) . " - " . date('d M Y', strtotime($end)); ?></h4>
                 <hr></td>
         </tr>   

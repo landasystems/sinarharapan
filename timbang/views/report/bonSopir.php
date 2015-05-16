@@ -1,7 +1,7 @@
 <?php
-$this->setPageTitle('Laporan Bon Sopir');
+$this->setPageTitle('Laporan Rekap Bon Sopir');
 $this->breadcrumbs = array(
-    'Laporan Bon Sopir',
+    'Laporan Rekap Bon Sopir',
 );
 ?>
 
@@ -23,7 +23,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         echo $form->dateRangeRow(
                 $model, 'tanggal', array(
             'prepend' => '<i class="icon-calendar"></i>',
-            'value' => (isset($_POST['Piutang']['tanggal'])) ? $_POST['Piutang']['tanggal'] : '',
+            'value' => (isset($_POST['Bon']['tanggal'])) ? $_POST['Bon']['tanggal'] : '',
             'options' => array('callback' => 'js:function(start, end){console.log(start.toString("MMMM d, yyyy") + " - " + end.toString("MMMM d, yyyy"));}'),
 //            'value' => (isset($_POST['AccCoaDet']['created'])) ? $_POST['AccCoaDet']['created'] : ''
                 )
@@ -31,7 +31,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         ?> 
 
         <div class="control-group ">
-            <label class="control-label" for="Pegawai_jabatan_id">Customer</label>
+            <label class="control-label" for="Pegawai_jabatan_id">Sopir</label>
             <div class="controls">
                 <?php
                 $data = array('0' => '- Pilih Nama Sopir -') + CHtml::listData(Sopir::model()->findAll(), 'id', 'nama');

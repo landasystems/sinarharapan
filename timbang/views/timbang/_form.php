@@ -111,6 +111,7 @@
                         <?php
                         echo $form->datepickerRow(
                                 $model, 'tanggal_timbang1', array(
+                            'style' => 'width:80px',
                             'options' => array('language' => 'id', 'format' => 'yyyy-mm-dd'),
                             'prepend' => '<i class="icon-calendar"></i>', 'labelOptions' => array('label' => false)
                                 )
@@ -131,6 +132,7 @@
                         <?php
                         echo $form->datepickerRow(
                                 $model, 'tanggal_timbang2', array(
+                            'style' => 'width:80px',
                             'options' => array('language' => 'id', 'format' => 'yyyy-mm-dd'),
                             'prepend' => '<i class="icon-calendar"></i>', 'labelOptions' => array('label' => false)
                                 )
@@ -216,7 +218,7 @@
             <tr>
                 <td style="text-align: left;"><b>Customer</b></td>
                 <td style="width:80px; text-align: " colspan="2"><?php echo $namaCustomer ?></td>
-                
+
                 <td style="width:80px; text-align: "><b>No Truck</b></td>
                 <td style="width:80px; text-align: "><?php echo $model->nomor_polisi ?></td>
 
@@ -224,14 +226,14 @@
             <tr>
                 <td style="text-align: left;"><b>No Telp</b></td>
                 <td style="width:80px; text-align: " colspan="2"><?php echo $telp ?></td>
-                
+
                 <td style="width:80px; text-align: "><b>Product</b></td>
                 <td style="width:80px; text-align: "><?php echo $model->produk ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>Alamat</b></td>
                 <td style="width:80px; text-align: " colspan="2"><?php echo $alamat ?></td>
-                
+
                 <td style="width:80px; text-align: "><b>Tanggal</b></td>
                 <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->created)) ?></td>
             </tr>
@@ -241,45 +243,45 @@
             <tr style="height: 20px;">
                 <td colspan="6"><hr style="border-top: 3px double #8c8b8b;"></td>
             </tr>
-             <tr>
+            <tr>
                 <td style="text-align: left;"><b>Timbang 1</b></td>
                 <td style="width:80px; text-align: " colspan="2"><?php echo $model->berat_timbang1 ?> Kg</td>
                 <td style="width:80px; text-align: "></td>
                 <td style="width:80px; text-align: "><b>Date</b></td>
                 <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->tanggal_timbang1)) ?></td>
-             </tr>
-             <tr>
+            </tr>
+            <tr>
                 <td style="text-align: left;"><b>Timbang 2</b></td>
                 <td style="width:80px; text-align: " colspan="2"><?php echo $model->berat_timbang2 ?> Kg</td>
                 <td style="width:80px; text-align: "></td>
                 <td style="width:80px; text-align: "><b>Date</b></td>
                 <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->tanggal_timbang2)) ?></td>
-             </tr>
-             <tr>
-                
+            </tr>
+            <tr>
+
                 <td style="width:80px;">&nbsp;</td>
                 <td style="width:80px; text-align: "><hr></td>
-             </tr>
-             <tr>
-                
+            </tr>
+            <tr>
+
                 <td style="width:80px;">&nbsp;</td>
                 <td style="width:80px; text-align: "><?php echo $model->netto ?> Kg</td>
-             </tr>
-              <tr>
-                
+            </tr>
+            <tr>
+
                 <td style="width:80px; text-align:right " colspan="5">Juru Timbang</td>
-               
+
             </tr>
-              <tr>
-                
+            <tr>
+
                 <td style="width:80px; text-align:right " colspan="5">&nbsp;</td>
-               
+
             </tr>
-              <tr>
-                
-                
+            <tr>
+
+
                 <td style="width:80px; text-align:right " colspan="5">_____________</td>
-               
+
             </tr>
         </table>
         <hr>
@@ -287,7 +289,7 @@
     </div>
 <?php } ?>
 <script>
-    $("#Timbang_customer_id").on("change", function() {
+    $("#Timbang_customer_id").on("change", function () {
         //var name = $("#Registration_guest_user_id").val();
         //  alert(name);
 
@@ -295,7 +297,7 @@
             url: "<?php echo url('customer/getDetail'); ?>",
             type: "POST",
             data: {id: $(this).val()},
-            success: function(data) {
+            success: function (data) {
 
                 obj = JSON.parse(data);
                 $("#telpon").val(obj.telpon);
@@ -315,16 +317,16 @@
         $("#Timbang_total").val(total);
     }
 
-    $("body").on("keyup", "#Timbang_berat_timbang1", function() {
+    $("body").on("keyup", "#Timbang_berat_timbang1", function () {
         calculate();
     });
-    $("body").on("keyup", "#Timbang_berat_timbang2", function() {
+    $("body").on("keyup", "#Timbang_berat_timbang2", function () {
         calculate();
     });
-    $("body").on("keyup", "#Timbang_rafaksi", function() {
+    $("body").on("keyup", "#Timbang_rafaksi", function () {
         calculate();
     });
-    $("body").on("keyup", "#Timbang_harga", function() {
+    $("body").on("keyup", "#Timbang_harga", function () {
         calculate();
     });
 </script>

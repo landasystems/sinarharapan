@@ -34,23 +34,23 @@
             $cId = '';
             $criteria = new CDbCriteria();
 
-            if (!empty($sopir))
-                $cId = 'AND sopir_id=' . $sopir;
+            if (!empty($kendaraan))
+                $cId = 'AND truk_id=' . $kendaraan;
 
-            $mBon = Bon::model()->findAll(array(
-                'with' => 'Sopir',
-                'condition' => 'Sopir.is_delete = 0 ' . $cId
+            $mPerawatan = PerawatanTruk::model()->findAll(array(
+                'with' => 'Truk',
+                'condition' => 'Truk.is_delete = 0 ' . $cId
             ));
-            foreach ($mBon as $val) {
-                $mBalance = BonDet::model()->find(array(
+            foreach ($mPerawatan as $val) {
+                $mBalance = PerawatanTrukDet::model()->find(array(
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => 'tanggal<"' . date('Y-m-d', strtotime($start)) . '" AND bon_id=' . $val->id,
-                    'group' => 'bon_id'
+                    'condition' => 'tanggal<"' . date('Y-m-d', strtotime($start)) . '" AND perawatan_truk_id=' . $val->id,
+                    'group' => 'perawatan_truk_id'
                 ));
-                $mutasi = BonDet::model()->find(array(
+                $mutasi = PerawatanTrukDet::model()->find(array(
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => '(tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND bon_id=' . $val->id,
-                    'group' => 'bon_id'
+                    'condition' => '(tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND perawatan_truk_id=' . $val->id,
+                    'group' => 'perawatan_truk_id'
                 ));
 
                 $sDebet = (!empty($mBalance->sumDebet)) ? $mBalance->sumDebet : 0;

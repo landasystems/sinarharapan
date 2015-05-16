@@ -66,7 +66,7 @@ $this->endWidget();
                 array(
                     'header' => 'Total',
                     'name' => 'total',
-                    'value' => '$data->totalCredit',
+                    'value' => '$data->totalDebet',
                 ),
 		/*
 		'created',

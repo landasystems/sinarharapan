@@ -34,7 +34,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <label class="control-label" for="Pegawai_jabatan_id">Nomor Polisi Kendaran</label>
             <div class="controls">
                 <?php
-                $data = array('0' => '- Pilih Nopol-') + CHtml::listData(Truk::model()->findAll(), 'id', 'nomor_polisi');
+                $data = array('0' => '- Pilih Nopol-') + CHtml::listData(Truk::model()->findAll(array('condition'=>'is_delete = 0')), 'id', 'nomor_polisi');
                 $this->widget(
                         'bootstrap.widgets.TbSelect2', array(
                     'name' => 'PerawatanTruk[truk_id]',

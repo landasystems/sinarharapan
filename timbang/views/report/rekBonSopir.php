@@ -34,7 +34,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <label class="control-label" for="Pegawai_jabatan_id">Sopir</label>
             <div class="controls">
                 <?php
-                $data = array('0' => '- Pilih Nama Sopir -') + CHtml::listData(Sopir::model()->findAll(), 'id', 'nama');
+                $data = array('0' => '- Pilih Nama Sopir -') + CHtml::listData(Sopir::model()->findAll(array('condition'=>'is_delete = 0')), 'id', 'nama');
                 $this->widget(
                         'bootstrap.widgets.TbSelect2', array(
                     'name' => 'Bon[sopir_id]',

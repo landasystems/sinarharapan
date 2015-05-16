@@ -1,26 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "{{customer}}".
+ * This is the model class for table "perawatan_truk".
  *
- * The followings are the available columns in table '{{customer}}':
+ * The followings are the available columns in table 'perawatan_truk':
  * @property integer $id
  * @property string $kode
- * @property string $nama
- * @property string $alamat
- * @property string $telepon
- * @property integer $is_delete
+ * @property string $truk_id
+ * @property string $tanggal
+ * @property string $deskripsi
  * @property integer $created_user_id
  * @property string $created
  * @property string $modified
  */
-class Customer extends CActiveRecord {
+class PerawatanTruk extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return '{{customer}}';
+        return 'perawatan_truk';
     }
 
     /**
@@ -30,15 +29,15 @@ class Customer extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('is_delete, created_user_id', 'numerical', 'integerOnly' => true),
-            array('kode, nama', 'required'),
+            array('created_user_id', 'numerical', 'integerOnly' => true),
+            array('truk_id,tanggal', 'required'),
             array('kode', 'length', 'max' => 10),
-            array('nama', 'length', 'max' => 45),
-            array('telepon', 'length', 'max' => 15),
-            array('alamat, created, modified', 'safe'),
+            array('truk_id', 'length', 'max' => 45),
+            array('keterangan', 'length', 'max' => 255),
+            array('tanggal, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, kode, nama, alamat, telepon, is_delete, created_user_id, created, modified', 'safe', 'on' => 'search'),
+            array('id, kode, truk_id, tanggal, keterangan, created_user_id, created, modified', 'safe', 'on' => 'search'),
         );
     }
 
@@ -49,7 +48,23 @@ class Customer extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'Truk' => array(self::BELONGS_TO, 'Truk', 'truk_id'),
+            'PerawatanTrukDet' => array(self::HAS_MANY, 'PerawatanTrukDet', 'perawatan_truk_id'),
         );
+    }
+
+    public function getTotalCredit() {
+        $tot = Yii::app()->db->createCommand()
+                ->select('sum(perawatan_truk_det.credit) as totalCredit')
+                ->from('perawatan_truk_det, perawatan_truk')
+                ->where('perawatan_truk_det.perawatan_truk_id = perawatan_truk.id and perawatan_truk.id = ' . $this->id)
+                ->queryRow();
+        $total =  !empty($tot) ? $tot['totalCredit'] : 0;
+        return landa()->rp($total);
+    }
+
+    public function getTanggalPerawatan() {
+        return (!empty($this->tanggal)) ? date("d M Y", strtotime($this->tanggal)) : '-';
     }
 
     /**
@@ -58,11 +73,13 @@ class Customer extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'kode' => 'No. Customer',
-            'nama' => 'Nama',
-            'alamat' => 'Alamat',
-            'telepon' => 'No. Telepon',
-            'is_delete' => 'Aktifasi Customer',
+            'kode' => 'Kode',
+            'truk_id' => 'Truk',
+            'tanggal' => 'Tanggal',
+            'keterangan' => 'Keterangan',
+            'created_user_id' => 'Created User',
+            'created' => 'Created',
+            'modified' => 'Modified',
         );
     }
 
@@ -83,15 +100,15 @@ class Customer extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('id', $this->id);
-        $criteria->compare('kode', $this->kode, true);
-        $criteria->compare('nama', $this->nama, true);
-        $criteria->compare('alamat', $this->alamat, true);
-        $criteria->compare('telepon', $this->telepon, true);
-        $criteria->compare('is_delete', $this->is_delete, true);
-        $criteria->compare('created_user_id', $this->created_user_id);
-        $criteria->compare('created', $this->created, true);
-        $criteria->compare('modified', $this->modified, true);
+        if (!empty($this->tanggal)) {
+            $dt = explode(" - ", $this->tanggal);
+            $start = $dt[0];
+            $end = $dt[1];
+            $criteria->addCondition('tanggal >= "' . $start . '" and tanggal <= "' . $end . '"');
+        }
+
+        if (!empty($this->truk_id))
+            $criteria->addCondition('truk_id = "' . $this->truk_id . '"');
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -99,16 +116,11 @@ class Customer extends CActiveRecord {
         ));
     }
 
-    
-    public function arrCustomerAktif() {
-        $kunci = array('0' => 'Aktif', '1' => 'Tidak Aktif');
-        return $kunci;
-    }
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Customer the static model class
+     * @return PerawatanTruk the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

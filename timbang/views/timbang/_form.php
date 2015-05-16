@@ -1,7 +1,7 @@
 <style type="text/css">
 
     #printNota{display: none;}
-  
+
 </style>
 <style type="text/css" media="print">
     body {visibility:hidden;}
@@ -47,6 +47,7 @@
             <legend>Info Customer</legend>
         </fieldset>
         <?php
+        $bunga = Pengaturan::model()->findByPk(1);
         $idcustomer = isset($model->customer_id) ? $model->customer_id : 0;
         $namaCustomer = isset($model->Customer->nama) ? $model->Customer->kode . ' - ' . $model->Customer->nama : 0;
         $telp = isset($model->Customer->telepon) ? $model->Customer->telepon : 0;
@@ -97,6 +98,7 @@
 
 
         <?php echo $form->textFieldRow($model, 'nomor_polisi', array('class' => 'span3', 'maxlength' => 25)); ?>
+        <?php echo $form->textFieldRow($model, 'kode', array('class' => 'span3', 'maxlength' => 25)); ?>
 
         <fieldset>
             <legend>Info Timbangan</legend>
@@ -116,7 +118,7 @@
                         ?>
 
                         <div class="input-append">
-                            <input class="span6" name="Timbang[berat_timbang1]" id="Timbang_berat_timbang1" value="<?php echo (isset($model->berat_timbang1)) ? $model->berat_timbang1 : '' ?>" type="text">
+                            <input class="span6 angka" name="Timbang[berat_timbang1]" id="Timbang_berat_timbang1" value="<?php echo (isset($model->berat_timbang1)) ? $model->berat_timbang1 : '' ?>" type="text">
                             <span class="add-on">Kg</span>
                         </div>
                         <?php // echo $form->textFieldRow($model, 'berat_timbang1', array('class' => 'span3', 'labelOptions' => array('label' => false))); ?>
@@ -149,7 +151,7 @@
                     <div class="controls">
 
                         <div class="input-append">
-                            <input class="span6 angka" name="Timbang[rafaksi]" id="Timbang_rafaksi" value="<?php echo (isset($model->rafaksi)) ? $model->rafaksi : 0 ?>" type="text">
+                            <input class="span6 angka" name="Timbang[rafaksi]" id="Timbang_rafaksi" value="<?php echo (isset($model->rafaksi)) ? $model->rafaksi : $bunga->rafaksi ?>" type="text">
                             <span class="add-on">Kg</span>
                         </div>
                         <?php // echo $form->textFieldRow($model, 'berat_timbang2', array('class' => 'span3', 'labelOptions' => array('label' => false))); ?>
@@ -168,26 +170,36 @@
 
                     </div>
                 </div>
-                <?php echo $form->textFieldRow($model, 'harga', array('class' => 'span7 angka', 'prepend' => 'Rp',)); ?>
+                <div class="control-group ">
+                    <label class="control-label" for="Timbang_harga">Harga</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">Rp</span>
+                            <input class="span7 angka" name="Timbang[harga]" value="<?php echo (isset($model->harga)) ? $model->harga : $bunga->harga_tebu ?>" id="Timbang_harga" type="text">
+                            <span class="add-on">/Kg</span>
+                        </div>
+                    </div>
+                </div>
+                <?php // echo $form->textFieldRow($model, 'harga', array('class' => 'span7 angka', 'prepend' => 'Rp',)); ?>
                 <?php echo $form->textFieldRow($model, 'total', array('class' => 'span7', 'prepend' => 'Rp', 'readOnly' => true)); ?>
             </div>
         </div>
         <?php if (!isset($_GET['v'])) { ?>        <div class="form-actions">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'submit',
-                    'type' => 'primary',
-                    'icon' => 'ok white',
-                    'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
-                ));
-                ?>
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'reset',
-                    'icon' => 'remove',
-                    'label' => 'Reset',
-                ));
-                ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'submit',
+                'type' => 'primary',
+                'icon' => 'ok white',
+                'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
+            ));
+            ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'reset',
+                'icon' => 'remove',
+                'label' => 'Reset',
+            ));
+            ?>
             </div>
         <?php } ?>    </fieldset>
 
@@ -204,7 +216,9 @@
             <tr>
                 <td style="width:80px; text-align: left;"><b>No Truck</b></td>
                 <td><?php echo $model->nomor_polisi ?></td>
-                
+                <td style="width:80px; text-align: ">dfg</td>
+                <td style="width:80px; text-align: ">dgfg</td>
+
             </tr>
             <tr>
                 <td style="text-align: left;"><b>Customer</b></td>
@@ -214,13 +228,13 @@
                 <td style="text-align: left;"><b>Produk</b></td>
                 <td style="" colspan="2"><?php echo $model->produk ?></td>
             </tr>
-            
-           
-            
+
+
+
             <tr style="height: 20px;">
                 <td colspan="3"><hr></td>
             </tr>
-            
+
         </table>
         <hr>
         <p style="text-align:center;font-size: 11.5px;">Simpan nota ini sebagai bukti menyelesaikan pekerjaan dan sebagai bukti sah untuk mendapatkan gaji</p>

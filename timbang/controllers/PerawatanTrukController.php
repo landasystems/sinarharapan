@@ -1,6 +1,6 @@
 <?php
 
-class BonController extends Controller {
+class PerawatanTrukController extends Controller {
 
     public $breadcrumbs;
 
@@ -58,35 +58,32 @@ class BonController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Bon;
+        $model = new PerawatanTruk;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Bon'])) {
-            $model->attributes = $_POST['Bon'];
-//            $model->status = "belum lunas";
-            if ($model->save())
+        if (isset($_POST['PerawatanTruk'])) {
+            $model->attributes = $_POST['PerawatanTruk'];
+            if ($model->save()) {
+                for ($i = 0; $i <= count($_POST['keteranganDet']); $i++) {
+                    if (!empty($_POST['keteranganDet'][$i])) {
+                        $detail = new PerawatanTrukDet;
+                        $detail->perawatan_truk_id = $model->id;
+                        $detail->keterangan = $_POST['keteranganDet'][$i];
+                        $detail->harga = $_POST['hargaDet'][$i];
+                        $detail->qty = $_POST['jumlahDet'][$i];
+                        $detail->credit = $_POST['subTotalDet'][$i];
+                        $detail->save();
+                    }
+                }
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('create', array(
             'model' => $model,
         ));
-    }
-
-    public function actionGetListSopir() {
-        $name = $_GET["q"];
-        $list = array();
-        $data = Sopir::model()->findAll(array('condition' => 'nama like "%' . $name . '%"', 'limit' => '10'));
-        if (empty($data)) {
-            $list[] = array("id" => "0", "text" => "No Results Found..");
-        } else {
-            foreach ($data as $val) {
-                $list[] = array("id" => $val->id, "text" => $val->nama);
-            }
-        }
-        echo json_encode($list);
     }
 
     /**
@@ -100,10 +97,24 @@ class BonController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Bon'])) {
-            $model->attributes = $_POST['Bon'];
-            if ($model->save())
+        if (isset($_POST['PerawatanTruk'])) {
+            $model->attributes = $_POST['PerawatanTruk'];
+            $detail = PerawatanTrukDet::model()->deleteAll(array('condition' => 'perawatan_truk_id = ' . $id));
+
+            if ($model->save()) {
+                for ($i = 0; $i <= count($_POST['keteranganDet']); $i++) {
+                    if (!empty($_POST['keteranganDet'][$i])) {
+                        $detail = new PerawatanTrukDet;
+                        $detail->perawatan_truk_id = $model->id;
+                        $detail->keterangan = $_POST['keteranganDet'][$i];
+                        $detail->harga = $_POST['hargaDet'][$i];
+                        $detail->qty = $_POST['jumlahDet'][$i];
+                        $detail->credit = $_POST['subTotalDet'][$i];
+                        $detail->save();
+                    }
+                }
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('update', array(
@@ -120,11 +131,13 @@ class BonController extends Controller {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
             $this->loadModel($id)->delete();
+            $detail = PerawatanTrukDet::model()->deleteAll(array('condition' => 'perawatan_truk_id = ' . $id));
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -133,47 +146,22 @@ class BonController extends Controller {
      */
     public function actionIndex() {
         $criteria = new CDbCriteria();
-        $model = new Bon('search');
+        $model = new PerawatanTruk('search');
         $model->unsetAttributes();  // clear any default values
 
-        if (isset($_GET['Bon'])) {
-            $model->attributes = $_GET['Bon'];
+        if (isset($_GET['PerawatanTruk'])) {
+            $model->attributes = $_GET['PerawatanTruk'];
 
+             if (!empty($model->tanggal)) {
+                $dt = explode(" - ",$model->tanggal);
+                $start = $dt[0];
+                $end = $dt[1];
+                $criteria->addCondition('tanggal >= "'.$start.'" and tanggal <= "'.$end.'"');
+            }
 
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
-            if (!empty($model->sopir_id))
-                $criteria->addCondition('sopir_id = "' . $model->sopir_id . '"');
-
-
-            if (!empty($model->tanggal))
-                $criteria->addCondition('tanggal = "' . $model->tanggal . '"');
-
-
-            if (!empty($model->deskripsi))
-                $criteria->addCondition('deskripsi = "' . $model->deskripsi . '"');
-
-
-            if (!empty($model->total))
-                $criteria->addCondition('total = "' . $model->total . '"');
-
-
-//            if (!empty($model->status))
-//                $criteria->addCondition('status = "' . $model->status . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
+            if (!empty($model->truk_id))
+                $criteria->addCondition('truk_id = "' . $model->truk_id . '"');
+            
         }
 
         $this->render('index', array(
@@ -187,7 +175,7 @@ class BonController extends Controller {
      * @param integer the ID of the model to be loaded
      */
     public function loadModel($id) {
-        $model = Bon::model()->findByPk($id);
+        $model = PerawatanTruk::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -198,7 +186,7 @@ class BonController extends Controller {
      * @param CModel the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'bon-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'perawatan-truk-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

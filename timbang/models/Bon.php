@@ -33,7 +33,7 @@ class Bon extends CActiveRecord {
             array('sopir_id, total, created_user_id', 'numerical', 'integerOnly' => true),
             array('deskripsi', 'length', 'max' => 255),
             array('sopir_id, tanggal, total', 'required'),
-            array('status', 'length', 'max' => 11),
+//            array('status', 'length', 'max' => 11),
             array('tanggal, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -62,7 +62,7 @@ class Bon extends CActiveRecord {
             'tanggal' => 'Tanggal',
             'deskripsi' => 'Deskripsi',
             'total' => 'Total Bon',
-            'status' => 'Status',
+//            'status' => 'Status',
             'created_user_id' => 'Created User',
             'created' => 'Created',
             'modified' => 'Modified',
@@ -85,14 +85,14 @@ class Bon extends CActiveRecord {
         return (!empty($this->Sopir->nama)) ? $this->Sopir->nama : '-';
     }
 
-    public function getStts() {
-        if ($this->status == "belum lunas") {
-            $status = '<span class="label label-important">Belum Lunas</span>';
-        } else {
-            $status = '<span class="label label-success">Lunas</span>';
-        }
-        return $status;
-    }
+//    public function getStts() {
+//        if ($this->status == "belum lunas") {
+//            $status = '<span class="label label-important">Belum Lunas</span>';
+//        } else {
+//            $status = '<span class="label label-success">Lunas</span>';
+//        }
+//        return $status;
+//    }
 
     public function getTgl() {
         return date('d-m-Y', strtotime($this->tanggal));
@@ -112,7 +112,7 @@ class Bon extends CActiveRecord {
         $criteria->compare('tanggal', $this->tanggal, true);
         $criteria->compare('deskripsi', $this->deskripsi, true);
         $criteria->compare('total', $this->total);
-        $criteria->compare('status', $this->status);
+//        $criteria->compare('status', $this->status);
         $criteria->compare('created_user_id', $this->created_user_id);
         $criteria->compare('created', $this->created, true);
         $criteria->compare('modified', $this->modified, true);
@@ -123,10 +123,10 @@ class Bon extends CActiveRecord {
         ));
     }
 
-    public function arrStatus() {
-        $agama = array('lunas' => 'Lunas', 'belum lunas' => 'Belum Lunas');
-        return $agama;
-    }
+//    public function arrStatus() {
+//        $agama = array('lunas' => 'Lunas', 'belum lunas' => 'Belum Lunas');
+//        return $agama;
+//    }
 
     /**
      * Returns the static model of the specified AR class.

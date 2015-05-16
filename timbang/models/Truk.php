@@ -85,6 +85,7 @@ class Truk extends CActiveRecord {
             'terpal' => 'Terpal',
             'kunci' => 'Kunci',
             'sopir_id' => 'Sopir',
+            'is_delete' => 'Aktifasi truck',
         );
     }
 
@@ -155,10 +156,33 @@ class Truk extends CActiveRecord {
         return $kunci;
     }
 
+    public function arrTrukAktif() {
+        $kunci = array('0' => 'Aktif', '1' => 'Tidak Aktif');
+        return $kunci;
+    }
+    
     public function getSopir() {
         return (!empty($this->Sopir->nama)) ? $this->Sopir->nama : '-';
     }
 
+     public function getCekSurat() {
+        return ($this->surat == '1') ? 'Ada' : 'Tidak Ada';
+    }
+     public function getCekSeling() {
+        return ($this->seling == '1') ? 'Ada' : 'Tidak Ada';
+    }
+     public function getCekTerpal() {
+        return ($this->terpal == '1') ? 'Ada' : 'Tidak Ada';
+    }
+     public function getCekDongkrak() {
+        return ($this->dongkrak == '1') ? 'Ada' : 'Tidak Ada';
+    }
+     public function getCekKunci() {
+        return ($this->kunci == '1') ? 'Ada' : 'Tidak Ada';
+    }
+     
+    
+    
     public function getTglpajak() {
         return date('d-m-Y', strtotime($this->pajak));
     }

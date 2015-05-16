@@ -79,6 +79,7 @@ class TrukController extends Controller {
 
         if (isset($_POST['Truk'])) {
             $model->attributes = $_POST['Truk'];
+            $model->is_delete = 0;
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -110,6 +111,23 @@ class TrukController extends Controller {
         ));
     }
 
+    public function actionRestore($id) {
+//		if(Yii::app()->request->isPostRequest)
+//		{
+        // we only allow deletion via POST request
+//			$this->loadModel($id)->delete();
+        $cus = $this->loadModel($id);
+        $cus->is_delete = 0;
+        $cus->save();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+//		}
+//		else
+//			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+    }
+
     /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -118,8 +136,10 @@ class TrukController extends Controller {
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
-            $this->loadModel($id)->delete();
-
+            // $this->loadModel($id)->delete();
+            $cus = $this->loadModel($id);
+            $cus->is_delete = 1;
+            $cus->save();
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
@@ -131,85 +151,55 @@ class TrukController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $criteria = new CDbCriteria();
+
         $model = new Truk('search');
         $model->unsetAttributes();  // clear any default values
-
+        $model->is_delete = 0;
         if (isset($_GET['Truk'])) {
             $model->attributes = $_GET['Truk'];
-
-
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
-            if (!empty($model->kode))
-                $criteria->addCondition('kode = "' . $model->kode . '"');
-
-
-            if (!empty($model->nomor_polisi))
-                $criteria->addCondition('nomor_polisi = "' . $model->nomor_polisi . '"');
-
-
-            if (!empty($model->merk))
-                $criteria->addCondition('merk = "' . $model->merk . '"');
-
-
-            if (!empty($model->type))
-                $criteria->addCondition('type = "' . $model->type . '"');
-
-
-            if (!empty($model->pajak))
-                $criteria->addCondition('pajak = "' . $model->pajak . '"');
-
-
-            if (!empty($model->kir))
-                $criteria->addCondition('kir = "' . $model->kir . '"');
-
-
-            if (!empty($model->stnk))
-                $criteria->addCondition('stnk = "' . $model->stnk . '"');
-
-
-            if (!empty($model->surat))
-                $criteria->addCondition('surat = "' . $model->surat . '"');
-
-
-            if (!empty($model->seling))
-                $criteria->addCondition('seling = "' . $model->seling . '"');
-
-
-            if (!empty($model->terpal))
-                $criteria->addCondition('terpal = "' . $model->terpal . '"');
-
-
-            if (!empty($model->kunci))
-                $criteria->addCondition('kunci = "' . $model->kunci . '"');
-
-
-            if (!empty($model->sopir_id))
-                $criteria->addCondition('sopir_id = "' . $model->sopir_id . '"');
-
-
-            if (!empty($model->is_delete))
-                $criteria->addCondition('is_delete = "' . $model->is_delete . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
         }
 
         $this->render('index', array(
             'model' => $model,
         ));
+    }
+     public function actionGenerateExcel() {
+
+        
+        $is_delete = $_GET['is_delete'];
+        //kelengkapan
+        $surat = $_GET['surat'];
+        $seling = $_GET['seling'];
+        $dongkrak = $_GET['dongkrak'];
+        $terpal = $_GET['terpal'];
+        $kunci = $_GET['kunci'];
+        //jenis kendaraan
+        $sopir_id = $_GET['Truk_sopir_id'];
+        $merk = $_GET['Truk_merk'];
+        $type = $_GET['Truk_type'];
+        $nomor_polisi = $_GET['Truk_nomor_polisi'];
+        
+
+        $criteria = new CDbCriteria;
+        //kelengkapan
+        $criteria->compare('surat', $surat);
+        $criteria->compare('seling', $seling);
+        $criteria->compare('dongkrak', $dongkrak);
+        $criteria->compare('terpal', $terpal);
+        $criteria->compare('kunci', $kunci);
+        //jenis kendaraan
+        $criteria->compare('sopir_id', $sopir_id);
+        $criteria->compare('merk', $merk, true);
+        $criteria->compare('type',  $type, true);
+        $criteria->compare('nomor_polisi', $nomor_polisi, true);
+        $criteria->compare('is_delete', $is_delete);
+        
+        $model = Truk::model()->findAll($criteria);
+        
+         Yii::app()->request->sendFile('Data Truk -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
     }
 
     /**

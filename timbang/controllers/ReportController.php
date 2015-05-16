@@ -58,6 +58,79 @@ class ReportController extends Controller {
         }
         $this->render('trsCustomer', array('model' => $model));
     }
+    public function actionDetailCustomer(){
+        $id = $_POST['id'];
+        $detail = array();
+        if($id != 0){
+            $customer = Customer::model()->findByPk($id);
+            $detail['alamat'] = $customer->alamat;
+            $detail['telepon'] = $customer->telepon;
+            
+            echo json_encode($detail);
+        }
+    }
+    public function actionTrsSopir() {
+        $this->css();
+        $model = new Bon();
+        if (isset($_POST['export']) && !empty($_POST['Bon']['tanggal'])) {
+            $tanggal = explode('-', $_POST['Bon']['tanggal']);
+            $start = $tanggal[0];
+            $end = $tanggal[1];
+            $sopir = (isset($_POST['Bon']['sopir_id'])) ? $_POST['Bon']['sopir_id'] : '';
+            $export = 1;
+            Yii::app()->request->sendFile('Laporan Transaksi Sopir - ' . date('dmY') . '.xls', $this->renderPartial('_trsSopir', array(
+                        'model' => $model,
+                        'start' => $start,
+                        'end' => $end,
+                        'sopir' => $sopir,
+                        'export' => $export
+                            ), true)
+            );
+        }
+        $this->render('trsSopir', array('model' => $model));
+    }
+    public function actionDetailSopir(){
+        $id = $_POST['id'];
+        $detail = array();
+        if($id != 0){
+            $sopir = Sopir::model()->findByPk($id);
+            $detail['alamat'] = $sopir->alamat;
+            $detail['telepon'] = $sopir->telepon;
+            
+            echo json_encode($detail);
+        }
+    }
+    public function actionTrsKendaraan() {
+        $this->css();
+        $model = new PerawatanTruk();
+        if (isset($_POST['export']) && !empty($_POST['PerawatanTruk']['tanggal'])) {
+            $tanggal = explode('-', $_POST['PerawatanTruk']['tanggal']);
+            $start = $tanggal[0];
+            $end = $tanggal[1];
+            $kendaraan = (isset($_POST['PerawatanTruk']['truk_id'])) ? $_POST['PerawatanTruk']['truk_id'] : '';
+            $export = 1;
+            Yii::app()->request->sendFile('Rekap Kendaraan - ' . date('dmY') . '.xls', $this->renderPartial('_trsKendaraan', array(
+                        'model' => $model,
+                        'start' => $start,
+                        'end' => $end,
+                        'kendaraan' => $kendaraan,
+                        'export' => $export
+                            ), true)
+            );
+        }
+        $this->render('trsKendaraan', array('model' => $model));
+    }
+    public function actionDetailTruk(){
+        $id = $_POST['id'];
+        $detail = array();
+        if($id != 0){
+            $truk = Truk::model()->findByPk($id);
+            $detail['alamat'] = $truk->alamat;
+            $detail['telepon'] = $truk->telepon;
+            
+            echo json_encode($detail);
+        }
+    }
     public function actionRekapHutCustomer() {
         $this->css();
         $model = new Piutang();

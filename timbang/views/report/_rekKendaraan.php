@@ -49,6 +49,7 @@
                     'group' => 'perawatan_truk_id'
                 ));
                 $mutasi = PerawatanTrukDet::model()->find(array(
+                    'with' => array('PerawatanTruk'),
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
                     'condition' => '(PerawatanTruk.tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND PerawatanTruk.tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND perawatan_truk_id=' . $val->id,
                     'group' => 'perawatan_truk_id'

@@ -83,8 +83,14 @@ class GirikController extends Controller {
 
         if (isset($_POST['Girik'])) {
             $model->attributes = $_POST['Girik'];
-            if ($model->save())
+            if ($model->save()) {
+                $det = new PerawatanTrukDet;
+                $det->girik_id = $model->id;
+                $det->keterangan = 'Setor girik tanggal ' . $model->tanggal;
+                $det->credit = $model->fee_truk;
+                $det->save();
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('create', array(
@@ -105,8 +111,14 @@ class GirikController extends Controller {
 
         if (isset($_POST['Girik'])) {
             $model->attributes = $_POST['Girik'];
-            if ($model->save())
+            if ($model->save()) {
+                $det = PerawatanTrukDet::model()->find(array('condition' => 'girik_id = ' . $model->id));
+                $det->girik_id = $model->id;
+                $det->keterangan = 'Setor girik tanggal ' . $model->tanggal;
+                $det->credit = $model->fee_truk;
+                $det->save();
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('update', array(
@@ -144,10 +156,10 @@ class GirikController extends Controller {
             $model->attributes = $_GET['Girik'];
 
             if (!empty($model->tanggal)) {
-                $dt = explode(" - ",$model->tanggal);
+                $dt = explode(" - ", $model->tanggal);
                 $start = $dt[0];
                 $end = $dt[1];
-                $criteria->addCondition('tanggal >= "'.$start.'" and <= "'.$end.'"');
+                $criteria->addCondition('tanggal >= "' . $start . '" and <= "' . $end . '"');
             }
 
             if (!empty($model->nomor_girik))
@@ -160,7 +172,6 @@ class GirikController extends Controller {
 
             if (!empty($model->truk_id))
                 $criteria->addCondition('truk_id = "' . $model->truk_id . '"');
-            
         }
 
         $this->render('index', array(

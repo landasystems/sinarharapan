@@ -56,8 +56,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     </div>
     <div class="span5">
         <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span10', 'prepend' => 'Rp')); ?>
-
-        <?php echo $form->textAreaRow($model, 'deskripsi', array('rows' => 6, 'cols' => 50, 'class' => 'span20')); ?>
+        <?php echo $form->textFieldRow($model, 'deskripsi', array('class' => 'span6')); ?>
 
 
 
@@ -68,6 +67,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 <div class="form-actions">
     <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'primary', 'icon' => 'search white', 'label' => 'Pencarian')); ?>
+
+    <?php
+    $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'primary', 'icon' => 'icon', 'label' => 'Export Excel',
+        'htmlOptions' => array(
+            'onclick' => 'excel()'
+    )));
+    ?>
+
     <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'button', 'icon' => 'icon-remove-sign white', 'label' => 'Reset', 'htmlOptions' => array('class' => 'btnreset btn-small'))); ?>
 </div>
 
@@ -88,5 +95,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             });
         });
     })
+
+    function excel() {
+
+        var Bon_sopir_id = $('#Bon_sopir_id').val();
+        var Bon_tanggal = $('#Bon_tanggal').val();
+        var Bon_total = $('#Bon_total').val();
+        var Bon_deskripsi = $('#Bon_deskripsi').val();
+       
+       window.open("<?php echo url('bon/GenerateExcel') ?>?Bon_sopir_id="+Bon_sopir_id+"&Bon_sopir_id="+Bon_sopir_id+"&Bon_tanggal="+Bon_tanggal+"&Bon_total="+Bon_total+"&Bon_deskripsi"+Bon_deskripsi);
+    }
 </script>
 

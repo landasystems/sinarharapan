@@ -1,7 +1,7 @@
 <?php
-$this->setPageTitle('Perawatan Truks');
+$this->setPageTitle('Piutang Dets');
 $this->breadcrumbs=array(
-	'Perawatan Truks',
+	'Piutang Dets',
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -10,7 +10,7 @@ $('.search-button').click(function(){
     return false;
 });
 $('.search-form form').submit(function(){
-    $.fn.yiiGridView.update('perawatan-truk-grid', {
+    $.fn.yiiGridView.update('piutang-det-grid', {
         data: $(this).serialize()
     });
     return false;
@@ -46,28 +46,17 @@ $this->endWidget();
 
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
-	'id'=>'perawatan-truk-grid',
+	'id'=>'piutang-det-grid',
 	'dataProvider'=>$model->search(),
         'type'=>'striped bordered condensed',
         'template'=>'{summary}{pager}{items}{pager}',
 	'columns'=>array(
 		'id',
-		array(
-                    'header' => 'Truk',
-                    'name' => 'truk_id',
-                    'value' => '$data->Truk->nama',
-                ),
-		array(
-                    'header' => 'Tanggal',
-                    'name' => 'tanggal',
-                    'value' => '$data->tanggalPerawatan',
-                ),
-		'keterangan',
-                array(
-                    'header' => 'Total',
-                    'name' => 'total',
-                    'value' => '$data->totalDebet',
-                ),
+		'piutang_id',
+		'tanggal',
+		'debet',
+		'credit',
+		'created_user_id',
 		/*
 		'created',
 		'modified',

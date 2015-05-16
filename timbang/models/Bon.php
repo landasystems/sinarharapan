@@ -123,10 +123,6 @@ class Bon extends CActiveRecord {
         ));
     }
 
-//    public function arrStatus() {
-//        $agama = array('lunas' => 'Lunas', 'belum lunas' => 'Belum Lunas');
-//        return $agama;
-//    }
 
     /**
      * Returns the static model of the specified AR class.

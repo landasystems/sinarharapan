@@ -39,12 +39,13 @@ class JasaTimbang extends CActiveRecord {
             array('harga, total, created_user_id', 'numerical', 'integerOnly' => true),
             array('berat_timbang1, berat_timbang2, rafaksi, netto', 'numerical'),
             array('customer', 'length', 'max' => 50),
+            array('customer,berat_timbang1, berat_timbang2', 'required'),
             array('nomor_polisi', 'length', 'max' => 25),
             array('produk', 'length', 'max' => 45),
             array('tanggal_timbang1, tanggal_timbang2, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, customer, nomor_polisi, produk, tanggal_timbang1, berat_timbang1, tanggal_timbang2, berat_timbang2, rafaksi, netto, harga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
+            array('id,kode, customer,telepon,alamat, nomor_polisi, produk, tanggal_timbang1, berat_timbang1, tanggal_timbang2, berat_timbang2, rafaksi, netto, harga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
         );
     }
 
@@ -65,6 +66,7 @@ class JasaTimbang extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
+            'kode' => 'Kode',
             'customer' => 'Customer',
             'nomor_polisi' => 'Nomor Polisi',
             'produk' => 'Produk',
@@ -100,7 +102,10 @@ class JasaTimbang extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
+        $criteria->compare('kode', $this->kode, true);
         $criteria->compare('customer', $this->customer, true);
+        $criteria->compare('telepon', $this->telepon, true);
+        $criteria->compare('alamat', $this->alamat, true);
         $criteria->compare('nomor_polisi', $this->nomor_polisi, true);
         $criteria->compare('produk', $this->produk, true);
         $criteria->compare('tanggal_timbang1', $this->tanggal_timbang1, true);

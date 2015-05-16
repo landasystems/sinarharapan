@@ -1,6 +1,6 @@
 <?php
 
-class TimbangController extends Controller {
+class PiutangDetController extends Controller {
 
     public $breadcrumbs;
 
@@ -40,24 +40,19 @@ class TimbangController extends Controller {
         );
     }
 
+    public function actionGetDetail() {
+        $id = $_POST['id'];
+        $cust = Customer::model()->findByPk($id);
+        $return['alamat'] = $cust->alamat;
+        $return['telpon'] = landa()->hp($cust->telepon);
+        $return['list'] = $this->renderPartial("_listPiutang", array('customer_id' => $id), TRUE);
+        echo json_encode($return);
+    }
+
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
-    public function actionGetListCustomer() {
-        $name = $_GET["q"];
-        $list = array();
-        $data = Customer::model()->findAll(array('condition' => 'nama like "%' . $name . '%" or kode like "%' . $name . '%" AND is_delete=0', 'limit' => '10'));
-        if (empty($data)) {
-            $list[] = array("id" => "0", "text" => "No Results Found..");
-        } else {
-            foreach ($data as $val) {
-                $list[] = array("id" => $val->id, "text" => $val->kode . ' - ' . $val->nama);
-            }
-        }
-        echo json_encode($list);
-    }
-
     public function actionView($id) {
         cs()->registerScript('read', '
                     $("form input, form textarea, form select").each(function(){
@@ -72,26 +67,13 @@ class TimbangController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Timbang;
+        $model = new PiutangDet;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Timbang'])) {
-
-            $model->attributes = $_POST['Timbang'];
-            if (!empty($_POST['Timbang']['kode'])) {
-                $model->kode = $_POST['Timbang']['kode'];
-            } else {
-                $forkode = Timbang::model()->findAll(array('order' => 'id desc', 'limit' => 1));
-                if (empty($forkode)) {
-                    $model->kode = 1;
-                } else {
-                    foreach ($forkode as $a) {
-                        $model->kode = $a->kode + 1;
-                    }
-                }
-            }
+        if (isset($_POST['PiutangDet'])) {
+            $model->attributes = $_POST['PiutangDet'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -112,20 +94,8 @@ class TimbangController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Timbang'])) {
-            $model->attributes = $_POST['Timbang'];
-            if (!empty($_POST['Timbang']['kode'])) {
-                $model->kode = $_POST['Timbang']['kode'];
-            } else {
-                $forkode = Timbang::model()->findAll(array('order' => 'id desc', 'limit' => 1));
-                if (empty($forkode)) {
-                    $model->kode = 1;
-                } else {
-                    foreach ($forkode as $a) {
-                        $model->kode = $a->kode + 1;
-                    }
-                }
-            }
+        if (isset($_POST['PiutangDet'])) {
+            $model->attributes = $_POST['PiutangDet'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -158,27 +128,43 @@ class TimbangController extends Controller {
      */
     public function actionIndex() {
 
-        $model = new Timbang('search');
+        $model = new PiutangDet('search');
         $model->unsetAttributes();  // clear any default values
-        //delet all
-        if (isset($_POST['delete']) && isset($_POST['ceckbox'])) {
-            foreach ($_POST['ceckbox'] as $data) {
-                $a = $this->loadModel($data);
-                if (!empty($a))
-                    $a->delete();
-            }
-        }
-        if (isset($_GET['Timbang'])) {
-            $model->attributes = $_GET['Timbang'];
-            if ($model->customer_id == 0) {
-                unset($model->customer_id);
-            }
-            if ($model->kode == "") {
-                unset($model->kode);
-            }
-            if ($model->nomor_polisi == "") {
-                unset($model->nomor_polisi);
-            }
+
+        if (isset($_GET['PiutangDet'])) {
+            $model->attributes = $_GET['PiutangDet'];
+
+
+            if (!empty($model->id))
+                $criteria->addCondition('id = "' . $model->id . '"');
+
+
+            if (!empty($model->piutang_id))
+                $criteria->addCondition('piutang_id = "' . $model->piutang_id . '"');
+
+
+            if (!empty($model->tanggal))
+                $criteria->addCondition('tanggal = "' . $model->tanggal . '"');
+
+
+            if (!empty($model->debet))
+                $criteria->addCondition('debet = "' . $model->debet . '"');
+
+
+            if (!empty($model->credit))
+                $criteria->addCondition('credit = "' . $model->credit . '"');
+
+
+            if (!empty($model->created_user_id))
+                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
+
+
+            if (!empty($model->created))
+                $criteria->addCondition('created = "' . $model->created . '"');
+
+
+            if (!empty($model->modified))
+                $criteria->addCondition('modified = "' . $model->modified . '"');
         }
 
         $this->render('index', array(
@@ -192,7 +178,7 @@ class TimbangController extends Controller {
      * @param integer the ID of the model to be loaded
      */
     public function loadModel($id) {
-        $model = Timbang::model()->findByPk($id);
+        $model = PiutangDet::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -203,7 +189,7 @@ class TimbangController extends Controller {
      * @param CModel the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'timbang-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'piutang-det-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

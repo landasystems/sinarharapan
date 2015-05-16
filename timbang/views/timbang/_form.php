@@ -1,7 +1,7 @@
 <style type="text/css">
 
     #printNota{display: none;}
-  
+
 </style>
 <style type="text/css" media="print">
     body {visibility:hidden;}
@@ -47,6 +47,7 @@
             <legend>Info Customer</legend>
         </fieldset>
         <?php
+        $bunga = Pengaturan::model()->findByPk(1);
         $idcustomer = isset($model->customer_id) ? $model->customer_id : 0;
         $namaCustomer = isset($model->Customer->nama) ? $model->Customer->kode . ' - ' . $model->Customer->nama : 0;
         $telp = isset($model->Customer->telepon) ? $model->Customer->telepon : 0;
@@ -97,6 +98,7 @@
 
 
         <?php echo $form->textFieldRow($model, 'nomor_polisi', array('class' => 'span3', 'maxlength' => 25)); ?>
+        <?php echo $form->textFieldRow($model, 'kode', array('class' => 'span3', 'maxlength' => 25)); ?>
 
         <fieldset>
             <legend>Info Timbangan</legend>
@@ -109,6 +111,7 @@
                         <?php
                         echo $form->datepickerRow(
                                 $model, 'tanggal_timbang1', array(
+                            'style' => 'width:80px',
                             'options' => array('language' => 'id', 'format' => 'yyyy-mm-dd'),
                             'prepend' => '<i class="icon-calendar"></i>', 'labelOptions' => array('label' => false)
                                 )
@@ -116,7 +119,7 @@
                         ?>
 
                         <div class="input-append">
-                            <input class="span6" name="Timbang[berat_timbang1]" id="Timbang_berat_timbang1" value="<?php echo (isset($model->berat_timbang1)) ? $model->berat_timbang1 : '' ?>" type="text">
+                            <input class="span6 angka" name="Timbang[berat_timbang1]" id="Timbang_berat_timbang1" value="<?php echo (isset($model->berat_timbang1)) ? $model->berat_timbang1 : '' ?>" type="text">
                             <span class="add-on">Kg</span>
                         </div>
                         <?php // echo $form->textFieldRow($model, 'berat_timbang1', array('class' => 'span3', 'labelOptions' => array('label' => false))); ?>
@@ -129,6 +132,7 @@
                         <?php
                         echo $form->datepickerRow(
                                 $model, 'tanggal_timbang2', array(
+                            'style' => 'width:80px',
                             'options' => array('language' => 'id', 'format' => 'yyyy-mm-dd'),
                             'prepend' => '<i class="icon-calendar"></i>', 'labelOptions' => array('label' => false)
                                 )
@@ -149,7 +153,7 @@
                     <div class="controls">
 
                         <div class="input-append">
-                            <input class="span6 angka" name="Timbang[rafaksi]" id="Timbang_rafaksi" value="<?php echo (isset($model->rafaksi)) ? $model->rafaksi : 0 ?>" type="text">
+                            <input class="span6 angka" name="Timbang[rafaksi]" id="Timbang_rafaksi" value="<?php echo (isset($model->rafaksi)) ? $model->rafaksi : $bunga->rafaksi ?>" type="text">
                             <span class="add-on">Kg</span>
                         </div>
                         <?php // echo $form->textFieldRow($model, 'berat_timbang2', array('class' => 'span3', 'labelOptions' => array('label' => false))); ?>
@@ -168,26 +172,36 @@
 
                     </div>
                 </div>
-                <?php echo $form->textFieldRow($model, 'harga', array('class' => 'span7 angka', 'prepend' => 'Rp',)); ?>
+                <div class="control-group ">
+                    <label class="control-label" for="Timbang_harga">Harga</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">Rp</span>
+                            <input class="span7 angka" name="Timbang[harga]" value="<?php echo (isset($model->harga)) ? $model->harga : $bunga->harga_tebu ?>" id="Timbang_harga" type="text">
+                            <span class="add-on">/Kg</span>
+                        </div>
+                    </div>
+                </div>
+                <?php // echo $form->textFieldRow($model, 'harga', array('class' => 'span7 angka', 'prepend' => 'Rp',)); ?>
                 <?php echo $form->textFieldRow($model, 'total', array('class' => 'span7', 'prepend' => 'Rp', 'readOnly' => true)); ?>
             </div>
         </div>
         <?php if (!isset($_GET['v'])) { ?>        <div class="form-actions">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'submit',
-                    'type' => 'primary',
-                    'icon' => 'ok white',
-                    'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
-                ));
-                ?>
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'reset',
-                    'icon' => 'remove',
-                    'label' => 'Reset',
-                ));
-                ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'submit',
+                'type' => 'primary',
+                'icon' => 'ok white',
+                'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
+            ));
+            ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'reset',
+                'icon' => 'remove',
+                'label' => 'Reset',
+            ));
+            ?>
             </div>
         <?php } ?>    </fieldset>
 
@@ -202,32 +216,80 @@
         <hr>
         <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
             <tr>
-                <td style="width:80px; text-align: left;"><b>No Truck</b></td>
-                <td><?php echo $model->nomor_polisi ?></td>
-                
-            </tr>
-            <tr>
                 <td style="text-align: left;"><b>Customer</b></td>
-                <td style="" colspan="2"><?php echo $namaCustomer ?></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $namaCustomer ?></td>
+
+                <td style="width:80px; text-align: "><b>No Truck</b></td>
+                <td style="width:80px; text-align: "><?php echo $model->nomor_polisi ?></td>
+
             </tr>
             <tr>
-                <td style="text-align: left;"><b>Produk</b></td>
-                <td style="" colspan="2"><?php echo $model->produk ?></td>
+                <td style="text-align: left;"><b>No Telp</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $telp ?></td>
+
+                <td style="width:80px; text-align: "><b>Product</b></td>
+                <td style="width:80px; text-align: "><?php echo $model->produk ?></td>
             </tr>
-            
-           
-            
+            <tr>
+                <td style="text-align: left;"><b>Alamat</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $alamat ?></td>
+
+                <td style="width:80px; text-align: "><b>Tanggal</b></td>
+                <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->created)) ?></td>
+            </tr>
+
+
+
             <tr style="height: 20px;">
-                <td colspan="3"><hr></td>
+                <td colspan="6"><hr style="border-top: 3px double #8c8b8b;"></td>
             </tr>
-            
+            <tr>
+                <td style="text-align: left;"><b>Timbang 1</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $model->berat_timbang1 ?> Kg</td>
+                <td style="width:80px; text-align: "></td>
+                <td style="width:80px; text-align: "><b>Date</b></td>
+                <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->tanggal_timbang1)) ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>Timbang 2</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $model->berat_timbang2 ?> Kg</td>
+                <td style="width:80px; text-align: "></td>
+                <td style="width:80px; text-align: "><b>Date</b></td>
+                <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->tanggal_timbang2)) ?></td>
+            </tr>
+            <tr>
+
+                <td style="width:80px;">&nbsp;</td>
+                <td style="width:80px; text-align: "><hr></td>
+            </tr>
+            <tr>
+
+                <td style="width:80px;">&nbsp;</td>
+                <td style="width:80px; text-align: "><?php echo $model->netto ?> Kg</td>
+            </tr>
+            <tr>
+
+                <td style="width:80px; text-align:right " colspan="5">Juru Timbang</td>
+
+            </tr>
+            <tr>
+
+                <td style="width:80px; text-align:right " colspan="5">&nbsp;</td>
+
+            </tr>
+            <tr>
+
+
+                <td style="width:80px; text-align:right " colspan="5">_____________</td>
+
+            </tr>
         </table>
         <hr>
-        <p style="text-align:center;font-size: 11.5px;">Simpan nota ini sebagai bukti menyelesaikan pekerjaan dan sebagai bukti sah untuk mendapatkan gaji</p>
+        <p style="text-align:center;font-size: 11.5px;"></p>
     </div>
 <?php } ?>
 <script>
-    $("#Timbang_customer_id").on("change", function() {
+    $("#Timbang_customer_id").on("change", function () {
         //var name = $("#Registration_guest_user_id").val();
         //  alert(name);
 
@@ -235,7 +297,7 @@
             url: "<?php echo url('customer/getDetail'); ?>",
             type: "POST",
             data: {id: $(this).val()},
-            success: function(data) {
+            success: function (data) {
 
                 obj = JSON.parse(data);
                 $("#telpon").val(obj.telpon);
@@ -255,16 +317,16 @@
         $("#Timbang_total").val(total);
     }
 
-    $("body").on("keyup", "#Timbang_berat_timbang1", function() {
+    $("body").on("keyup", "#Timbang_berat_timbang1", function () {
         calculate();
     });
-    $("body").on("keyup", "#Timbang_berat_timbang2", function() {
+    $("body").on("keyup", "#Timbang_berat_timbang2", function () {
         calculate();
     });
-    $("body").on("keyup", "#Timbang_rafaksi", function() {
+    $("body").on("keyup", "#Timbang_rafaksi", function () {
         calculate();
     });
-    $("body").on("keyup", "#Timbang_harga", function() {
+    $("body").on("keyup", "#Timbang_harga", function () {
         calculate();
     });
 </script>

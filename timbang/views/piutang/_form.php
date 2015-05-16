@@ -1,3 +1,30 @@
+<style type="text/css">
+
+    #printNota{display: none;}
+
+</style>
+<style type="text/css" media="print">
+    body {visibility:hidden;}
+    #printNota{
+        visibility:visible;
+        display: block; 
+        position: absolute;top: 0;left: 0;float: left;
+        padding: 0 20px 0 0;
+    } 
+</style>
+<script>
+    function printDiv(divName)
+    {
+        var w = window.open();
+        var css = '<style media="print">body{ margin-top:0 !important}</style>';
+        var printContents = '<div style="width:100%;" class="printNota"><center>' + $("#" + divName + "").html() + '</center></div>';
+
+        $(w.document.body).html(css + printContents);
+        w.print();
+        w.window.close();
+    }
+
+</script>
 <div class="form">
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -134,6 +161,27 @@
     <?php $this->endWidget(); ?>
 
 </div>
+<?php if ($model->isNewRecord == false) { ?>
+    <div class="printNota" id="printNota" style="width:310px; width:310px;">
+        <center style="font-size: 11.5px;"><strong>CV Sinar Harapan</strong></center>
+        <center style="font-size: 11.5px;">Jl. Mayjen Panjaitan No. 62 Malang</center>
+        <center style="font-size: 11.5px;">Telp. (0341) 789555</center>
+        <hr>
+        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
+            <tr>
+                <td style="text-align: left;"><b>Customer</b></td>
+                <td style="width:80px; text-align: " colspan="2">fgdfg</td>
+                
+                <td style="width:80px; text-align: "><b>No Truck</b></td>
+                <td style="width:80px; text-align: ">fgdfg</td>
+
+            </tr>
+            
+        </table>
+        <hr>
+        <p style="text-align:center;font-size: 11.5px;"></p>
+    </div>
+<?php } ?>
 <script>
     function calculate() {
         var jumlah = parseInt($("#Piutang_sub_total").val());

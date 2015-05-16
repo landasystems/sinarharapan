@@ -52,6 +52,13 @@ class SopirController extends Controller {
         $_GET['v'] = true;
         $this->actionUpdate($id);
     }
+     public function actionGetDetail() {
+        $id = $_POST['id'];
+        $cust = Sopir::model()->findByPk($id);
+        $return['alamat'] = $cust->alamat;
+        $return['telpon'] = landa()->hp($cust->telepon);
+        echo json_encode($return);
+    }
 
     /**
      * Creates a new model.
@@ -142,6 +149,28 @@ class SopirController extends Controller {
     public function actionIndex() {
         $model = new Sopir('search');
         $model->unsetAttributes();  // clear any default values
+        
+         //delete checked
+        if (isset($_POST['delete']) && isset($_POST['ceckbox'])) {
+            foreach ($_POST['ceckbox'] as $data) {
+                $a = $this->loadModel($data);
+                if (!empty($a))
+                    $a->is_delete = 1;
+                $a->save();
+                ;
+            }
+        }
+        
+        //restore checked
+        if (isset($_POST['restore']) && isset($_POST['ceckbox'])) {
+            foreach ($_POST['ceckbox'] as $data) {
+                $a = $this->loadModel($data);
+                if (!empty($a))
+                    $a->is_delete = 0;
+                $a->save();
+            }
+        }
+        
         $model->is_delete = 0;
         if (isset($_GET['Sopir'])) {
             $model->attributes = $_GET['Sopir'];

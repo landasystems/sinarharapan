@@ -66,8 +66,14 @@ class BonController extends Controller {
         if (isset($_POST['Bon'])) {
             $model->attributes = $_POST['Bon'];
 //            $model->status = "belum lunas";
-            if ($model->save())
+            if ($model->save()) {
+                $bonDet = new BonDet;
+                $bonDet->bon_id = $model->id;
+                $bonDet->tanggal = $model->tanggal;
+                $bonDet->debet = $model->total;
+                $bonDet->save();
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('create', array(
@@ -78,7 +84,8 @@ class BonController extends Controller {
     public function actionGetListSopir() {
         $name = $_GET["q"];
         $list = array();
-        $data = Sopir::model()->findAll(array('condition' => 'nama like "%' . $name . '%"', 'limit' => '10'));
+        $data = Sopir::model()->findAll(array('condition' => 'nama like "%' . $name . '%" and is_delete=0', 'limit' => '10'));
+        // $data->is_delete = 0;
         if (empty($data)) {
             $list[] = array("id" => "0", "text" => "No Results Found..");
         } else {
@@ -103,7 +110,9 @@ class BonController extends Controller {
         if (isset($_POST['Bon'])) {
             $model->attributes = $_POST['Bon'];
             if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
+                BonDet::model()->updateAll(array('debet' => $_POST['Bon']['total'], 'tanggal' => $_POST['Bon']['tanggal']), 'bon_id=' . $id);
+
+            $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('update', array(
@@ -120,7 +129,7 @@ class BonController extends Controller {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
             $this->loadModel($id)->delete();
-
+            BonDet::model()->deleteAll('bon_id='.$id);
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
@@ -132,53 +141,38 @@ class BonController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $criteria = new CDbCriteria();
+
         $model = new Bon('search');
         $model->unsetAttributes();  // clear any default values
 
         if (isset($_GET['Bon'])) {
             $model->attributes = $_GET['Bon'];
-
-
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
-            if (!empty($model->sopir_id))
-                $criteria->addCondition('sopir_id = "' . $model->sopir_id . '"');
-
-
-            if (!empty($model->tanggal))
-                $criteria->addCondition('tanggal = "' . $model->tanggal . '"');
-
-
-            if (!empty($model->deskripsi))
-                $criteria->addCondition('deskripsi = "' . $model->deskripsi . '"');
-
-
-            if (!empty($model->total))
-                $criteria->addCondition('total = "' . $model->total . '"');
-
-
-//            if (!empty($model->status))
-//                $criteria->addCondition('status = "' . $model->status . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
         }
 
         $this->render('index', array(
             'model' => $model,
         ));
+    }
+
+    public function actionGenerateExcel() {
+
+        $sopir_id = $_GET['Bon_sopir_id'];
+        $deskripsi = $_GET['Bon_deskripsi'];
+        $tanggal = $_GET['Bon_tanggal'];
+        $total = $_GET['Bon_total'];
+
+        $criteria = new CDbCriteria;
+        $criteria->compare('sopir_id', $sopir_id);
+        $criteria->compare('tanggal', $tanggal, true);
+        $criteria->compare('deskripsi', $deskripsi, true);
+        $criteria->compare('total', $total);
+
+        $model = Bon::model()->findAll($criteria);
+
+        Yii::app()->request->sendFile('Data Bon -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
     }
 
     /**

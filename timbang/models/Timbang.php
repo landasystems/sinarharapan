@@ -38,12 +38,13 @@ class Timbang extends CActiveRecord {
         return array(
             array('customer_id, harga, total, created_user_id', 'numerical', 'integerOnly' => true),
             array('berat_timbang1, berat_timbang2, rafaksi, netto', 'numerical'),
+            array('customer_id,berat_timbang1, berat_timbang2', 'required'),
             array('nomor_polisi', 'length', 'max' => 25),
             array('produk', 'length', 'max' => 45),
             array('tanggal_timbang1, tanggal_timbang2, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, customer_id, nomor_polisi, produk, tanggal_timbang1, berat_timbang1, tanggal_timbang2, berat_timbang2, rafaksi, netto, harga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
+            array('id,kode, customer_id, nomor_polisi, produk, tanggal_timbang1, berat_timbang1, tanggal_timbang2, berat_timbang2, rafaksi, netto, harga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
         );
     }
 
@@ -64,13 +65,14 @@ class Timbang extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
+            'kode' => 'Kode',
             'customer_id' => 'Customer',
             'nomor_polisi' => 'Plat Nomor',
             'produk' => 'Produk',
-            'tanggal_timbang1' => 'Tanggal Timbang1',
-            'berat_timbang1' => 'Berat Timbang1',
-            'tanggal_timbang2' => 'Tanggal Timbang2',
-            'berat_timbang2' => 'Berat Timbang2',
+            'tanggal_timbang1' => 'Tanggal Timbang 1',
+            'berat_timbang1' => 'Berat Timbang 1',
+            'tanggal_timbang2' => 'Tanggal Timbang 2',
+            'berat_timbang2' => 'Berat Timbang 2',
             'rafaksi' => 'Rafaksi',
             'netto' => 'Netto',
             'harga' => 'Harga',
@@ -99,6 +101,7 @@ class Timbang extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
+        $criteria->compare('kode', $this->kode);
         $criteria->compare('customer_id', $this->customer_id);
         $criteria->compare('nomor_polisi', $this->nomor_polisi, true);
         $criteria->compare('produk', $this->produk, true);
@@ -133,6 +136,7 @@ class Timbang extends CActiveRecord {
         if (empty($this->created_user_id)) {
             $this->created_user_id = Yii::app()->user->id;
             $this->modified = date("Y-m-d H:i:s");
+            $this->created = date("Y-m-d H:i:s");
 //            $this->modified_user_id = Yii::app()->user->id;
         }
         return parent::beforeValidate();

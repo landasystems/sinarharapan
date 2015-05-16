@@ -99,6 +99,26 @@ class ReportController extends Controller {
         }
         $this->render('rekBonSopir', array('model' => $model));
     }
+    public function actionRekapKendaraan() {
+        $this->css();
+        $model = new PerawatanTruk();
+        if (isset($_POST['export']) && !empty($_POST['PerawatanTruk']['tanggal'])) {
+            $tanggal = explode('-', $_POST['PerawatanTruk']['tanggal']);
+            $start = $tanggal[0];
+            $end = $tanggal[1];
+            $kendaraan = (isset($_POST['PerawatanTruk']['truk_id'])) ? $_POST['PerawatanTruk']['truk_id'] : '';
+            $export = 1;
+            Yii::app()->request->sendFile('Rekap Kendaraan - ' . date('dmY') . '.xls', $this->renderPartial('_rekKendaraan', array(
+                        'model' => $model,
+                        'start' => $start,
+                        'end' => $end,
+                        'kendaraan' => $kendaraan,
+                        'export' => $export
+                            ), true)
+            );
+        }
+        $this->render('rekKendaraan', array('model' => $model));
+    }
 
     public function cssTable() {
         cs()->registerCss('', '

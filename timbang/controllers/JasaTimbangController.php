@@ -65,6 +65,18 @@ class JasaTimbangController extends Controller {
 
         if (isset($_POST['JasaTimbang'])) {
             $model->attributes = $_POST['JasaTimbang'];
+            if (!empty($_POST['JasaTimbang']['kode'])) {
+                $model->kode = $_POST['Timbang']['kode'];
+            } else {
+                $forkode = Timbang::model()->findAll(array('order' => 'id desc', 'limit' => 1));
+                if (empty($forkode)) {
+                    $model->kode = 1;
+                } else {
+                    foreach ($forkode as $a) {
+                        $model->kode = $a->kode + 1;
+                    }
+                }
+            }
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -87,6 +99,18 @@ class JasaTimbangController extends Controller {
 
         if (isset($_POST['JasaTimbang'])) {
             $model->attributes = $_POST['JasaTimbang'];
+              if (!empty($_POST['JasaTimbang']['kode'])) {
+                $model->kode = $_POST['Timbang']['kode'];
+            } else {
+                $forkode = Timbang::model()->findAll(array('order' => 'id desc', 'limit' => 1));
+                if (empty($forkode)) {
+                    $model->kode = 1;
+                } else {
+                    foreach ($forkode as $a) {
+                        $model->kode = $a->kode + 1;
+                    }
+                }
+            }
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }

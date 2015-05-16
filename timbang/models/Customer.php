@@ -62,6 +62,7 @@ class Customer extends CActiveRecord {
             'nama' => 'Nama',
             'alamat' => 'Alamat',
             'telepon' => 'No. Telepon',
+            'is_delete' => 'Aktifasi Customer',
         );
     }
 
@@ -87,7 +88,7 @@ class Customer extends CActiveRecord {
         $criteria->compare('nama', $this->nama, true);
         $criteria->compare('alamat', $this->alamat, true);
         $criteria->compare('telepon', $this->telepon, true);
-        $criteria->compare('is_delete', $this->is_delete);
+        $criteria->compare('is_delete', $this->is_delete, true);
         $criteria->compare('created_user_id', $this->created_user_id);
         $criteria->compare('created', $this->created, true);
         $criteria->compare('modified', $this->modified, true);
@@ -98,6 +99,11 @@ class Customer extends CActiveRecord {
         ));
     }
 
+    
+    public function arrCustomerAktif() {
+        $kunci = array('0' => 'Aktif', '1' => 'Tidak Aktif');
+        return $kunci;
+    }
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!

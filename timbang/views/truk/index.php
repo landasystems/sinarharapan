@@ -44,7 +44,20 @@ $this->endWidget();
     ));
     ?>
 </div><!-- search-form -->
-
+<?php
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+    'id' => 'chargeAdditional-form',
+    'enableAjaxValidation' => false,
+    'method' => 'post',
+    'type' => 'horizontal',
+    'htmlOptions' => array(
+        'enctype' => 'multipart/form-data'
+    )
+        ));
+?>
+<button type="submit" name="delete" value="dd" style="margin-left: 10px;" class="btn btn-danger pull-right"><span class="icon16 brocco-icon-trashcan white"></span> Delete Checked</button>    
+<br>
+<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -130,5 +143,6 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         )
     ),
 ));
-?>
 
+$this->endWidget();
+?>

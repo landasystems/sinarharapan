@@ -132,53 +132,38 @@ class BonController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $criteria = new CDbCriteria();
+        
         $model = new Bon('search');
         $model->unsetAttributes();  // clear any default values
 
         if (isset($_GET['Bon'])) {
             $model->attributes = $_GET['Bon'];
-
-
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
-            if (!empty($model->sopir_id))
-                $criteria->addCondition('sopir_id = "' . $model->sopir_id . '"');
-
-
-            if (!empty($model->tanggal))
-                $criteria->addCondition('tanggal = "' . $model->tanggal . '"');
-
-
-            if (!empty($model->deskripsi))
-                $criteria->addCondition('deskripsi = "' . $model->deskripsi . '"');
-
-
-            if (!empty($model->total))
-                $criteria->addCondition('total = "' . $model->total . '"');
-
-
-//            if (!empty($model->status))
-//                $criteria->addCondition('status = "' . $model->status . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
         }
 
         $this->render('index', array(
             'model' => $model,
         ));
+    }
+    
+     public function actionGenerateExcel() {
+
+        $sopir_id = $_GET['Bon_sopir_id'];
+        $deskripsi = $_GET['Bon_deskripsi'];
+        $tanggal = $_GET['Bon_tanggal'];
+        $total = $_GET['Bon_total'];
+
+        $criteria = new CDbCriteria;
+          $criteria->compare('sopir_id', $sopir_id);
+        $criteria->compare('tanggal', $tanggal, true);
+        $criteria->compare('deskripsi', $deskripsi, true);
+        $criteria->compare('total', $total);
+        
+        $model = Bon::model()->findAll($criteria);
+        
+         Yii::app()->request->sendFile('Data Bon -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
     }
 
     /**

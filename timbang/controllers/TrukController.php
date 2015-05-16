@@ -153,7 +153,16 @@ class TrukController extends Controller {
     public function actionIndex() {
 
         $model = new Truk('search');
-        $model->unsetAttributes();  // clear any default values
+        $model->unsetAttributes(); // clear any default values
+        
+        if (isset($_POST['delete']) && isset($_POST['ceckbox'])) {
+            foreach ($_POST['ceckbox'] as $data) {
+                $a = $this->loadModel($data);
+                if (!empty($a))
+                    $a->delete();
+            }
+        }
+        
         $model->is_delete = 0;
         if (isset($_GET['Truk'])) {
             $model->attributes = $_GET['Truk'];

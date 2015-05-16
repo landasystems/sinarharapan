@@ -46,6 +46,7 @@ $this->endWidget();
 </div><!-- search-form -->
 
 
+
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'sopir-grid',

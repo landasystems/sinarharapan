@@ -32,7 +32,7 @@
                         'width' => '260px',
                         'minimumInputLength' => '3',
                         'ajax' => array(
-                            'url' => Yii::app()->createUrl('piutang/getListCustomer'),
+                            'url' => Yii::app()->createUrl('timbang/getListCustomer'),
                             'dataType' => 'json',
                             'data' => 'js:function(term, page) { 
                                                         return {
@@ -65,7 +65,7 @@
                     <div class="controls">
                         <div class="input-prepend">
                             <span class="add-on">+62</span>
-                            <input class="span12" maxlength="19" readonly="1" name="" id="telepon" type="text" value="<?php echo (isset($model->Customer->telepon)) ? $model->Customer->telepon : '-' ?>">
+                            <input class="span12" maxlength="19" readonly="1" name="" id="telpon" type="text" value="<?php echo (isset($model->Customer->telepon)) ? $model->Customer->telepon : '-' ?>">
                         </div>
                     </div>
                 </div>
@@ -85,20 +85,29 @@
 
                 <?php echo $form->radioButtonListRow($model, 'type', Piutang::model()->ArrPinjaman()); ?>
 
+                <div class="control-group ">
+                    <label class="control-label" for="Piutang_jumlah_pupuk">Jumlah Pupuk</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input class="span12 angka" name="Piutang[jumlah_pupuk]" id="Piutang_jumlah_pupuk" type="text">
+                            <span class="add-on">Kg</span>
+                        </div>
+                    </div>
+                </div>
                 <?php echo $form->textFieldRow($model, 'sub_total', array('class' => 'span12')); ?>
 
                 <?php
                 $bunga = Pengaturan::model()->findByPk(1);
                 ?>
                 <div class="control-group ">
-                <label class="control-label" for="Piutang_bunga">Bunga</label>
-                <div class="controls">
-                    <div class="input-append">
-                        <input class="angka span12" value="<?php echo $bunga->bunga ?>" name="Piutang[bunga]" id="Piutang_bunga" type="text"><span class="add-on">%</span>
+                    <label class="control-label" for="Piutang_bunga">Bunga</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input class="angka span12" value="<?php echo (isset($model->bunga)) ? $model->bunga : $bunga->bunga ?>" name="Piutang[bunga]" id="Piutang_bunga" type="text"><span class="add-on">%</span>
+                        </div>
                     </div>
                 </div>
-                </div>
-                <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span12', 'prepend' => 'Rp')); ?>
+                <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span12', 'prepend' => 'Rp', 'readOnly' => true)); ?>
 
             </div></div>
 
@@ -125,3 +134,53 @@
     <?php $this->endWidget(); ?>
 
 </div>
+<script>
+    function calculate() {
+        var jumlah = parseInt($("#Piutang_sub_total").val());
+        var bunga = parseInt($("#Piutang_bunga").val());
+        var sBunga = bunga / 100;
+        var total = jumlah - (sBunga * jumlah);
+        $("#Piutang_total").val(total);
+    }
+    $("body").on("keyup", "#Piutang_sub_total", function() {
+        calculate();
+    });
+    $("body").on("keyup", "#Piutang_bunga", function() {
+        calculate();
+    });
+
+    $("body").on("click", ".radio", function() {
+        var id = $(this).find("input").val();
+
+        if (id == "pupuk") {
+            $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:");
+        }
+        else {
+            $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:none");
+        }
+
+    });
+    $("#Piutang_customer_id").on("change", function() {
+        //var name = $("#Registration_guest_user_id").val();
+        //  alert(name);
+
+        $.ajax({
+            url: "<?php echo url('customer/getDetail'); ?>",
+            type: "POST",
+            data: {id: $(this).val()},
+            success: function(data) {
+
+                obj = JSON.parse(data);
+                $("#telpon").val(obj.telpon);
+                $("#alamat").val(obj.alamat);
+            }
+        });
+    });
+<?php
+if ($model->type == "uang") {
+    echo '$("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:none");';
+} else {
+    echo '$("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:");';
+}
+?>
+</script>

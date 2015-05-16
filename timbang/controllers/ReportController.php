@@ -38,7 +38,7 @@ class ReportController extends Controller {
             }');
     }
 
-    public function actionRekapHutCustomer() {
+    public function actionTrsCustomer() {
         $this->css();
         $model = new Piutang();
         if (isset($_POST['export']) && !empty($_POST['Piutang']['tanggal'])) {
@@ -58,6 +58,26 @@ class ReportController extends Controller {
         }
         $this->render('trsCustomer', array('model' => $model));
     }
+    public function actionRekapHutCustomer() {
+        $this->css();
+        $model = new Piutang();
+        if (isset($_POST['export']) && !empty($_POST['Piutang']['tanggal'])) {
+            $tanggal = explode('-', $_POST['Piutang']['tanggal']);
+            $start = $tanggal[0];
+            $end = $tanggal[1];
+            $export = 1;
+            $customer = (isset($_POST['Piutang']['customer_id'])) ? $_POST['Piutang']['customer_id'] : '';
+            Yii::app()->request->sendFile('Rekap Hutang Customer - ' . date('dmY') . '.xls', $this->renderPartial('_rekCustomer', array(
+                        'model' => $model,
+                        'start' => $start,
+                        'end' => $end,
+                        'customer' => $customer,
+                        'export' => $export
+                            ), true)
+            );
+        }
+        $this->render('rekCustomer', array('model' => $model));
+    }
 
     public function actionRekapBonSopir() {
         $this->css();
@@ -68,7 +88,7 @@ class ReportController extends Controller {
             $end = $tanggal[1];
             $sopir = (isset($_POST['Bon']['sopir_id'])) ? $_POST['Bon']['sopir_id'] : '';
             $export = 1;
-            Yii::app()->request->sendFile('Rekap Bon Sopir - ' . date('dmY') . '.xls', $this->renderPartial('_bonSopir', array(
+            Yii::app()->request->sendFile('Rekap Bon Sopir - ' . date('dmY') . '.xls', $this->renderPartial('_rekBonSopir', array(
                         'model' => $model,
                         'start' => $start,
                         'end' => $end,
@@ -77,7 +97,7 @@ class ReportController extends Controller {
                             ), true)
             );
         }
-        $this->render('bonSopir', array('model' => $model));
+        $this->render('rekBonSopir', array('model' => $model));
     }
 
     public function cssTable() {

@@ -96,7 +96,7 @@ if (!empty($_POST['Bon']['tanggal'])) {
     $end = $tanggal[1];
     $sopir = (isset($_POST['Bon']['sopir_id'])) ? $_POST['Bon']['sopir_id'] : '';
 
-    $this->renderPartial('_bonSopir', array(
+    $this->renderPartial('_rekBonSopir', array(
         'model' => $model,
         'start' => $start,
         'end' => $end,

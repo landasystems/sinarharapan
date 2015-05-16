@@ -139,7 +139,7 @@ class Auth extends CActiveRecord {
                     array('visible' => landa()->checkAccess('bon', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bon', 'url' => url('/bon'), 'auth_id' => 'bon'),
                     array('visible' => landa()->checkAccess('storGir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Stor Girik', 'url' => url('/girik'), 'auth_id' => 'storGir'),
                 )),
-            array('visible' => landa()->checkAccess('perawatan', 'r'), 'label' => '<span class="icon16 icomoon-icon-cars"></span>Perawatan Kendaraan', 'url' => url('#'), 'auth_id' => 'perawatan'),
+            array('visible' => landa()->checkAccess('perawatan', 'r'), 'label' => '<span class="icon16 icomoon-icon-cars"></span>Perawatan Kendaraan', 'url' => url('/perawatanTruk'), 'auth_id' => 'perawatan'),
             array('visible' => landa()->checkAccess('trsCustomer', 'r'), 'label' => '<span class="icon16  silk-icon-checklist"></span>Laporan', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('trsCustomer', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Hutang Customer', 'url' => url('report/trsCustomer'), 'auth_id' => 'trsCustomer'),
                     array('visible' => landa()->checkAccess('trSopir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Piutang Sopir', 'url' => url('report/trsSopir'), 'auth_id' => 'trSopir'),

@@ -99,10 +99,12 @@ class Timbang extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
+        $criteria->with = array('Customer');
+        $criteria->together = true;
 
         $criteria->compare('id', $this->id);
         $criteria->compare('kode', $this->kode);
-        $criteria->compare('customer_id', $this->customer_id);
+        $criteria->compare('t.customer_id', $this->customer_id, true);
         $criteria->compare('nomor_polisi', $this->nomor_polisi, true);
         $criteria->compare('produk', $this->produk, true);
         $criteria->compare('tanggal_timbang1', $this->tanggal_timbang1, true);
@@ -119,7 +121,7 @@ class Timbang extends CActiveRecord {
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
-            'sort' => array('defaultOrder' => 'id DESC')
+            'sort' => array('defaultOrder' => 't.id DESC')
         ));
     }
 

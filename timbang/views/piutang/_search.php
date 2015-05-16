@@ -46,18 +46,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         );
         ?>
 
-        <?php echo $form->textFieldRow($model, 'jaminan', array('class' => 'span7', 'maxlength' => 150)); ?>
-
-        <?php echo $form->textFieldRow($model, 'deskripsi', array('class' => 'span7', 'maxlength' => 255)); ?>
-
-        <?php
-        echo $form->datepickerRow(
-                $model, 'tanggal', array(
-            'options' => array('language' => 'id', 'format' => 'yyyy-mm-dd'),
-            'prepend' => '<i class="icon-calendar"></i>'
-                )
-        );
-        ?>
     </div>
     <div class="span5">
 
@@ -65,21 +53,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
         <?php echo $form->radioButtonListRow($model, 'type', Piutang::model()->ArrPinjaman()); ?>
 
-        <?php
-        $bunga = Pengaturan::model()->findByPk(1);
-        ?>
-        <div class="control-group ">
-            <label class="control-label" for="Piutang_bunga">Bunga</label>
-            <div class="controls">
-                <div class="input-append">
-                    <input class="angka span12" value="<?php echo $bunga->bunga ?>" name="Piutang[bunga]" id="Piutang_bunga" type="text"><span class="add-on">%</span>
-                </div>
-            </div>
-        </div>
-        <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span12', 'prepend' => 'Rp')); ?>
-
-
-        <?php echo $form->textFieldRow($model, 'sub_total', array('class' => 'span7')); ?>
+       
     </div></div>
 
 

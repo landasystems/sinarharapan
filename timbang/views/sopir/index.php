@@ -112,3 +112,17 @@ $this->widget('bootstrap.widgets.TbGridView', array(
 ));
 ?>
 
+
+<script type="text/javascript">
+jQuery(document).on('click','#sopir-grid a.btn.btn-small.ok',function() {
+        if(!confirm('Anda yakin ingin mengembalikan data ini?')) return false;
+        jQuery('#sopir-grid').yiiGridView('update', {
+                type: 'POST',
+                url: jQuery(this).attr('href'),
+                success: function(data) {
+                        jQuery('#sopir-grid').yiiGridView('update');
+                },
+        });
+        return false;
+});
+</script>

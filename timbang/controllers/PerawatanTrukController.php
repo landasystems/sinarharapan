@@ -109,7 +109,7 @@ class PerawatanTrukController extends Controller {
                         $detail->keterangan = $_POST['keteranganDet'][$i];
                         $detail->harga = $_POST['hargaDet'][$i];
                         $detail->qty = $_POST['jumlahDet'][$i];
-                        $detail->credit = $_POST['subTotalDet'][$i];
+                        $detail->debet = $_POST['subTotalDet'][$i];
                         $detail->save();
                     }
                 }

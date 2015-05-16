@@ -29,7 +29,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
     'items' => array(
         array('label' => 'Tambah', 'icon' => 'icon-plus', 'url' => Yii::app()->controller->createUrl('create'), 'linkOptions' => array()),
         array('label' => 'List Data', 'icon' => 'icon-th-list', 'url' => Yii::app()->controller->createUrl('index'), 'active' => true, 'linkOptions' => array()),
-        array('label' => 'Pencarian', 'icon' => 'icon-search', 'url' => '#', 'linkOptions' => array('class' => 'search-button')),
+        array('label' => 'Pencarian & Export Excel', 'icon' => 'icon-search', 'url' => '#', 'linkOptions' => array('class' => 'search-button')),
     ),
 ));
 $this->endWidget();
@@ -74,7 +74,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
          */
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{view} {update} {delete}',
+            'template' => '{view} {update} {delete} {restore}',
             'buttons' => array(
                 'view' => array(
                     'label' => 'Lihat',
@@ -88,12 +88,22 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                         'class' => 'btn btn-small update'
                     )
                 ),
+                'restore' => array(
+//                    'label' => '',
+                    'icon' => 'icon-ok',
+                    'visible' => '($data->is_delete == 1)',
+                    'url' => 'Yii::app()->createUrl("customer/restore",array("id"=>$data->id))',
+                    'options' => array(
+                        'class' => 'btn btn-small ok',
+                    )
+                ),
                 'delete' => array(
                     'label' => 'Hapus',
+                    'visible' => '($data->is_delete == 0)',
                     'options' => array(
                         'class' => 'btn btn-small delete'
                     )
-                )
+                ),
             ),
             'htmlOptions' => array('style' => 'width: 125px'),
         )

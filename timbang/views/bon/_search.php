@@ -52,7 +52,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 )
         );
         ?>
-        <?php echo $form->dropDownListRow($model, 'status', Bon::model()->ArrStatus(), array('empty' => '- Status -')); ?>
+        <?php // echo $form->dropDownListRow($model, 'status', Bon::model()->ArrStatus(), array('empty' => '- Status -')); ?>
     </div>
     <div class="span5">
         <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span10', 'prepend' => 'Rp')); ?>

@@ -48,7 +48,7 @@
                 );
                 ?>
                 <?php
-                $data = array('0' => '- Pilih Truk -') + CHtml::listData(Truk::model()->findall(array('condition' => 'is_delete = 0 and sopir_id = ' . $model->sopir_id)), 'id', 'nama');
+                $data = array('0' => '- Pilih Truk -') + CHtml::listData(Truk::model()->findall(array('condition' => 'is_delete = 0')), 'id', 'nama');
                 echo $form->select2Row($model, 'truk_id', array(
                     'asDropDownList' => true,
                     'data' => $data,
@@ -124,7 +124,7 @@
     <?php $this->endWidget(); ?>
 
 </div>
-<script>
+<script type="text/javascript">
                                 function calculate() {
                                     var berat = parseInt($("#Girik_berat").val());
                                     var ongkos = parseInt($("#ongkos").val());
@@ -136,21 +136,21 @@
                                     $("#Girik_fee_truk").val(total * persentasi_truk);
                                     $("#Girik_fee_sopir").val((total * persentasi_truk) - solar);
                                 }
-                                $(document).ready(function() {
-                                    $("#Girik_sopir_id").change(function() {
-                                        $.ajax(
-                                                {
-                                                    type: "POST",
-                                                    url: "<?php echo url('girik/ambilTruk'); ?>",
-                                                    data: {id: $(this).val()},
-                                                    success: function(data)
-                                                    {
-                                                        obj = JSON.parse(data);
-                                                        $("#Girik_truk_id").html(obj.body);
-                                                        $("#alamat").html(obj.alamat);
-                                                        $("#telepon").val(obj.telepon);
-                                                    }
-                                                });
-                                    });
-                                });
+//                                $(document).ready(function() {
+//                                    $("#Girik_sopir_id").change(function() {
+//                                        $.ajax(
+//                                                {
+//                                                    type: "POST",
+//                                                    url: "<?php echo url('girik/ambilTruk'); ?>",
+//                                                    data: {id: $(this).val()},
+//                                                    success: function(data)
+//                                                    {
+//                                                        obj = JSON.parse(data);
+//                                                        $("#Girik_truk_id").html(obj.body);
+//                                                        $("#alamat").html(obj.alamat);
+//                                                        $("#telepon").val(obj.telepon);
+//                                                    }
+//                                                });
+//                                    });
+//                                });
 </script>

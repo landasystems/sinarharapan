@@ -95,12 +95,20 @@
         <fieldset>
             <legend>Kelengkapan</legend>
         </fieldset>
-        <?php echo $form->radioButtonListRow($model, 'surat', Truk::model()->ArrSurat()); ?>
-        <?php echo $form->radioButtonListRow($model, 'seling', Truk::model()->ArrSeling()); ?>
-        <?php echo $form->radioButtonListRow($model, 'terpal', Truk::model()->ArrSurat()); ?>
-        <?php echo $form->radioButtonListRow($model, 'dongkrak', Truk::model()->ArrSurat()); ?>
-        <?php echo $form->radioButtonListRow($model, 'kunci', Truk::model()->ArrSurat()); ?>
+        <div class="row-fluid">
+            <div class="span4">
 
+                <?php echo $form->radioButtonListRow($model, 'surat', Truk::model()->ArrSurat()); ?>
+                <?php echo $form->radioButtonListRow($model, 'seling', Truk::model()->ArrSeling()); ?>
+
+            </div><div class="span4">
+
+                <?php echo $form->radioButtonListRow($model, 'terpal', Truk::model()->ArrSurat()); ?>
+                <?php echo $form->radioButtonListRow($model, 'dongkrak', Truk::model()->ArrSurat()); ?>
+                </div><div class="span4">
+                <?php echo $form->radioButtonListRow($model, 'kunci', Truk::model()->ArrSurat()); ?>
+
+            </div></div>
 
 
 

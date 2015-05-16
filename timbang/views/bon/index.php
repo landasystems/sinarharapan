@@ -76,12 +76,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'name' => 'total',
             'value' => '$data->rptotal',
         ),
-       array(
-            'name' => 'status',
-            'type'=>'raw',
-            'value' => '$data->stts',
-            'htmlOptions' => array('style' => 'text-align: center;')
-        ),
+     
         
         'deskripsi',
         /*

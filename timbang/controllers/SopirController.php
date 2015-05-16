@@ -65,6 +65,7 @@ class SopirController extends Controller {
 
         if (isset($_POST['Sopir'])) {
             $model->attributes = $_POST['Sopir'];
+            $model->is_delete = 0;
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -87,6 +88,7 @@ class SopirController extends Controller {
 
         if (isset($_POST['Sopir'])) {
             $model->attributes = $_POST['Sopir'];
+
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -101,10 +103,31 @@ class SopirController extends Controller {
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
+    public function actionRestore($id) {
+//		if(Yii::app()->request->isPostRequest)
+//		{
+        // we only allow deletion via POST request
+//			$this->loadModel($id)->delete();
+        $cus = $this->loadModel($id);
+        $cus->is_delete = 0;
+        $cus->save();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+//		}
+//		else
+//			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+    }
+
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
-            $this->loadModel($id)->delete();
+            // we only allow deletion via POST request
+//			$this->loadModel($id)->delete();
+            $cus = $this->loadModel($id);
+            $cus->is_delete = 1;
+            $cus->save();
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
@@ -117,48 +140,11 @@ class SopirController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $criteria = new CDbCriteria();
         $model = new Sopir('search');
         $model->unsetAttributes();  // clear any default values
-
+        $model->is_delete = 0;
         if (isset($_GET['Sopir'])) {
             $model->attributes = $_GET['Sopir'];
-
-
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
-            if (!empty($model->kode))
-                $criteria->addCondition('kode = "' . $model->kode . '"');
-
-
-            if (!empty($model->nama))
-                $criteria->addCondition('nama = "' . $model->nama . '"');
-
-
-            if (!empty($model->alamat))
-                $criteria->addCondition('alamat = "' . $model->alamat . '"');
-
-
-            if (!empty($model->telepon))
-                $criteria->addCondition('telepon = "' . $model->telepon . '"');
-
-
-            if (!empty($model->is_delete))
-                $criteria->addCondition('is_delete = "' . $model->is_delete . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
         }
 
         $this->render('index', array(
@@ -178,6 +164,29 @@ class SopirController extends Controller {
         return $model;
     }
 
+     public function actionGenerateExcel() {
+
+        $kode = $_GET['Sopir_kode'];
+        $is_delete = $_GET['is_delete'];
+        $nama = $_GET['Sopir_nama'];
+        $telepon = $_GET['Sopir_telepon'];
+        $alamat = $_GET['Sopir_alamat'];
+
+        $criteria = new CDbCriteria;
+        $criteria->compare('kode', $kode, true);
+        $criteria->addCondition('nama like "%' . $nama . '%"');
+        $criteria->compare('is_delete', $is_delete, true);
+        $criteria->compare('telepon', $telepon, true);
+        $criteria->compare('alamat', $alamat, true);
+        
+        $model = Sopir::model()->findAll($criteria);
+        
+         Yii::app()->request->sendFile('Data Sopir -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
+    }
+    
     public function actionSearchJson() {
         $user = (empty(Yii::app()->session['searchSopir'])) ? Sopir::model()->findAll(array('condition' => 'nama like "%' . $_POST['queryString'] . '%"')) : Yii::app()->session['searchSopir'];
         $results = array();
@@ -185,7 +194,7 @@ class SopirController extends Controller {
             $results[$no]['url'] = url('sopir/' . $o->id);
 //            $results[$no]['img'] = $o->imgUrl['small'];
             $results[$no]['title'] = ucfirst($o->nama);
-            $results[$no]['description'] = '<br><b>No :</b> '.$o->kode . '<br/><b>Telp :</b> ' .$o->telepon. '<br/><b>Addr:</b> ' . $o->alamat;
+            $results[$no]['description'] = '<br><b>No :</b> ' . $o->kode . '<br/><b>Telp :</b> ' . $o->telepon . '<br/><b>Addr:</b> ' . $o->alamat;
         }
         echo json_encode($results);
     }

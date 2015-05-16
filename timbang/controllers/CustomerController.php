@@ -52,14 +52,6 @@ class CustomerController extends Controller {
         $_GET['v'] = true;
         $this->actionUpdate($id);
     }
-    
-    public function actionGetDetail(){
-        $id= $_POST['id'];
-        $cust = Customer::model()->findByPk($id);
-        $return['alamat'] = $cust->alamat;
-        $return['telpon'] = landa()->hp($cust->telepon);
-        echo json_encode($return);
-    }
 
     /**
      * Creates a new model.
@@ -73,6 +65,7 @@ class CustomerController extends Controller {
 
         if (isset($_POST['Customer'])) {
             $model->attributes = $_POST['Customer'];
+            $model->is_delete = 0;
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -109,16 +102,35 @@ class CustomerController extends Controller {
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
+    public function actionRestore($id) {
+//		if(Yii::app()->request->isPostRequest)
+//		{
+        // we only allow deletion via POST request
+//			$this->loadModel($id)->delete();
+        $cus = $this->loadModel($id);
+        $cus->is_delete = 0;
+        $cus->save();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+//		}
+//		else
+//			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+    }
+
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
-            $this->loadModel($id)->delete();
+//			$this->loadModel($id)->delete();
+            $cus = $this->loadModel($id);
+            $cus->is_delete = 1;
+            $cus->save();
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        }
-        else
+        } else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -126,53 +138,39 @@ class CustomerController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $criteria = new CDbCriteria();
         $model = new Customer('search');
         $model->unsetAttributes();  // clear any default values
-
+        $model->is_delete = 0;
         if (isset($_GET['Customer'])) {
             $model->attributes = $_GET['Customer'];
-
-
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
-            if (!empty($model->kode))
-                $criteria->addCondition('kode = "' . $model->kode . '"');
-
-
-            if (!empty($model->nama))
-                $criteria->addCondition('nama = "' . $model->nama . '"');
-
-
-            if (!empty($model->alamat))
-                $criteria->addCondition('alamat = "' . $model->alamat . '"');
-
-
-            if (!empty($model->telepon))
-                $criteria->addCondition('telepon = "' . $model->telepon . '"');
-
-
-            if (!empty($model->is_delete))
-                $criteria->addCondition('is_delete = "' . $model->is_delete . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
         }
 
         $this->render('index', array(
             'model' => $model,
         ));
+    }
+
+    public function actionGenerateExcel() {
+
+        $kode = $_GET['Customer_kode'];
+        $is_delete = $_GET['is_delete'];
+        $nama = $_GET['Customer_nama'];
+        $telepon = $_GET['Customer_telepon'];
+        $alamat = $_GET['Customer_alamat'];
+
+        $criteria = new CDbCriteria;
+        $criteria->compare('kode', $kode, true);
+        $criteria->addCondition('nama like "%' . $nama . '%"');
+        $criteria->compare('is_delete', $is_delete, true);
+        $criteria->compare('telepon', $telepon, true);
+        $criteria->compare('alamat', $alamat, true);
+        
+        $model = Customer::model()->findAll($criteria);
+        
+         Yii::app()->request->sendFile('Data Customer -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
     }
 
     /**

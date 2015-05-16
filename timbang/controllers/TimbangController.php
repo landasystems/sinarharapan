@@ -1,6 +1,6 @@
 <?php
 
-class CustomerController extends Controller {
+class TimbangController extends Controller {
 
     public $breadcrumbs;
 
@@ -44,6 +44,20 @@ class CustomerController extends Controller {
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
+    public function actionGetListCustomer() {
+        $name = $_GET["q"];
+        $list = array();
+        $data = Customer::model()->findAll(array('condition' => 'nama like "%' . $name . '%" or kode like "%' . $name . '%" AND is_delete=0', 'limit' => '10'));
+        if (empty($data)) {
+            $list[] = array("id" => "0", "text" => "No Results Found..");
+        } else {
+            foreach ($data as $val) {
+                $list[] = array("id" => $val->id, "text" => $val->kode . ' - ' . $val->nama);
+            }
+        }
+        echo json_encode($list);
+    }
+
     public function actionView($id) {
         cs()->registerScript('read', '
                     $("form input, form textarea, form select").each(function(){
@@ -52,27 +66,19 @@ class CustomerController extends Controller {
         $_GET['v'] = true;
         $this->actionUpdate($id);
     }
-    
-    public function actionGetDetail(){
-        $id= $_POST['id'];
-        $cust = Customer::model()->findByPk($id);
-        $return['alamat'] = $cust->alamat;
-        $return['telpon'] = landa()->hp($cust->telepon);
-        echo json_encode($return);
-    }
 
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Customer;
+        $model = new Timbang;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Customer'])) {
-            $model->attributes = $_POST['Customer'];
+        if (isset($_POST['Timbang'])) {
+            $model->attributes = $_POST['Timbang'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -93,8 +99,8 @@ class CustomerController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Customer'])) {
-            $model->attributes = $_POST['Customer'];
+        if (isset($_POST['Timbang'])) {
+            $model->attributes = $_POST['Timbang'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -126,36 +132,67 @@ class CustomerController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $criteria = new CDbCriteria();
-        $model = new Customer('search');
-        $model->unsetAttributes();  // clear any default values
 
-        if (isset($_GET['Customer'])) {
-            $model->attributes = $_GET['Customer'];
+        $model = new Timbang('search');
+        $model->unsetAttributes();  // clear any default values
+        //delet all
+        if (isset($_POST['delete']) && isset($_POST['ceckbox'])) {
+            foreach ($_POST['ceckbox'] as $data) {
+                $a = $this->loadModel($data);
+                if (!empty($a))
+                    $a->delete();
+            }
+        }
+        if (isset($_GET['Timbang'])) {
+            $model->attributes = $_GET['Timbang'];
 
 
             if (!empty($model->id))
                 $criteria->addCondition('id = "' . $model->id . '"');
 
 
-            if (!empty($model->kode))
-                $criteria->addCondition('kode = "' . $model->kode . '"');
+            if (!empty($model->customer_id))
+                $criteria->addCondition('customer_id = "' . $model->customer_id . '"');
 
 
-            if (!empty($model->nama))
-                $criteria->addCondition('nama = "' . $model->nama . '"');
+            if (!empty($model->nomor_polisi))
+                $criteria->addCondition('nomor_polisi = "' . $model->nomor_polisi . '"');
 
 
-            if (!empty($model->alamat))
-                $criteria->addCondition('alamat = "' . $model->alamat . '"');
+            if (!empty($model->produk))
+                $criteria->addCondition('produk = "' . $model->produk . '"');
 
 
-            if (!empty($model->telepon))
-                $criteria->addCondition('telepon = "' . $model->telepon . '"');
+            if (!empty($model->tanggal_timbang1))
+                $criteria->addCondition('tanggal_timbang1 = "' . $model->tanggal_timbang1 . '"');
 
 
-            if (!empty($model->is_delete))
-                $criteria->addCondition('is_delete = "' . $model->is_delete . '"');
+            if (!empty($model->berat_timbang1))
+                $criteria->addCondition('berat_timbang1 = "' . $model->berat_timbang1 . '"');
+
+
+            if (!empty($model->tanggal_timbang2))
+                $criteria->addCondition('tanggal_timbang2 = "' . $model->tanggal_timbang2 . '"');
+
+
+            if (!empty($model->berat_timbang2))
+                $criteria->addCondition('berat_timbang2 = "' . $model->berat_timbang2 . '"');
+
+
+            if (!empty($model->rafaksi))
+                $criteria->addCondition('rafaksi = "' . $model->rafaksi . '"');
+
+
+            if (!empty($model->netto))
+                $criteria->addCondition('netto = "' . $model->netto . '"');
+
+
+            if (!empty($model->harga))
+                $criteria->addCondition('harga = "' . $model->harga . '"');
+
+
+            if (!empty($model->total))
+                $criteria->addCondition('total = "' . $model->total . '"');
 
 
             if (!empty($model->created_user_id))
@@ -181,7 +218,7 @@ class CustomerController extends Controller {
      * @param integer the ID of the model to be loaded
      */
     public function loadModel($id) {
-        $model = Customer::model()->findByPk($id);
+        $model = Timbang::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -192,7 +229,7 @@ class CustomerController extends Controller {
      * @param CModel the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'customer-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'timbang-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

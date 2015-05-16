@@ -48,7 +48,17 @@ class PerawatanTruk extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'Truk' => array(self::BELONGS_TO, 'Truk', 'truk_id'),
+            'PerawatanTrukDet' => array(self::HAS_MANY, 'PerawatanTrukDet', 'perawatan_truk_id'),
         );
+    }
+
+    public function getTotalCredit() {
+        $detail = PerawatanTruk::model()->with('PerawatanTrukDet')->find(array('select' => 'sum(PerawatanTrukDet.credit)'));
+    }
+
+    public function getTanggalPerawatan() {
+        return (!empty($this->tanggal)) ? date("d M Y", strtotime($this->tanggal)) : '-';
     }
 
     /**
@@ -84,13 +94,15 @@ class PerawatanTruk extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('id', $this->id);
-        $criteria->compare('kode', $this->kode, true);
-        $criteria->compare('truk_id', $this->truk_id, true);
-        $criteria->compare('tanggal', $this->tanggal, true);
-        $criteria->compare('created_user_id', $this->created_user_id);
-        $criteria->compare('created', $this->created, true);
-        $criteria->compare('modified', $this->modified, true);
+        if (!empty($this->tanggal)) {
+            $dt = explode(" - ", $this->tanggal);
+            $start = $dt[0];
+            $end = $dt[1];
+            $criteria->addCondition('tanggal >= "' . $start . '" and tanggal <= "' . $end . '"');
+        }
+
+        if (!empty($this->truk_id))
+            $criteria->addCondition('truk_id = "' . $this->truk_id . '"');
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

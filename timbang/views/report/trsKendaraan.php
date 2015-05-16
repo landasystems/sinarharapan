@@ -1,7 +1,7 @@
 <?php
-$this->setPageTitle('Laporan Rekap Transaksi Customer');
+$this->setPageTitle('Laporan Perawatan Kendaraan');
 $this->breadcrumbs = array(
-    'Laporan Rekap Transaksi Customer',
+    'Laporan Perawatan Kendaraan',
 );
 ?>
 
@@ -23,7 +23,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         echo $form->dateRangeRow(
                 $model, 'tanggal', array(
             'prepend' => '<i class="icon-calendar"></i>',
-            'value' => (isset($_POST['Piutang']['tanggal'])) ? $_POST['Piutang']['tanggal'] : '',
+            'value' => (isset($_POST['PerawatanTruk']['tanggal'])) ? $_POST['PerawatanTruk']['tanggal'] : '',
             'options' => array('callback' => 'js:function(start, end){console.log(start.toString("MMMM d, yyyy") + " - " + end.toString("MMMM d, yyyy"));}'),
 //            'value' => (isset($_POST['AccCoaDet']['created'])) ? $_POST['AccCoaDet']['created'] : ''
                 )
@@ -31,33 +31,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         ?> 
 
         <div class="control-group ">
-            <label class="control-label" for="Pegawai_jabatan_id">Customer</label>
+            <label class="control-label" for="Pegawai_jabatan_id">Nomor Polisi Kendaran</label>
             <div class="controls">
                 <?php
-                $data = array('0' => '- Pilih Nama Customer -') + CHtml::listData(Customer::model()->findAll(), 'id', 'nama');
+                $data = array('0' => '- Pilih Nopol-') + CHtml::listData(Truk::model()->findAll(), 'id', 'nomor_polisi');
                 $this->widget(
                         'bootstrap.widgets.TbSelect2', array(
-                    'name' => 'Piutang[customer_id]',
+                    'name' => 'PerawatanTruk[truk_id]',
                     'data' => $data,
-                    'value' => (isset($_POST['Piutang']['customer_id'])) ? $_POST['Piutang']['customer_id'] : '',
+                    'value' => (isset($_POST['PerawatanTruk']['truk_id'])) ? $_POST['PerawatanTruk']['truk_id'] : '',
                     'options' => array(
                         'width' => '25%;margin:0px;text-align:left',
                 )));
                 ?>
             </div>
         </div>
-        <div class="control-group ">
-            <label class="control-label" for="Pegawai_jabatan_id">Alamat</label>
-            <div class="controls">
-                <textarea id="alamat" name="alamat" readonly="readonly"><?php echo (isset($_POST['alamat']))? $_POST['alamat'] :''?></textarea>
-            </div>
-        </div>
-        <div class="control-group ">
-            <label class="control-label" for="Pegawai_jabatan_id">No. Telp</label>
-            <div class="controls">
-                <input type="text" readonly="readonly" name="telp" id="telp" value="<?php echo (isset($_POST['telp']))? $_POST['telp'] :''?>">
-            </div>
-        </div>
+
 
     </div>
 </div>
@@ -82,7 +71,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     ));
     ?>
     <?php
-    if (!empty($_POST['Piutang']['tanggal'])) {
+    if (!empty($_POST['PerawatanTruk']['tanggal'])) {
         $this->widget('bootstrap.widgets.TbButton', array(
             'type' => 'primary',
             'icon' => 'entypo-icon-printer white',
@@ -100,18 +89,18 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 
 <?php
-if (!empty($_POST['Piutang']['tanggal']) && isset($_POST['Piutang']['customer_id'])) {
+if (!empty($_POST['PerawatanTruk']['tanggal'])) {
 
-    $tanggal = explode('-', $_POST['Piutang']['tanggal']);
+    $tanggal = explode('-', $_POST['PerawatanTruk']['tanggal']);
     $start = $tanggal[0];
     $end = $tanggal[1];
-    $customer = $_POST['Piutang']['customer_id'];
+    $kendaraan = (isset($_POST['PerawatanTruk']['truk_id'])) ? $_POST['PerawatanTruk']['truk_id'] : '';
 
-    $this->renderPartial('_trsCustomer', array(
+    $this->renderPartial('_trsKendaraan', array(
         'model' => $model,
         'start' => $start,
         'end' => $end,
-        'customer' => $customer
+        'kendaraan' => $kendaraan
     ));
 }
 ?>
@@ -125,23 +114,6 @@ if (!empty($_POST['Piutang']['tanggal']) && isset($_POST['Piutang']['customer_id
         window.print();
         document.body.innerHTML = originalContents;
     }
-
-    $("body").on("change", "#Piutang_customer_id", function () {
-        var id = $(this).val();
-        $.ajax({
-            type : 'post',
-            data : {id:id},
-            url : "<?php echo url('report/detailCustomer')?>",
-            success : function(data){
-                if(data != ""){
-                   isi = JSON.parse(data);
-                   $("#alamat").html(isi.alamat);
-                   $("#telp").val(isi.telepon);
-                }
-            }
-            
-        });
-    });
 </script>
 <style>
     .form-horizontal .control-group{

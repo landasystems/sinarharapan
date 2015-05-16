@@ -38,18 +38,19 @@
                 $cId = 'AND truk_id=' . $kendaraan;
 
             $mPerawatan = PerawatanTruk::model()->findAll(array(
-                'with' => 'Truk',
+                'with' => array('Truk'),
                 'condition' => 'Truk.is_delete = 0 ' . $cId
             ));
             foreach ($mPerawatan as $val) {
                 $mBalance = PerawatanTrukDet::model()->find(array(
+                    'with' => array('PerawatanTruk'),
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => 'tanggal<"' . date('Y-m-d', strtotime($start)) . '" AND perawatan_truk_id=' . $val->id,
+                    'condition' => 'PerawatanTruk.tanggal<"' . date('Y-m-d', strtotime($start)) . '" AND PerawatanTruk.perawatan_truk_id=' . $val->id,
                     'group' => 'perawatan_truk_id'
                 ));
                 $mutasi = PerawatanTrukDet::model()->find(array(
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => '(tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND perawatan_truk_id=' . $val->id,
+                    'condition' => '(PerawatanTruk.tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND PerawatanTruk.tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND perawatan_truk_id=' . $val->id,
                     'group' => 'perawatan_truk_id'
                 ));
 

@@ -170,66 +170,15 @@ class TimbangController extends Controller {
         }
         if (isset($_GET['Timbang'])) {
             $model->attributes = $_GET['Timbang'];
-
-
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
-            if (!empty($model->customer_id))
-                $criteria->addCondition('customer_id = "' . $model->customer_id . '"');
-
-
-            if (!empty($model->nomor_polisi))
-                $criteria->addCondition('nomor_polisi = "' . $model->nomor_polisi . '"');
-
-
-            if (!empty($model->produk))
-                $criteria->addCondition('produk = "' . $model->produk . '"');
-
-
-            if (!empty($model->tanggal_timbang1))
-                $criteria->addCondition('tanggal_timbang1 = "' . $model->tanggal_timbang1 . '"');
-
-
-            if (!empty($model->berat_timbang1))
-                $criteria->addCondition('berat_timbang1 = "' . $model->berat_timbang1 . '"');
-
-
-            if (!empty($model->tanggal_timbang2))
-                $criteria->addCondition('tanggal_timbang2 = "' . $model->tanggal_timbang2 . '"');
-
-
-            if (!empty($model->berat_timbang2))
-                $criteria->addCondition('berat_timbang2 = "' . $model->berat_timbang2 . '"');
-
-
-            if (!empty($model->rafaksi))
-                $criteria->addCondition('rafaksi = "' . $model->rafaksi . '"');
-
-
-            if (!empty($model->netto))
-                $criteria->addCondition('netto = "' . $model->netto . '"');
-
-
-            if (!empty($model->harga))
-                $criteria->addCondition('harga = "' . $model->harga . '"');
-
-
-            if (!empty($model->total))
-                $criteria->addCondition('total = "' . $model->total . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
+            if ($model->customer_id == 0) {
+                unset($model->customer_id);
+            }
+            if ($model->kode == "") {
+                unset($model->kode);
+            }
+            if ($model->nomor_polisi == "") {
+                unset($model->nomor_polisi);
+            }
         }
 
         $this->render('index', array(

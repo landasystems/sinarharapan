@@ -65,8 +65,10 @@ class JasaTimbangController extends Controller {
 
         if (isset($_POST['JasaTimbang'])) {
             $model->attributes = $_POST['JasaTimbang'];
+            $model->telepon = $_POST['JasaTimbang']['telepon'];
+            $model->alamat = $_POST['JasaTimbang']['alamat'];
             if (!empty($_POST['JasaTimbang']['kode'])) {
-                $model->kode = $_POST['Timbang']['kode'];
+                $model->kode = $_POST['JasaTimbang']['kode'];
             } else {
                 $forkode = Timbang::model()->findAll(array('order' => 'id desc', 'limit' => 1));
                 if (empty($forkode)) {
@@ -99,8 +101,10 @@ class JasaTimbangController extends Controller {
 
         if (isset($_POST['JasaTimbang'])) {
             $model->attributes = $_POST['JasaTimbang'];
+             $model->telepon = $_POST['JasaTimbang']['telepon'];
+            $model->alamat = $_POST['JasaTimbang']['alamat'];
               if (!empty($_POST['JasaTimbang']['kode'])) {
-                $model->kode = $_POST['Timbang']['kode'];
+                $model->kode = $_POST['JasaTimbang']['kode'];
             } else {
                 $forkode = Timbang::model()->findAll(array('order' => 'id desc', 'limit' => 1));
                 if (empty($forkode)) {
@@ -157,64 +161,9 @@ class JasaTimbangController extends Controller {
             $model->attributes = $_GET['JasaTimbang'];
 
 
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
-            if (!empty($model->customer))
-                $criteria->addCondition('customer = "' . $model->customer . '"');
-
-
-            if (!empty($model->nomor_polisi))
-                $criteria->addCondition('nomor_polisi = "' . $model->nomor_polisi . '"');
-
-
-            if (!empty($model->produk))
-                $criteria->addCondition('produk = "' . $model->produk . '"');
-
-
-            if (!empty($model->tanggal_timbang1))
-                $criteria->addCondition('tanggal_timbang1 = "' . $model->tanggal_timbang1 . '"');
-
-
-            if (!empty($model->berat_timbang1))
-                $criteria->addCondition('berat_timbang1 = "' . $model->berat_timbang1 . '"');
-
-
-            if (!empty($model->tanggal_timbang2))
-                $criteria->addCondition('tanggal_timbang2 = "' . $model->tanggal_timbang2 . '"');
-
-
-            if (!empty($model->berat_timbang2))
-                $criteria->addCondition('berat_timbang2 = "' . $model->berat_timbang2 . '"');
-
-
-            if (!empty($model->rafaksi))
-                $criteria->addCondition('rafaksi = "' . $model->rafaksi . '"');
-
-
-            if (!empty($model->netto))
-                $criteria->addCondition('netto = "' . $model->netto . '"');
-
-
-            if (!empty($model->harga))
-                $criteria->addCondition('harga = "' . $model->harga . '"');
-
-
-            if (!empty($model->total))
-                $criteria->addCondition('total = "' . $model->total . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
+           if ($model->customer == "") {
+                unset($model->customer);
+            }
         }
 
         $this->render('index', array(

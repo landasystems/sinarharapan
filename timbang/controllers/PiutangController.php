@@ -162,56 +162,10 @@ class PiutangController extends Controller {
             $model->attributes = $_GET['Piutang'];
 
 
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
-            if (!empty($model->customer_id))
-                $criteria->addCondition('customer_id = "' . $model->customer_id . '"');
-
-
-            if (!empty($model->jaminan))
-                $criteria->addCondition('jaminan = "' . $model->jaminan . '"');
-
-
-            if (!empty($model->deskripsi))
-                $criteria->addCondition('deskripsi = "' . $model->deskripsi . '"');
-
-
-            if (!empty($model->tanggal))
-                $criteria->addCondition('tanggal = "' . $model->tanggal . '"');
-
-
-            if (!empty($model->type))
-                $criteria->addCondition('type = "' . $model->type . '"');
-
-
-            if (!empty($model->sub_total))
-                $criteria->addCondition('sub_total = "' . $model->sub_total . '"');
-
-
-            if (!empty($model->bunga))
-                $criteria->addCondition('bunga = "' . $model->bunga . '"');
-
-
-            if (!empty($model->total))
-                $criteria->addCondition('total = "' . $model->total . '"');
-
-
-            if (!empty($model->status))
-                $criteria->addCondition('status = "' . $model->status . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
+            if ($model->customer_id == 0) {
+                unset($model->customer_id);
+            }
+            
         }
 
         $this->render('index', array(

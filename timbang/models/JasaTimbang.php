@@ -45,7 +45,7 @@ class JasaTimbang extends CActiveRecord {
             array('tanggal_timbang1, tanggal_timbang2, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id,kode, customer, nomor_polisi, produk, tanggal_timbang1, berat_timbang1, tanggal_timbang2, berat_timbang2, rafaksi, netto, harga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
+            array('id,kode, customer,telepon,alamat, nomor_polisi, produk, tanggal_timbang1, berat_timbang1, tanggal_timbang2, berat_timbang2, rafaksi, netto, harga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
         );
     }
 
@@ -104,6 +104,8 @@ class JasaTimbang extends CActiveRecord {
         $criteria->compare('id', $this->id);
         $criteria->compare('kode', $this->kode, true);
         $criteria->compare('customer', $this->customer, true);
+        $criteria->compare('telepon', $this->telepon, true);
+        $criteria->compare('alamat', $this->alamat, true);
         $criteria->compare('nomor_polisi', $this->nomor_polisi, true);
         $criteria->compare('produk', $this->produk, true);
         $criteria->compare('tanggal_timbang1', $this->tanggal_timbang1, true);

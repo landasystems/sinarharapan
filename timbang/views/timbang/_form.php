@@ -214,30 +214,76 @@
         <hr>
         <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
             <tr>
-                <td style="width:80px; text-align: left;"><b>No Truck</b></td>
-                <td><?php echo $model->nomor_polisi ?></td>
-                <td style="width:80px; text-align: ">dfg</td>
-                <td style="width:80px; text-align: ">dgfg</td>
+                <td style="text-align: left;"><b>Customer</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $namaCustomer ?></td>
+                
+                <td style="width:80px; text-align: "><b>No Truck</b></td>
+                <td style="width:80px; text-align: "><?php echo $model->nomor_polisi ?></td>
 
             </tr>
             <tr>
-                <td style="text-align: left;"><b>Customer</b></td>
-                <td style="" colspan="2"><?php echo $namaCustomer ?></td>
+                <td style="text-align: left;"><b>No Telp</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $telp ?></td>
+                
+                <td style="width:80px; text-align: "><b>Product</b></td>
+                <td style="width:80px; text-align: "><?php echo $model->produk ?></td>
             </tr>
             <tr>
-                <td style="text-align: left;"><b>Produk</b></td>
-                <td style="" colspan="2"><?php echo $model->produk ?></td>
+                <td style="text-align: left;"><b>Alamat</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $alamat ?></td>
+                
+                <td style="width:80px; text-align: "><b>Tanggal</b></td>
+                <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->created)) ?></td>
             </tr>
 
 
 
             <tr style="height: 20px;">
-                <td colspan="3"><hr></td>
+                <td colspan="6"><hr style="border-top: 3px double #8c8b8b;"></td>
             </tr>
-
+             <tr>
+                <td style="text-align: left;"><b>Timbang 1</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $model->berat_timbang1 ?> Kg</td>
+                <td style="width:80px; text-align: "></td>
+                <td style="width:80px; text-align: "><b>Date</b></td>
+                <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->tanggal_timbang1)) ?></td>
+             </tr>
+             <tr>
+                <td style="text-align: left;"><b>Timbang 2</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $model->berat_timbang2 ?> Kg</td>
+                <td style="width:80px; text-align: "></td>
+                <td style="width:80px; text-align: "><b>Date</b></td>
+                <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->tanggal_timbang2)) ?></td>
+             </tr>
+             <tr>
+                
+                <td style="width:80px;">&nbsp;</td>
+                <td style="width:80px; text-align: "><hr></td>
+             </tr>
+             <tr>
+                
+                <td style="width:80px;">&nbsp;</td>
+                <td style="width:80px; text-align: "><?php echo $model->netto ?> Kg</td>
+             </tr>
+              <tr>
+                
+                <td style="width:80px; text-align:right " colspan="5">Juru Timbang</td>
+               
+            </tr>
+              <tr>
+                
+                <td style="width:80px; text-align:right " colspan="5">&nbsp;</td>
+               
+            </tr>
+              <tr>
+                
+                
+                <td style="width:80px; text-align:right " colspan="5">_____________</td>
+               
+            </tr>
         </table>
         <hr>
-        <p style="text-align:center;font-size: 11.5px;">Simpan nota ini sebagai bukti menyelesaikan pekerjaan dan sebagai bukti sah untuk mendapatkan gaji</p>
+        <p style="text-align:center;font-size: 11.5px;"></p>
     </div>
 <?php } ?>
 <script>

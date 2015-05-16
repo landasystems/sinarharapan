@@ -131,10 +131,19 @@ class Auth extends CActiveRecord {
                     array('visible' => landa()->checkAccess('jstimbang', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Jasa Timbang', 'url' => url('/jasaTimbang'), 'auth_id' => 'jstimbang'),
                     array('visible' => landa()->checkAccess('perawatan', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Perawatan Kendaraan', 'url' => url('#'), 'auth_id' => 'perawatan'),
                 )),
-              array('visible' => landa()->checkAccess('trsCustomer', 'r'), 'label' => '<span class="icon16  silk-icon-checklist"></span>Laporan', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
-                    array('visible' => landa()->checkAccess('trsCustomer', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Transaksi Customer', 'url' => url('#'), 'auth_id' => 'trsCustomer'),
-                    array('visible' => landa()->checkAccess('trSopir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Transaksi Sopir', 'url' => url('#'), 'auth_id' => 'trSopir'),
-                    array('visible' => landa()->checkAccess('prKendaraan', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Perawatan Kendaraan', 'url' => url('#'), 'auth_id' => 'prKendaraan'),
+            array('visible' => landa()->checkAccess('pinjaman', 'r'), 'label' => '<span class="icon16 entypo-icon-card"></span>Transaksi Customer', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
+                    array('visible' => landa()->checkAccess('pinjaman', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Pinjaman', 'url' => url('/piutang'), 'auth_id' => 'pinjaman'),
+                    array('visible' => landa()->checkAccess('bayarPinjaman', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bayar Pinjaman', 'url' => url('#'), 'auth_id' => 'bayarPinjaman'),
+                )),
+            array('visible' => landa()->checkAccess('pinjaman', 'r'), 'label' => '<span class="icon16 wpzoom-user-2"></span>Transaksi Supir', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
+                    array('visible' => landa()->checkAccess('bon', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bon', 'url' => url('/bon'), 'auth_id' => 'bon'),
+                    array('visible' => landa()->checkAccess('storGir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Stor Girik', 'url' => url('/girik'), 'auth_id' => 'storGir'),
+                )),
+            array('visible' => landa()->checkAccess('perawatan', 'r'), 'label' => '<span class="icon16 icomoon-icon-cars"></span>Perawatan Kendaraan', 'url' => url('#'), 'auth_id' => 'perawatan'),
+            array('visible' => landa()->checkAccess('trsCustomer', 'r'), 'label' => '<span class="icon16  silk-icon-checklist"></span>Laporan', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
+                    array('visible' => landa()->checkAccess('trsCustomer', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Hutang Customer', 'url' => url('#'), 'auth_id' => 'trsCustomer'),
+                    array('visible' => landa()->checkAccess('trSopir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Piutang Sopir', 'url' => url('#'), 'auth_id' => 'trSopir'),
+                    array('visible' => landa()->checkAccess('prKendaraan', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Kendaraan', 'url' => url('#'), 'auth_id' => 'prKendaraan'),
                 )),
             array('visible' => landa()->checkAccess('rkpCostumer', 'r'), 'label' => '<span class="icon16  eco-article "></span>Rekap', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('rkpCustomer', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Hutang Customer', 'url' => url('#'), 'auth_id' => 'rCustomer'),

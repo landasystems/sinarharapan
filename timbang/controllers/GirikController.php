@@ -40,6 +40,24 @@ class GirikController extends Controller {
         );
     }
 
+    public function actionAmbilTruk() {
+        $id = $_POST['id'];
+        $data = '';
+        $truk = Truk::model()->findAll(array('condition' => 'sopir_id=' . $id));
+        $sopir = Sopir::model()->findByPk($id);
+        if (empty($truk)) {
+            $data = '<option>Tidak ada truk</option>';
+        } else {
+            foreach ($truk as $val) {
+                $data .= '<option value=' . $val->id . '>' . $val->merk . ' (' . $val->nomor_polisi . ')</option>';
+            }
+        }
+        $body['truk'] = $data;
+        $body['alamat'] = $sopir->alamat;
+        $body['telepon'] = landa()->hp($sopir->telepon);
+        echo json_encode($body);
+    }
+
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
@@ -109,7 +127,8 @@ class GirikController extends Controller {
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        } else
+        }
+        else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -124,37 +143,15 @@ class GirikController extends Controller {
         if (isset($_GET['Girik'])) {
             $model->attributes = $_GET['Girik'];
 
-
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
-            if (!empty($model->tanggal))
-                $criteria->addCondition('tanggal = "' . $model->tanggal . '"');
-
+            if (!empty($model->tanggal)) {
+                $dt = explode(" - ",$model->tanggal);
+                $start = $dt[0];
+                $end = $dt[1];
+                $criteria->addCondition('tanggal >= "'.$start.'" and <= "'.$end.'"');
+            }
 
             if (!empty($model->nomor_girik))
                 $criteria->addCondition('nomor_girik = "' . $model->nomor_girik . '"');
-
-
-            if (!empty($model->berat))
-                $criteria->addCondition('berat = "' . $model->berat . '"');
-
-
-            if (!empty($model->total))
-                $criteria->addCondition('total = "' . $model->total . '"');
-
-
-            if (!empty($model->solar))
-                $criteria->addCondition('solar = "' . $model->solar . '"');
-
-
-            if (!empty($model->fee_sopir))
-                $criteria->addCondition('fee_sopir = "' . $model->fee_sopir . '"');
-
-
-            if (!empty($model->fee_truk))
-                $criteria->addCondition('fee_truk = "' . $model->fee_truk . '"');
 
 
             if (!empty($model->sopir_id))
@@ -163,18 +160,7 @@ class GirikController extends Controller {
 
             if (!empty($model->truk_id))
                 $criteria->addCondition('truk_id = "' . $model->truk_id . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
+            
         }
 
         $this->render('index', array(

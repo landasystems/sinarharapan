@@ -1,6 +1,6 @@
 <?php
 //=========change this scope=========================================================
-$root = '/var/www/sinarharapan/';
+$root = '/var/www/html/asrul/sinarharapan/';
 //$root = 'D:/xampp/htdocs/taro_simpeg/'; //local
 $themesUrl = 'http://localhost/sinarharapan/common/themes/';
 $db = 'landa_timbang';

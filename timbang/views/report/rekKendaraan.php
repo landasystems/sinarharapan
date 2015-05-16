@@ -1,7 +1,7 @@
 <?php
-$this->setPageTitle('Laporan Rekap Kendaran');
+$this->setPageTitle('Laporan Rekap Perawatan Kendaraan');
 $this->breadcrumbs = array(
-    'Laporan Rekap Kendaraan',
+    'Laporan Rekap Perawatan Kendaraan',
 );
 ?>
 
@@ -71,7 +71,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     ));
     ?>
     <?php
-    if (!empty($_POST['Bon']['tanggal'])) {
+    if (!empty($_POST['PerawatanTruk']['tanggal'])) {
         $this->widget('bootstrap.widgets.TbButton', array(
             'type' => 'primary',
             'icon' => 'entypo-icon-printer white',

@@ -1,6 +1,6 @@
 <?php
 
-class GirikController extends Controller {
+class TimbangController extends Controller {
 
     public $breadcrumbs;
 
@@ -40,28 +40,24 @@ class GirikController extends Controller {
         );
     }
 
-    public function actionAmbilTruk() {
-        $id = $_POST['id'];
-        $data = '';
-        $truk = Truk::model()->findAll(array('condition' => 'sopir_id=' . $id));
-        $sopir = Sopir::model()->findByPk($id);
-        if (empty($truk)) {
-            $data = '<option>Tidak ada truk</option>';
-        } else {
-            foreach ($truk as $val) {
-                $data .= '<option value=' . $val->id . '>' . $val->merk . ' (' . $val->nomor_polisi . ')</option>';
-            }
-        }
-        $body['truk'] = $data;
-        $body['alamat'] = $sopir->alamat;
-        $body['telepon'] = landa()->hp($sopir->telepon);
-        echo json_encode($body);
-    }
-
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
+    public function actionGetListCustomer() {
+        $name = $_GET["q"];
+        $list = array();
+        $data = Customer::model()->findAll(array('condition' => 'nama like "%' . $name . '%" or kode like "%' . $name . '%" AND is_delete=0', 'limit' => '10'));
+        if (empty($data)) {
+            $list[] = array("id" => "0", "text" => "No Results Found..");
+        } else {
+            foreach ($data as $val) {
+                $list[] = array("id" => $val->id, "text" => $val->kode . ' - ' . $val->nama);
+            }
+        }
+        echo json_encode($list);
+    }
+
     public function actionView($id) {
         cs()->registerScript('read', '
                     $("form input, form textarea, form select").each(function(){
@@ -76,13 +72,13 @@ class GirikController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Girik;
+        $model = new Timbang;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Girik'])) {
-            $model->attributes = $_POST['Girik'];
+        if (isset($_POST['Timbang'])) {
+            $model->attributes = $_POST['Timbang'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -103,8 +99,8 @@ class GirikController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Girik'])) {
-            $model->attributes = $_POST['Girik'];
+        if (isset($_POST['Timbang'])) {
+            $model->attributes = $_POST['Timbang'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -136,50 +132,84 @@ class GirikController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $criteria = new CDbCriteria();
-        $model = new Girik('search');
+
+        $model = new Timbang('search');
         $model->unsetAttributes();  // clear any default values
-
-        if (isset($_GET['Girik'])) {
-            $model->attributes = $_GET['Girik'];
-
-            if (!empty($model->tanggal)) {
-                $dt = explode(" - ",$model->tanggal);
-                $start = $dt[0];
-                $end = $dt[1];
-                $criteria->addCondition('tanggal >= "'.$start.'" and <= "'.$end.'"');
+        //delet all
+        if (isset($_POST['delete']) && isset($_POST['ceckbox'])) {
+            foreach ($_POST['ceckbox'] as $data) {
+                $a = $this->loadModel($data);
+                if (!empty($a))
+                    $a->delete();
             }
-
-            if (!empty($model->nomor_girik))
-                $criteria->addCondition('nomor_girik = "' . $model->nomor_girik . '"');
-
-
-            if (!empty($model->sopir_id))
-                $criteria->addCondition('sopir_id = "' . $model->sopir_id . '"');
+        }
+        if (isset($_GET['Timbang'])) {
+            $model->attributes = $_GET['Timbang'];
 
 
-            if (!empty($model->truk_id))
-                $criteria->addCondition('truk_id = "' . $model->truk_id . '"');
-            
+            if (!empty($model->id))
+                $criteria->addCondition('id = "' . $model->id . '"');
+
+
+            if (!empty($model->customer_id))
+                $criteria->addCondition('customer_id = "' . $model->customer_id . '"');
+
+
+            if (!empty($model->nomor_polisi))
+                $criteria->addCondition('nomor_polisi = "' . $model->nomor_polisi . '"');
+
+
+            if (!empty($model->produk))
+                $criteria->addCondition('produk = "' . $model->produk . '"');
+
+
+            if (!empty($model->tanggal_timbang1))
+                $criteria->addCondition('tanggal_timbang1 = "' . $model->tanggal_timbang1 . '"');
+
+
+            if (!empty($model->berat_timbang1))
+                $criteria->addCondition('berat_timbang1 = "' . $model->berat_timbang1 . '"');
+
+
+            if (!empty($model->tanggal_timbang2))
+                $criteria->addCondition('tanggal_timbang2 = "' . $model->tanggal_timbang2 . '"');
+
+
+            if (!empty($model->berat_timbang2))
+                $criteria->addCondition('berat_timbang2 = "' . $model->berat_timbang2 . '"');
+
+
+            if (!empty($model->rafaksi))
+                $criteria->addCondition('rafaksi = "' . $model->rafaksi . '"');
+
+
+            if (!empty($model->netto))
+                $criteria->addCondition('netto = "' . $model->netto . '"');
+
+
+            if (!empty($model->harga))
+                $criteria->addCondition('harga = "' . $model->harga . '"');
+
+
+            if (!empty($model->total))
+                $criteria->addCondition('total = "' . $model->total . '"');
+
+
+            if (!empty($model->created_user_id))
+                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
+
+
+            if (!empty($model->created))
+                $criteria->addCondition('created = "' . $model->created . '"');
+
+
+            if (!empty($model->modified))
+                $criteria->addCondition('modified = "' . $model->modified . '"');
         }
 
         $this->render('index', array(
             'model' => $model,
         ));
-    }
-
-    public function actionGetListSopir() {
-        $name = $_GET["q"];
-        $list = array();
-        $data = Sopir::model()->findAll(array('condition' => 'nama like "%' . $name . '%"', 'limit' => '10'));
-        if (empty($data)) {
-            $list[] = array("id" => "0", "text" => "No Results Found..");
-        } else {
-            foreach ($data as $val) {
-                $list[] = array("id" => $val->id, "text" => $val->nama);
-            }
-        }
-        echo json_encode($list);
     }
 
     /**
@@ -188,7 +218,7 @@ class GirikController extends Controller {
      * @param integer the ID of the model to be loaded
      */
     public function loadModel($id) {
-        $model = Girik::model()->findByPk($id);
+        $model = Timbang::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -199,7 +229,7 @@ class GirikController extends Controller {
      * @param CModel the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'girik-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'timbang-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

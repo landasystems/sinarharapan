@@ -34,7 +34,7 @@ class Girik extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('id', 'required'),
+            array('tanggal, sopir_id, truk_id, nomor_girik', 'required'),
             array('id, nomor_girik, total, solar, fee_sopir, fee_truk, sopir_id, truk_id, created_user_id', 'numerical', 'integerOnly' => true),
             array('berat', 'numerical'),
             array('tanggal, created, modified', 'safe'),
@@ -68,17 +68,26 @@ class Girik extends CActiveRecord {
             'total' => 'Total',
             'solar' => 'Solar',
             'fee_sopir' => 'Ongkos Sopir',
-            'fee_truk' => 'Fee Truk',
+            'fee_truk' => 'Ongkos Truk',
             'sopir_id' => 'Sopir',
-            'truk_id' => 'Kendaraan',
+            'truk_id' => 'Truk',
             'created_user_id' => 'Created User',
             'created' => 'Created',
             'modified' => 'Modified',
         );
     }
 
+    public function getBeratBarang() {
+        $berat = (!empty($this->berat)) ? $this->berat : 0;
+        return $berat . " Kg";
+    }
+
     public function getSopir() {
         return (!empty($this->Sopir->nama)) ? $this->Sopir->nama : '-';
+    }
+    
+    public function getTanggalTrans() {
+        return (!empty($this->tanggal)) ? date("d M Y",  strtotime($this->tanggal)) : '-';
     }
 
     /**
@@ -98,20 +107,25 @@ class Girik extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('id', $this->id);
-        $criteria->compare('tanggal', $this->tanggal, true);
-        $criteria->compare('nomor_girik', $this->nomor_girik);
-        $criteria->compare('berat', $this->berat);
-        $criteria->compare('total', $this->total);
-        $criteria->compare('solar', $this->solar);
-        $criteria->compare('fee_sopir', $this->fee_sopir);
-        $criteria->compare('fee_truk', $this->fee_truk);
-        $criteria->compare('sopir_id', $this->sopir_id);
-        $criteria->compare('truk_id', $this->truk_id);
-        $criteria->compare('created_user_id', $this->created_user_id);
-        $criteria->compare('created', $this->created, true);
-        $criteria->compare('modified', $this->modified, true);
+            if (!empty($this->tanggal)) {
+                $dt = explode(" - ",$this->tanggal);
+                $start = $dt[0];
+                $end = $dt[1];
+                $criteria->addCondition('tanggal >= "'.$start.'" and tanggal <= "'.$end.'"');
+            }
 
+            if (!empty($this->nomor_girik))
+                $criteria->addCondition('nomor_girik = "' . $this->nomor_girik . '"');
+
+
+            if (!empty($this->sopir_id))
+                $criteria->addCondition('sopir_id = "' . $this->sopir_id . '"');
+
+
+            if (!empty($this->truk_id))
+                $criteria->addCondition('truk_id = "' . $this->truk_id . '"');
+           
+        
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array('defaultOrder' => 'id DESC')

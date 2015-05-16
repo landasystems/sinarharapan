@@ -59,6 +59,15 @@ class Truk extends CActiveRecord {
         );
     }
 
+    public function getNama() {
+        $merk = '';
+        if (!empty($this->merk))
+            $merk = $this->merk;
+        if (!empty($this->nomor_polisi))
+            $merk .= " (" . $this->nomor_polisi . ") ";
+        return $merk;
+    }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -153,9 +162,11 @@ class Truk extends CActiveRecord {
     public function getTglpajak() {
         return date('d-m-Y', strtotime($this->pajak));
     }
+
     public function getTglkir() {
         return date('d-m-Y', strtotime($this->kir));
     }
+
     public function getTglstnk() {
         return date('d-m-Y', strtotime($this->stnk));
     }

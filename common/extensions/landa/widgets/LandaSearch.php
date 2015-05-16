@@ -16,7 +16,7 @@ class LandaSearch extends CWidget {
         $this->registerScript();
         echo '<div id="searchform" class="row-fluid">
             <div class="input-append">
-		<input type="text" placeholder="Pencarian Sopir" id="inputString" onkeyup="lookup(this.value);" 
+		<input type="text" placeholder="Masukkan nomor girik" id="inputString" onkeyup="lookup(this.value);" 
                     class="' . $this->class . ' span12" />
                 <button class="btn btn-primary" type="button">&nbsp;<i class="icon-search"></i></button>
             </div>

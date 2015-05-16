@@ -111,3 +111,17 @@ $this->widget('bootstrap.widgets.TbGridView', array(
 ));
 ?>
 
+
+<script type="text/javascript">
+jQuery(document).on('click','#customer-grid a.btn.btn-small.ok',function() {
+        if(!confirm('Anda yakin ingin mengembalikan data ini?')) return false;
+        jQuery('#customer-grid').yiiGridView('update', {
+                type: 'POST',
+                url: jQuery(this).attr('href'),
+                success: function(data) {
+                        jQuery('#customer-grid').yiiGridView('update');
+                },
+        });
+        return false;
+});
+</script>

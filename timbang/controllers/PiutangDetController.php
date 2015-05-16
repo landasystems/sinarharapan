@@ -1,6 +1,6 @@
 <?php
 
-class CustomerController extends Controller {
+class PiutangDetController extends Controller {
 
     public $breadcrumbs;
 
@@ -40,6 +40,14 @@ class CustomerController extends Controller {
         );
     }
 
+    public function actionGetDetail() {
+        $id = $_POST['id'];
+        $cust = Customer::model()->findByPk($id);
+        $return['alamat'] = $cust->alamat;
+        $return['telpon'] = landa()->hp($cust->telepon);
+        $return['list'] = $this->renderPartial("_listPiutang", array('customer_id' => $id), TRUE);
+        echo json_encode($return);
+    }
 
     /**
      * Displays a particular model.
@@ -54,23 +62,18 @@ class CustomerController extends Controller {
         $this->actionUpdate($id);
     }
 
-    public function actionGetDetail() {
-        $id = $_POST['id'];
-        $cust = Customer::model()->findByPk($id);
-        $return['alamat'] = $cust->alamat;
-        $return['telpon'] = landa()->hp($cust->telepon);
-        echo json_encode($return);
-    }
-
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
     public function actionCreate() {
-        $model = new Customer;
+        $model = new PiutangDet;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Customer'])) {
-            $model->attributes = $_POST['Customer'];
-            $model->is_delete = 0;
+        if (isset($_POST['PiutangDet'])) {
+            $model->attributes = $_POST['PiutangDet'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -91,8 +94,8 @@ class CustomerController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Customer'])) {
-            $model->attributes = $_POST['Customer'];
+        if (isset($_POST['PiutangDet'])) {
+            $model->attributes = $_POST['PiutangDet'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -107,30 +110,10 @@ class CustomerController extends Controller {
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionRestore($id) {
-//		if(Yii::app()->request->isPostRequest)
-//		{
-        // we only allow deletion via POST request
-//			$this->loadModel($id)->delete();
-        $cus = $this->loadModel($id);
-        $cus->is_delete = 0;
-        $cus->save();
-
-        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-        if (!isset($_GET['ajax']))
-            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-//		}
-//		else
-//			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-    }
-
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
-//			$this->loadModel($id)->delete();
-            $cus = $this->loadModel($id);
-            $cus->is_delete = 1;
-            $cus->save();
+            $this->loadModel($id)->delete();
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
@@ -144,61 +127,49 @@ class CustomerController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $model = new Customer('search');
+
+        $model = new PiutangDet('search');
         $model->unsetAttributes();  // clear any default values
-        
-        //delete checked
-        if (isset($_POST['delete']) && isset($_POST['ceckbox'])) {
-            foreach ($_POST['ceckbox'] as $data) {
-                $a = $this->loadModel($data);
-                if (!empty($a))
-                    $a->is_delete = 1;
-                $a->save();
-                ;
-            }
-        }
-        
-        //restore checked
-        if (isset($_POST['restore']) && isset($_POST['ceckbox'])) {
-            foreach ($_POST['ceckbox'] as $data) {
-                $a = $this->loadModel($data);
-                if (!empty($a))
-                    $a->is_delete = 0;
-                $a->save();
-            }
-        }
-        
-        $model->is_delete = 0;
-        if (isset($_GET['Customer'])) {
-            $model->attributes = $_GET['Customer'];
+
+        if (isset($_GET['PiutangDet'])) {
+            $model->attributes = $_GET['PiutangDet'];
+
+
+            if (!empty($model->id))
+                $criteria->addCondition('id = "' . $model->id . '"');
+
+
+            if (!empty($model->piutang_id))
+                $criteria->addCondition('piutang_id = "' . $model->piutang_id . '"');
+
+
+            if (!empty($model->tanggal))
+                $criteria->addCondition('tanggal = "' . $model->tanggal . '"');
+
+
+            if (!empty($model->debet))
+                $criteria->addCondition('debet = "' . $model->debet . '"');
+
+
+            if (!empty($model->credit))
+                $criteria->addCondition('credit = "' . $model->credit . '"');
+
+
+            if (!empty($model->created_user_id))
+                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
+
+
+            if (!empty($model->created))
+                $criteria->addCondition('created = "' . $model->created . '"');
+
+
+            if (!empty($model->modified))
+                $criteria->addCondition('modified = "' . $model->modified . '"');
         }
 
         $this->render('index', array(
             'model' => $model,
         ));
-    }
-
-    public function actionGenerateExcel() {
-
-        $kode = $_GET['Customer_kode'];
-        $is_delete = $_GET['is_delete'];
-        $nama = $_GET['Customer_nama'];
-        $telepon = $_GET['Customer_telepon'];
-        $alamat = $_GET['Customer_alamat'];
-
-        $criteria = new CDbCriteria;
-        $criteria->compare('kode', $kode, true);
-        $criteria->addCondition('nama like "%' . $nama . '%"');
-        $criteria->compare('is_delete', $is_delete, true);
-        $criteria->compare('telepon', $telepon, true);
-        $criteria->compare('alamat', $alamat, true);
-
-        $model = Customer::model()->findAll($criteria);
-
-        Yii::app()->request->sendFile('Data Customer -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
-                    'model' => $model
-                        ), true)
-        );
     }
 
     /**
@@ -207,7 +178,7 @@ class CustomerController extends Controller {
      * @param integer the ID of the model to be loaded
      */
     public function loadModel($id) {
-        $model = Customer::model()->findByPk($id);
+        $model = PiutangDet::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -218,7 +189,7 @@ class CustomerController extends Controller {
      * @param CModel the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'customer-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'piutang-det-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

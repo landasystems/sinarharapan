@@ -128,7 +128,7 @@ class Auth extends CActiveRecord {
                 )),
             array('visible' => landa()->checkAccess('pinjaman', 'r'), 'label' => '<span class="icon16 entypo-icon-card"></span>Transaksi Customer', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('pinjaman', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Pinjaman', 'url' => url('/piutang'), 'auth_id' => 'pinjaman'),
-                    array('visible' => landa()->checkAccess('bayarPinjaman', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bayar Pinjaman', 'url' => url('#'), 'auth_id' => 'bayarPinjaman'),
+                    array('visible' => landa()->checkAccess('bayarPinjaman', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bayar Pinjaman', 'url' => url('/piutangDet'), 'auth_id' => 'bayarPinjaman'),
                 )),
             array('visible' => landa()->checkAccess('pinjaman', 'r'), 'label' => '<span class="icon16 wpzoom-user-2"></span>Transaksi Supir', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('bon', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bon', 'url' => url('/bon'), 'auth_id' => 'bon'),

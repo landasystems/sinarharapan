@@ -248,7 +248,7 @@
             </tr>
         </table>
         <hr>
-        <p style="text-align:center;font-size: 11.5px;">Simpan nota ini sebagai bukti menyelesaikan pekerjaan dan sebagai bukti sah untuk mendapatkan gaji</p>
+        <p style="text-align:center;font-size: 11.5px;"></p>
     </div>
 <?php } ?>
 <script>

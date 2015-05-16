@@ -1,12 +1,12 @@
 <?php
-if (isset($_GET['v'])) {$this->setPageTitle('Lihat Piutangs | ID : '. $model->id);
+if (isset($_GET['v'])) {$this->setPageTitle('Lihat Piutang Dets | ID : '. $model->id);
 $this->breadcrumbs=array(
-	'Piutangs'=>array('index'),
+	'Piutang Dets'=>array('index'),
 	$model->id,
 );
-}else{$this->setPageTitle('Edit Piutangs | ID : '. $model->id);
+}else{$this->setPageTitle('Edit Piutang Dets | ID : '. $model->id);
 $this->breadcrumbs=array(
-	'Piutangs'=>array('index'),
+	'Piutang Dets'=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
 	'Update',
 );
@@ -23,7 +23,7 @@ if (isset($_GET['v'])) {
 		array('label'=>'Tambah', 'icon'=>'icon-plus', 'url'=>Yii::app()->controller->createUrl('create'), 'linkOptions'=>array()),
                 array('label'=>'List Data', 'icon'=>'icon-th-list', 'url'=>Yii::app()->controller->createUrl('index'), 'linkOptions'=>array()),
                 array('label'=>'Edit', 'icon'=>'icon-edit', 'url'=>Yii::app()->controller->createUrl('update',array('id'=>$model->id)), 'linkOptions'=>array()),
-		 array('label' => 'Print', 'icon' => 'icon-print', 'url' => 'javascript:void(0);return false', 'linkOptions' => array('onclick' => 'js:printDiv("printNota");return false;')),
+		array('label'=>'Print', 'icon'=>'icon-print', 'url'=>'javascript:void(0);return false', 'linkOptions'=>array('onclick'=>'printDiv();return false;')),
 
     )));
 }else{

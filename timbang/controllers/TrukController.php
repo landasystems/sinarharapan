@@ -153,7 +153,26 @@ class TrukController extends Controller {
     public function actionIndex() {
 
         $model = new Truk('search');
-        $model->unsetAttributes();  // clear any default values
+        $model->unsetAttributes(); // clear any default values
+
+        if (isset($_POST['delete']) && isset($_POST['ceckbox'])) {
+            foreach ($_POST['ceckbox'] as $data) {
+                $a = $this->loadModel($data);
+                if (!empty($a))
+                    $a->is_delete = 1;
+                $a->save();
+                ;
+            }
+        }
+        if (isset($_POST['restore']) && isset($_POST['ceckbox'])) {
+            foreach ($_POST['ceckbox'] as $data) {
+                $a = $this->loadModel($data);
+                if (!empty($a))
+                    $a->is_delete = 0;
+                $a->save();
+            }
+        }
+
         $model->is_delete = 0;
         if (isset($_GET['Truk'])) {
             $model->attributes = $_GET['Truk'];
@@ -163,9 +182,10 @@ class TrukController extends Controller {
             'model' => $model,
         ));
     }
-     public function actionGenerateExcel() {
 
-        
+    public function actionGenerateExcel() {
+
+
         $is_delete = $_GET['is_delete'];
         //kelengkapan
         $surat = $_GET['surat'];
@@ -178,7 +198,7 @@ class TrukController extends Controller {
         $merk = $_GET['Truk_merk'];
         $type = $_GET['Truk_type'];
         $nomor_polisi = $_GET['Truk_nomor_polisi'];
-        
+
 
         $criteria = new CDbCriteria;
         //kelengkapan
@@ -190,13 +210,13 @@ class TrukController extends Controller {
         //jenis kendaraan
         $criteria->compare('sopir_id', $sopir_id);
         $criteria->compare('merk', $merk, true);
-        $criteria->compare('type',  $type, true);
+        $criteria->compare('type', $type, true);
         $criteria->compare('nomor_polisi', $nomor_polisi, true);
         $criteria->compare('is_delete', $is_delete);
-        
+
         $model = Truk::model()->findAll($criteria);
-        
-         Yii::app()->request->sendFile('Data Truk -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+
+        Yii::app()->request->sendFile('Data Truk -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
                     'model' => $model
                         ), true)
         );

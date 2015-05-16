@@ -59,6 +59,16 @@ class Piutang extends CActiveRecord {
         );
     }
 
+    public function getTotalBayar() {
+        $tot = Yii::app()->db->createCommand()
+                ->select('sum(piutang_det.credit) as total')
+                ->from('piutang, piutang_det')
+                ->where('piutang.id = piutang_det.piutang_id and piutang.id = ' . $this->id)
+                ->queryRow();
+        $total = !empty($tot) ? $tot['total'] : 0;
+        return $total;
+    }
+
     /**
      * @return array customized attribute labels (name=>label)
      */

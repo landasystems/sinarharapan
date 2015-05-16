@@ -1,6 +1,6 @@
 <?php
 
-class PiutangController extends Controller {
+class PiutangDetController extends Controller {
 
     public $breadcrumbs;
 
@@ -39,7 +39,15 @@ class PiutangController extends Controller {
             )
         );
     }
-    
+
+    public function actionGetDetail() {
+        $id = $_POST['id'];
+        $cust = Customer::model()->findByPk($id);
+        $return['alamat'] = $cust->alamat;
+        $return['telpon'] = landa()->hp($cust->telepon);
+        $return['list'] = $this->renderPartial("_listPiutang", array('customer_id' => $id), TRUE);
+        echo json_encode($return);
+    }
 
     /**
      * Displays a particular model.
@@ -54,42 +62,20 @@ class PiutangController extends Controller {
         $this->actionUpdate($id);
     }
 
-    public function actionGetListCustomer() {
-        $name = $_GET["q"];
-        $list = array();
-        $data = Customer::model()->findAll(array('condition' => 'nama like "%' . $name . '%"', 'limit' => '10'));
-        if (empty($data)) {
-            $list[] = array("id" => "0", "text" => "No Results Found..");
-        } else {
-            foreach ($data as $val) {
-                $list[] = array("id" => $val->id, "text" => $val->nama);
-            }
-        }
-        echo json_encode($list);
-    }
-
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Piutang;
+        $model = new PiutangDet;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Piutang'])) {
-            $model->attributes = $_POST['Piutang'];
-            $model->customer_id = $_POST['Piutang']['customer_id'];
-            $model->jumlah_pupuk = $_POST['Piutang']['jumlah_pupuk'];
-            if ($model->save()){
-                $pituangDet = new PiutangDet;
-                $pituangDet->piutang_id = $model->id;
-                $pituangDet->tanggal = $model->tanggal;
-                $pituangDet->debet= $model->total;
-                $pituangDet->save();
+        if (isset($_POST['PiutangDet'])) {
+            $model->attributes = $_POST['PiutangDet'];
+            if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
-        }
         }
 
         $this->render('create', array(
@@ -108,11 +94,8 @@ class PiutangController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Piutang'])) {
-            $model->attributes = $_POST['Piutang'];
-            $model->customer_id = $_POST['Piutang']['customer_id'];
-            $model->jumlah_pupuk = $_POST['Piutang']['jumlah_pupuk'];
-            PiutangDet::model()->updateAll(array('debet'=>$_POST['Piutang']['total'],'tanggal'=>$_POST['Piutang']['tanggal']),'piutang_id='.$id);
+        if (isset($_POST['PiutangDet'])) {
+            $model->attributes = $_POST['PiutangDet'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -131,7 +114,7 @@ class PiutangController extends Controller {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
             $this->loadModel($id)->delete();
-            PiutangDet::model()->deleteAll('piutang_id='.$id);
+
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
@@ -144,62 +127,32 @@ class PiutangController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $criteria = new CDbCriteria();
-        $model = new Piutang('search');
+
+        $model = new PiutangDet('search');
         $model->unsetAttributes();  // clear any default values
-        
-        if (isset($_POST['delete']) && isset($_POST['ceckbox'])) {
-            foreach ($_POST['ceckbox'] as $data) {
-                $a = $this->loadModel($data);
-                if (!empty($a)){
-                    $a->delete();
-                    PiutangDet::model()->deleteAll('piutang_id='.$data);
-                }
-            }
-            }
-           
-        if (isset($_GET['Piutang'])) {
-            $model->attributes = $_GET['Piutang'];
+
+        if (isset($_GET['PiutangDet'])) {
+            $model->attributes = $_GET['PiutangDet'];
 
 
             if (!empty($model->id))
                 $criteria->addCondition('id = "' . $model->id . '"');
 
 
-            if (!empty($model->customer_id))
-                $criteria->addCondition('customer_id = "' . $model->customer_id . '"');
-
-
-            if (!empty($model->jaminan))
-                $criteria->addCondition('jaminan = "' . $model->jaminan . '"');
-
-
-            if (!empty($model->deskripsi))
-                $criteria->addCondition('deskripsi = "' . $model->deskripsi . '"');
+            if (!empty($model->piutang_id))
+                $criteria->addCondition('piutang_id = "' . $model->piutang_id . '"');
 
 
             if (!empty($model->tanggal))
                 $criteria->addCondition('tanggal = "' . $model->tanggal . '"');
 
 
-            if (!empty($model->type))
-                $criteria->addCondition('type = "' . $model->type . '"');
+            if (!empty($model->debet))
+                $criteria->addCondition('debet = "' . $model->debet . '"');
 
 
-            if (!empty($model->sub_total))
-                $criteria->addCondition('sub_total = "' . $model->sub_total . '"');
-
-
-            if (!empty($model->bunga))
-                $criteria->addCondition('bunga = "' . $model->bunga . '"');
-
-
-            if (!empty($model->total))
-                $criteria->addCondition('total = "' . $model->total . '"');
-
-
-            if (!empty($model->status))
-                $criteria->addCondition('status = "' . $model->status . '"');
+            if (!empty($model->credit))
+                $criteria->addCondition('credit = "' . $model->credit . '"');
 
 
             if (!empty($model->created_user_id))
@@ -225,7 +178,7 @@ class PiutangController extends Controller {
      * @param integer the ID of the model to be loaded
      */
     public function loadModel($id) {
-        $model = Piutang::model()->findByPk($id);
+        $model = PiutangDet::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -236,7 +189,7 @@ class PiutangController extends Controller {
      * @param CModel the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'piutang-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'piutang-det-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

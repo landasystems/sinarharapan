@@ -28,27 +28,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 //            'value' => (isset($_POST['AccCoaDet']['created'])) ? $_POST['AccCoaDet']['created'] : ''
                 )
         );
-        ?> 
-
-        <div class="control-group ">
-            <label class="control-label" for="Pegawai_jabatan_id">Nomor Polisi Kendaran</label>
-            <div class="controls">
-                <?php
-                $data = array('0' => '- Pilih Nopol-') + CHtml::listData(Truk::model()->findAll(array('condition'=>'is_delete = 0')), 'id', 'nomor_polisi');
-                $this->widget(
-                        'bootstrap.widgets.TbSelect2', array(
-                    'name' => 'PerawatanTruk[truk_id]',
-                    'data' => $data,
-                    'value' => (isset($_POST['PerawatanTruk']['truk_id'])) ? $_POST['PerawatanTruk']['truk_id'] : '',
-                    'options' => array(
-                        'width' => '25%;margin:0px;text-align:left',
-                )));
-                ?>
-            </div>
-        </div>
-
-
-    </div>
+        ?></div>
 </div>
 <div class="form-actions">
     <?php
@@ -94,13 +74,11 @@ if (!empty($_POST['PerawatanTruk']['tanggal'])) {
     $tanggal = explode('-', $_POST['PerawatanTruk']['tanggal']);
     $start = $tanggal[0];
     $end = $tanggal[1];
-    $kendaraan = (isset($_POST['PerawatanTruk']['truk_id'])) ? $_POST['PerawatanTruk']['truk_id'] : '';
 
     $this->renderPartial('_rekKendaraan', array(
         'model' => $model,
         'start' => $start,
         'end' => $end,
-        'kendaraan' => $kendaraan
     ));
 }
 ?>

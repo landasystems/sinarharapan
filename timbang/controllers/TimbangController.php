@@ -47,7 +47,7 @@ class TimbangController extends Controller {
     public function actionGetListCustomer() {
         $name = $_GET["q"];
         $list = array();
-        $data = Customer::model()->findAll(array('condition' => 'nama like "%' . $name . '%" or kode like "%' . $name . '%" AND is_delete=0', 'limit' => '10'));
+        $data = Customer::model()->findAll(array('condition' => '(nama like "%' . $name . '%" or kode like "%' . $name . '%") AND is_delete=0', 'limit' => '10'));
         if (empty($data)) {
             $list[] = array("id" => "0", "text" => "No Results Found..");
         } else {

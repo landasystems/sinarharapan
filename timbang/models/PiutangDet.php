@@ -34,6 +34,7 @@ class PiutangDet extends CActiveRecord {
             array('piutang_id, created_user_id', 'numerical', 'integerOnly' => true),
             array('debet, credit', 'length', 'max' => 20),
             array('tanggal, created, modified', 'safe'),
+            array('tanggal','required'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, piutang_id, tanggal, debet, credit, created_user_id, created, modified', 'safe', 'on' => 'search'),

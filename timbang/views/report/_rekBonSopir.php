@@ -11,7 +11,7 @@
             <tr> 
 
                 <th style="text-align:center">Tanggal</th>
-                <th style="text-align:center">Nama Customer</th>
+                <th style="text-align:center">Nama Sopir</th>
                 <th style="text-align:center">Keterangan</th>
                 <th style="text-align:center;width: 12%">Saldo Awal</th>
                 <th style="text-align:center;width: 12%">Debet</th>
@@ -31,28 +31,24 @@
             $totAkhir = 0;
             $totDebet = 0;
             $totCredit = 0;
-            $cId = '';
-            $criteria = new CDbCriteria();
-
-            if (!empty($sopir))
-                $cId = 'AND sopir_id=' . $sopir;
 
             $mBon = Bon::model()->findAll(array(
                 'with' => 'Sopir',
-                'condition' => 'Sopir.is_delete = 0 ' . $cId
+                'condition' => 'Sopir.is_delete = 0',
+                'group' => 'sopir_id'
             ));
+
             foreach ($mBon as $val) {
                 $mBalance = BonDet::model()->find(array(
+                    'with' => 'Bon',
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => 'tanggal<"' . date('Y-m-d', strtotime($start)) . '" AND bon_id=' . $val->id,
-                    'group' => 'bon_id'
+                    'condition' => 't.tanggal<"' . date('Y-m-d', strtotime($start)) . '" AND Bon.Sopir_id='.$val->sopir_id,
                 ));
                 $mutasi = BonDet::model()->find(array(
+                    'with' => 'Bon',
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => '(tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND bon_id=' . $val->id,
-                    'group' => 'bon_id'
+                    'condition' => '(t.tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND t.tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND Bon.Sopir_id='.$val->sopir_id,
                 ));
-
                 $sDebet = (!empty($mBalance->sumDebet)) ? $mBalance->sumDebet : 0;
                 $sCredit = (!empty($mBalance->sumCredit)) ? $mBalance->sumCredit : 0;
                 $debet = (!empty($mutasi->sumDebet)) ? $mutasi->sumDebet : 0;
@@ -63,7 +59,7 @@
                 echo '<tr>';
                 echo '<td style="text-align:center">' . date('d m Y', strtotime($val->tanggal)) . '</td>';
                 echo '<td>' . $val->Sopir->nama . '</td>';
-                echo '<td>' . $val->deskripsi . '</td>';
+                echo '<td></td>';
                 if (isset($export) && $export = 1) {
                     echo '<td style="text-align:right">' . $saldoAwal . '</td>';
                     echo '<td style="text-align:right">' . $debet . '</td>';

@@ -29,7 +29,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
     'items' => array(
         array('label' => 'Tambah', 'icon' => 'icon-plus', 'url' => Yii::app()->controller->createUrl('create'), 'linkOptions' => array()),
         array('label' => 'List Data', 'icon' => 'icon-th-list', 'url' => Yii::app()->controller->createUrl('index'), 'active' => true, 'linkOptions' => array()),
-        array('label' => 'Pencarian', 'icon' => 'icon-search', 'url' => '#', 'linkOptions' => array('class' => 'search-button')),
+        array('label' => 'Pencarian & Export Excel', 'icon' => 'icon-search', 'url' => '#', 'linkOptions' => array('class' => 'search-button')),
     ),
 ));
 $this->endWidget();
@@ -53,16 +53,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'type' => 'striped bordered condensed',
     'template' => '{items}{pager}{summary}',
     'columns' => array(
-          array(
-            'class' => 'CCheckBoxColumn',
-            'selectableRows' => 2,
-            'htmlOptions' => array('style' => 'text-align:center;display:'),
-            'headerHtmlOptions' => array('style' => 'width:25px;text-align:center;display:'),
-            'checkBoxHtmlOptions' => array(
-                'name' => 'ceckbox[]',
-                'value' => '$data->id',
-            ),
-        ),
+        
         array(
             'name' => 'sopir_id',
             'value' => '$data->sopir',

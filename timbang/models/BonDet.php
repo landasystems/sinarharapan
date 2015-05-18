@@ -31,7 +31,7 @@ class BonDet extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('id', 'required'),
+//            array('id', 'required'),
             array('id, bon_id, created_user_id', 'numerical', 'integerOnly' => true),
             array('debet, credit', 'length', 'max' => 20),
             array('tanggal, created, modified', 'safe'),

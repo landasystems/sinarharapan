@@ -44,7 +44,22 @@ $this->endWidget();
     ));
     ?>
 </div><!-- search-form -->
-
+<?php
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+    'id' => 'chargeAdditional-form',
+    'enableAjaxValidation' => false,
+    'method' => 'post',
+    'type' => 'horizontal',
+    'htmlOptions' => array(
+        'enctype' => 'multipart/form-data'
+    )
+        ));
+?>
+<button type="submit" name="delete" value="dd" style="margin-left: 10px;" class="btn btn-danger pull-right"><span class="icon16 brocco-icon-trashcan white"></span> Delete Checked</button>
+<button type="submit" name="restore" value="dd" style="margin-left: 10px;" class="btn btn-success pull-right"><span class="icon16 brocco-icon-checkmark white"></span> Restore Checked</button>    
+    
+<br>
+<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -130,8 +145,8 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         )
     ),
 ));
-?>
 
+?>
 <script type="text/javascript">
 jQuery(document).on('click','#truk-grid a.btn.btn-small.ok',function() {
         if(!confirm('Anda yakin ingin mengembalikan data ini?')) return false;
@@ -144,4 +159,6 @@ jQuery(document).on('click','#truk-grid a.btn.btn-small.ok',function() {
         });
         return false;
 });
+
 </script>
+<?php $this->endWidget();?>

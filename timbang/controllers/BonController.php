@@ -110,7 +110,7 @@ class BonController extends Controller {
         if (isset($_POST['Bon'])) {
             $model->attributes = $_POST['Bon'];
             if ($model->save())
-                BonDet::model()->updateAll(array('debet' => $_POST['Bon']['total'], 'tanggal' => $_POST['Bon']['tanggal']), 'bon_id=' . $id);
+                BonDet::model()->updateAll(array('debet' => $_POST['Bon']['total'], 'tanggal' => $_POST['Bon']['tanggal']), 'debet > 0 AND bon_id=' . $id);
 
             $this->redirect(array('view', 'id' => $model->id));
         }

@@ -65,7 +65,6 @@
                     <label class="control-label" for="eselon">Telepon</label>
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on">+62</span>
                             <input class="span15" maxlength="19" readonly="1" name="" id="telepon" type="text" value="<?php echo (isset($model->Sopir->telepon)) ? $model->Sopir->telepon : '-' ?>">
                         </div>
                     </div>

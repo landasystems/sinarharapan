@@ -95,18 +95,16 @@
                 <input class="span2" maxlength="25" name="Timbang[produk]" id="Timbang_produk" value="Tebu" readonly type="text">
             </div>
         </div>
-
-
         <?php echo $form->textFieldRow($model, 'nomor_polisi', array('class' => 'span3', 'maxlength' => 25)); ?>
-        <?php echo $form->textFieldRow($model, 'kode', array('class' => 'span3', 'maxlength' => 25)); ?>
 
         <fieldset>
             <legend>Info Timbangan</legend>
         </fieldset>
+        <?php echo $form->textFieldRow($model, 'kode', array('class' => 'angka', 'maxlength' => 25)); ?>
         <div class="row-fluid">
-            <div class="span5">
+            <div class="span3">
                 <div class="control-group ">
-                    <label class="control-label" for="Timbang_nomor_polisi">Berat 1</label>
+                    <label class="control-label" for="Timbang_nomor_polisi">Tanggal Berat 1</label>
                     <div class="controls">
                         <?php
                         echo $form->datepickerRow(
@@ -117,17 +115,10 @@
                                 )
                         );
                         ?>
-
-                        <div class="input-append">
-                            <input class="span6 angka" name="Timbang[berat_timbang1]" id="Timbang_berat_timbang1" value="<?php echo (isset($model->berat_timbang1)) ? $model->berat_timbang1 : '' ?>" type="text">
-                            <span class="add-on">Kg</span>
-                        </div>
-                        <?php // echo $form->textFieldRow($model, 'berat_timbang1', array('class' => 'span3', 'labelOptions' => array('label' => false))); ?>
-
                     </div>
                 </div>
                 <div class="control-group ">
-                    <label class="control-label" for="Timbang_nomor_polisi">Berat 2</label>
+                    <label class="control-label" for="Timbang_nomor_polisi">Tanggal Berat 2</label>
                     <div class="controls">
                         <?php
                         echo $form->datepickerRow(
@@ -138,16 +129,28 @@
                                 )
                         );
                         ?>
-                        <div class="input-append">
-                            <input class="span6 angka" name="Timbang[berat_timbang2]" id="Timbang_berat_timbang2" value="<?php echo (isset($model->berat_timbang2)) ? $model->berat_timbang2 : 0 ?>" type="text">
-                            <span class="add-on">Kg</span>
-                        </div>
-                        <?php // echo $form->textFieldRow($model, 'berat_timbang2', array('class' => 'span3', 'labelOptions' => array('label' => false))); ?>
-
                     </div>
                 </div>
             </div>
             <div class="span6">
+                <div class="control-group ">
+                    <label class="control-label">Berat 1</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input class="span6 angka" name="Timbang[berat_timbang1]" id="Timbang_berat_timbang1" value="<?php echo (isset($model->berat_timbang1)) ? $model->berat_timbang1 : '' ?>" type="text">
+                            <span class="add-on">Kg</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group ">
+                    <label class="control-label">Berat 2</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input class="span6 angka" name="Timbang[berat_timbang2]" id="Timbang_berat_timbang2" value="<?php echo (isset($model->berat_timbang2)) ? $model->berat_timbang2 : 0 ?>" type="text">
+                            <span class="add-on">Kg</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="control-group ">
                     <label class="control-label" for="Timbang_nomor_polisi">Rafaksi</label>
                     <div class="controls">

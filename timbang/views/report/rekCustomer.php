@@ -29,25 +29,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 )
         );
         ?> 
-
-        <div class="control-group ">
-            <label class="control-label" for="Pegawai_jabatan_id">Customer</label>
-            <div class="controls">
-                <?php
-                $data = array('0' => '- Pilih Nama Customer -') + CHtml::listData(Customer::model()->findAll(), 'id', 'nama');
-                $this->widget(
-                        'bootstrap.widgets.TbSelect2', array(
-                    'name' => 'Piutang[customer_id]',
-                    'data' => $data,
-                    'value' => (isset($_POST['Piutang']['customer_id'])) ? $_POST['Piutang']['customer_id'] : '',
-                    'options' => array(
-                        'width' => '25%;margin:0px;text-align:left',
-                )));
-                ?>
-            </div>
-        </div>
-
-
     </div>
 </div>
 <div class="form-actions">
@@ -94,13 +75,11 @@ if (!empty($_POST['Piutang']['tanggal'])) {
     $tanggal = explode('-', $_POST['Piutang']['tanggal']);
     $start = $tanggal[0];
     $end = $tanggal[1];
-    $customer = (isset($_POST['Piutang']['customer_id'])) ? $_POST['Piutang']['customer_id'] : '';
 
     $this->renderPartial('_rekCustomer', array(
         'model' => $model,
         'start' => $start,
         'end' => $end,
-        'customer' => $customer
     ));
 }
 ?>

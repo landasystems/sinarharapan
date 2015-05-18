@@ -187,7 +187,7 @@
         var jumlah = parseInt($("#Piutang_sub_total").val());
         var bunga = parseInt($("#Piutang_bunga").val());
         var sBunga = bunga / 100;
-        var total = jumlah - (sBunga * jumlah);
+        var total = jumlah + (sBunga * jumlah);
         $("#Piutang_total").val(total);
     }
     $("body").on("keyup", "#Piutang_sub_total", function() {

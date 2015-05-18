@@ -29,25 +29,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 )
         );
         ?> 
-
-        <div class="control-group ">
-            <label class="control-label" for="Pegawai_jabatan_id">Sopir</label>
-            <div class="controls">
-                <?php
-                $data = array('0' => '- Pilih Nama Sopir -') + CHtml::listData(Sopir::model()->findAll(), 'id', 'nama');
-                $this->widget(
-                        'bootstrap.widgets.TbSelect2', array(
-                    'name' => 'Bon[sopir_id]',
-                    'data' => $data,
-                    'value' => (isset($_POST['Bon']['sopir_id'])) ? $_POST['Bon']['sopir_id'] : '',
-                    'options' => array(
-                        'width' => '25%;margin:0px;text-align:left',
-                )));
-                ?>
-            </div>
-        </div>
-
-
     </div>
 </div>
 <div class="form-actions">
@@ -94,13 +75,11 @@ if (!empty($_POST['Bon']['tanggal'])) {
     $tanggal = explode('-', $_POST['Bon']['tanggal']);
     $start = $tanggal[0];
     $end = $tanggal[1];
-    $sopir = (isset($_POST['Bon']['sopir_id'])) ? $_POST['Bon']['sopir_id'] : '';
 
     $this->renderPartial('_rekBonSopir', array(
         'model' => $model,
         'start' => $start,
         'end' => $end,
-        'sopir' => $sopir
     ));
 }
 ?>

@@ -63,20 +63,29 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                 'value' => '$data->id',
             ),
         ),
+        
+        array(
+            'name' => 'tanggal',
+            'value' => '$data->tanggalTrans',
+        ),
         array(
             'name' => 'sopir_id',
             'value' => '$data->sopir',
         ),
         array(
-            'name' => 'tanggal',
-            'value' => '$data->tanggalTrans',
+            'name' => 'truk_id',
+            'value' => '$data->truk',
         ),
 //        'tanggal',
         'nomor_girik',
 //        'berat',
         array(
-            'name' => 'berat',
-            'value' => '$data->beratBarang',
+            'name' => 'fee_sopir',
+            'value' => 'landa()->rp($data->fee_sopir)',
+        ),
+        array(
+            'name' => 'fee_truk',
+            'value' => 'landa()->rp($data->fee_truk)',
         ),
 //        'total',
 //        'solar',

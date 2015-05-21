@@ -35,6 +35,7 @@ class BonDet extends CActiveRecord {
             array('id, bon_id, created_user_id', 'numerical', 'integerOnly' => true),
             array('debet, credit', 'length', 'max' => 20),
             array('tanggal, created, modified', 'safe'),
+            array('tanggal','required'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, bon_id, tanggal, debet, credit, created_user_id, created, modified', 'safe', 'on' => 'search'),
@@ -50,6 +51,10 @@ class BonDet extends CActiveRecord {
         return array(
             'Bon' => array(self::BELONGS_TO, 'Bon', 'bon_id'),
         );
+    }
+
+    public function getSopir() {
+        return isset($this->Bon->Sopir->nama) ? $this->Bon->Sopir->nama : "-";
     }
 
     /**
@@ -85,18 +90,20 @@ class BonDet extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('id', $this->id);
-        $criteria->compare('bon_id', $this->bon_id);
-        $criteria->compare('tanggal', $this->tanggal, true);
-        $criteria->compare('debet', $this->debet, true);
-        $criteria->compare('credit', $this->credit, true);
-        $criteria->compare('created_user_id', $this->created_user_id);
-        $criteria->compare('created', $this->created, true);
-        $criteria->compare('modified', $this->modified, true);
+        $criteria->with = 'Bon';
+
+        if (!empty($this->tanggal)) {
+            $dt = explode(" - ", $this->tanggal);
+            $start = $dt[0];
+            $end = $dt[1];
+            $criteria->addCondition('t.tanggal >= "' . $start . '" and t.tanggal <= "' . $end . '"');
+        }
+        if (!empty($this->piutang_id))
+            $criteria->addCondition('Bon.sopir_id = "' . $this->piutang_id . '"');
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
-            'sort' => array('defaultOrder' => 'id DESC')
+            'sort' => array('defaultOrder' => 't.id DESC')
         ));
     }
 

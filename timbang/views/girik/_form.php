@@ -2,7 +2,11 @@
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         'id' => 'girik-form',
-        'enableAjaxValidation' => false,
+        'enableClientValidation' => true,
+        'clientOptions' => array(
+            'validateOnSubmit' => true,
+            'type' => 'horizontal',
+        ),
         'method' => 'post',
         'type' => 'horizontal',
         'htmlOptions' => array(
@@ -11,7 +15,7 @@
     ));
     $pengaturan = Pengaturan::model()->findByPk(1);
     if ($model->isNewRecord == TRUE) {
-        $ongkos = (!empty($pengaturan->harga_tebu)) ? $pengaturan->harga_tebu : 0;
+        $ongkos = (!empty($pengaturan->ongkos_sopir)) ? $pengaturan->ongkos_sopir : 0;
     } else {
         $ongkos = $model->ongkos;
     }
@@ -21,8 +25,8 @@
             <p class="note">Fields dengan <span class="required">*</span> harus di isi.</p>
         </legend>
 
-        <?php echo $form->errorSummary($model, 'Opps!!!', null, array('class' => 'alert alert-error span12')); ?>
         <div class="row-fluid">
+            <?php echo $form->errorSummary($model, 'Opps!!!', null, array('class' => 'alert alert-error span12')); ?>
             <div class="span5">
                 <?php
                 echo $form->datepickerRow(
@@ -77,17 +81,9 @@
                 <?php echo $form->textFieldRow($model, 'nomor_girik', array('class' => 'span6')); ?>
 
                 <?php echo $form->textFieldRow($model, 'berat', array('class' => 'angka span12', 'append' => 'Kg', 'onkeyup' => 'calculate()')); ?>
-                <div class="control-group ">
-                    <label class="control-label" for="ongkos">
-                        Ongkos
-                    </label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">Rp</span>
-                            <input class="angka span12" name="ongkos" id="ongkos" type="text" onkeyup="calculate()" value="<?php echo $ongkos; ?>">
-                        </div>
-                    </div>
-                </div>
+
+                <?php echo $form->textFieldRow($model, 'ongkos', array('class' => 'angka span12', 'prepend' => 'Rp', 'onkeyup' => 'calculate()', 'value' => $ongkos, 'append' => '/ Kw')); ?>
+
                 <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span12', 'prepend' => 'Rp', 'readonly' => true)); ?>
 
                 <?php echo $form->textFieldRow($model, 'solar', array('class' => 'angka span12', 'prepend' => 'Rp', 'value' => (!empty($pengaturan->solar)) ? $pengaturan->solar : 0, 'onkeyup' => 'calculate()')); ?>
@@ -125,32 +121,31 @@
 
 </div>
 <script type="text/javascript">
-                                function calculate() {
-                                    var berat = parseInt($("#Girik_berat").val());
-                                    var ongkos = parseInt($("#ongkos").val());
-                                    var solar = parseInt($("#Girik_solar").val());
-                                    var persentasi_truk = $("#fee_truk").val();
-                                    var persentasi_sopir = $("#fee_sopir").val();
-                                    var total = berat * ongkos;
-                                    $("#Girik_total").val(total);
-                                    $("#Girik_fee_truk").val(total * persentasi_truk);
-                                    $("#Girik_fee_sopir").val((total * persentasi_truk) - solar);
-                                }
-//                                $(document).ready(function() {
-//                                    $("#Girik_sopir_id").change(function() {
-//                                        $.ajax(
-//                                                {
-//                                                    type: "POST",
-//                                                    url: "<?php echo url('girik/ambilTruk'); ?>",
-//                                                    data: {id: $(this).val()},
-//                                                    success: function(data)
-//                                                    {
-//                                                        obj = JSON.parse(data);
-//                                                        $("#Girik_truk_id").html(obj.body);
-//                                                        $("#alamat").html(obj.alamat);
-//                                                        $("#telepon").val(obj.telepon);
-//                                                    }
-//                                                });
-//                                    });
-//                                });
+    function calculate() {
+        var berat = parseFloat($("#Girik_berat").val() / 1000);
+        var ongkos = parseInt($("#Girik_ongkos").val());
+        var solar = parseInt($("#Girik_solar").val());
+        var persentasi_truk = parseFloat($("#fee_truk").val());
+        var persentasi_sopir = parseFloat($("#fee_sopir").val());
+        var total = berat * ongkos;
+        $("#Girik_total").val(total);
+        $("#Girik_fee_truk").val(total * persentasi_truk);
+        $("#Girik_fee_sopir").val((total * persentasi_sopir) - solar);
+    }
+    $(document).ready(function() {
+        $("#Girik_sopir_id").change(function() {
+            $.ajax(
+                    {
+                        type: "POST",
+                        url: "<?php echo url('girik/getDetail'); ?>",
+                        data: {id: $(this).val()},
+                        success: function(data)
+                        {
+                            obj = JSON.parse(data);
+                            $("#alamat").html(obj.alamat);
+                            $("#telepon").val(obj.telepon);
+                        }
+                    });
+        });
+    });
 </script>

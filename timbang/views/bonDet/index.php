@@ -1,7 +1,7 @@
 <?php
-$this->setPageTitle('Timbangs');
+$this->setPageTitle('Bayar Bon');
 $this->breadcrumbs = array(
-    'Timbangs',
+    'Bayar Bon',
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -10,7 +10,7 @@ $('.search-button').click(function(){
     return false;
 });
 $('.search-form form').submit(function(){
-    $.fn.yiiGridView.update('timbang-grid', {
+    $.fn.yiiGridView.update('bon-det-grid', {
         data: $(this).serialize()
     });
     return false;
@@ -45,66 +45,36 @@ $this->endWidget();
     ?>
 </div><!-- search-form -->
 
-<?php
-$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-    'id' => 'chargeAdditional-form',
-    'enableAjaxValidation' => false,
-    'method' => 'post',
-    'type' => 'horizontal',
-    'htmlOptions' => array(
-        'enctype' => 'multipart/form-data'
-    )
-        ));
-?>
-<button type="submit" name="delete" value="dd" style="margin-left: 10px;" class="btn btn-danger pull-right"><span class="icon16 brocco-icon-trashcan white"></span> Delete Checked</button>    
-<br>
-<br>
+
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
-    'id' => 'timbang-grid',
+    'id' => 'bon-det-grid',
     'dataProvider' => $model->search(),
     'type' => 'striped bordered condensed',
     'template' => '{summary}{pager}{items}{pager}',
     'columns' => array(
         array(
-            'class' => 'CCheckBoxColumn',
-            'selectableRows' => 2,
-//            'htmlOptions' => array('style' => 'text-align:center;display:' . $display),
-//            'headerHtmlOptions' => array('style' => 'width:25px;text-align:center;display:' . $display),
-            'checkBoxHtmlOptions' => array(
-                'name' => 'ceckbox[]',
-                'value' => '$data->id',
-            ),
+          'header' => 'Tanggal',
+          'name' => 'tanggal',
+          'value' => 'date("d M Y",strtotime($data->tanggal))',
+        ),
+       
+        array(
+          'header' => 'Sopir',
+          'name' => 'bon_id',
+          'value' => '$data->sopir',
         ),
         array(
-            'type' => 'raw',
-            'header'=>'Customer',
-            'name' => 'customer_id',
-            'value' => '$data->namaCustomer',
+          'header' => 'Debet',
+          'name' => 'debet',
+          'value' => 'landa()->rp($data->debet)',
         ),
-        'nomor_polisi',
-        'produk',
-//        'netto',
-        array(
-            'type' => 'raw',
-            'header'=>'Netto (Kg)',
-            'name' => 'netto',
-            'value' => '$data->netto',
-        ),
-        array(
-            'type' => 'raw',
-            'header'=>'Total',
-            'name' => 'total',
-            'value' => '$data->totalRp',
+         array(
+          'header' => 'Kredit',
+          'name' => 'credit',
+          'value' => 'landa()->rp($data->credit)',
         ),
         /*
-          'tanggal_timbang2',
-          'berat_timbang2',
-          'rafaksi',
-          'netto',
-          'harga',
-          'total',
-          'created_user_id',
           'created',
           'modified',
          */
@@ -135,6 +105,5 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         )
     ),
 ));
-$this->endWidget();
 ?>
 

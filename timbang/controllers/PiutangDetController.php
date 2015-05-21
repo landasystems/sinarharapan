@@ -73,6 +73,16 @@ class PiutangDetController extends Controller {
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['PiutangDet'])) {
+            for ($i = 0; $i < count($_POST['piutang_id']); $i++) {
+                if ($_POST['bayar'][$i] > 0) {
+                    $model->tanggal = $_POST['PiutangDet']['tanggal'];
+                    $model->credit = $_POST['bayar'][$i];
+                    $model->piutang_id = $_POST['piutang_id'][$i];
+//                $model->induk_id = $model->piutang_id;
+                    $model->save();
+                }
+                $i++;
+            }
             $model->attributes = $_POST['PiutangDet'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
@@ -96,6 +106,7 @@ class PiutangDetController extends Controller {
 
         if (isset($_POST['PiutangDet'])) {
             $model->attributes = $_POST['PiutangDet'];
+            $model->credit = $_POST['bayar'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -118,8 +129,7 @@ class PiutangDetController extends Controller {
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        }
-        else
+        } else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -127,44 +137,22 @@ class PiutangDetController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-
+        $criteria = new CDbCriteria();
         $model = new PiutangDet('search');
         $model->unsetAttributes();  // clear any default values
 
         if (isset($_GET['PiutangDet'])) {
             $model->attributes = $_GET['PiutangDet'];
+            $criteria->with = 'Piutang';
 
-
-            if (!empty($model->id))
-                $criteria->addCondition('id = "' . $model->id . '"');
-
-
+            if (!empty($model->tanggal)) {
+                $dt = explode(" - ", $model->tanggal);
+                $start = $dt[0];
+                $end = $dt[1];
+                $criteria->addCondition('t.tanggal >= "' . $start . '" and t.tanggal <= "' . $end . '"');
+            }
             if (!empty($model->piutang_id))
-                $criteria->addCondition('piutang_id = "' . $model->piutang_id . '"');
-
-
-            if (!empty($model->tanggal))
-                $criteria->addCondition('tanggal = "' . $model->tanggal . '"');
-
-
-            if (!empty($model->debet))
-                $criteria->addCondition('debet = "' . $model->debet . '"');
-
-
-            if (!empty($model->credit))
-                $criteria->addCondition('credit = "' . $model->credit . '"');
-
-
-            if (!empty($model->created_user_id))
-                $criteria->addCondition('created_user_id = "' . $model->created_user_id . '"');
-
-
-            if (!empty($model->created))
-                $criteria->addCondition('created = "' . $model->created . '"');
-
-
-            if (!empty($model->modified))
-                $criteria->addCondition('modified = "' . $model->modified . '"');
+                $criteria->addCondition('Piutang.customer_id = "' . $model->piutang_id . '"');
         }
 
         $this->render('index', array(

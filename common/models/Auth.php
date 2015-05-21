@@ -132,6 +132,7 @@ class Auth extends CActiveRecord {
                 )),
             array('visible' => landa()->checkAccess('pinjaman', 'r'), 'label' => '<span class="icon16 wpzoom-user-2"></span>Transaksi Supir', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('bon', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bon', 'url' => url('/bon'), 'auth_id' => 'bon'),
+                    array('visible' => landa()->checkAccess('bon', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bayar Bon', 'url' => url('/bonDet'), 'auth_id' => 'bon'),
                     array('visible' => landa()->checkAccess('storGir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Stor Girik', 'url' => url('/girik'), 'auth_id' => 'storGir'),
                 )),
             array('visible' => landa()->checkAccess('perawatan', 'r'), 'label' => '<span class="icon16 icomoon-icon-cars"></span>Perawatan Kendaraan', 'url' => url('/perawatanTruk'), 'auth_id' => 'perawatan'),

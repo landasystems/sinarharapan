@@ -40,19 +40,9 @@ class GirikController extends Controller {
         );
     }
 
-    public function actionAmbilTruk() {
+    public function actionGetDetail() {
         $id = $_POST['id'];
-        $data = '';
-        $truk = Truk::model()->findAll(array('condition' => 'sopir_id=' . $id));
         $sopir = Sopir::model()->findByPk($id);
-        if (empty($truk)) {
-            $data = '<option>Tidak ada truk</option>';
-        } else {
-            foreach ($truk as $val) {
-                $data .= '<option value=' . $val->id . '>' . $val->merk . ' (' . $val->nomor_polisi . ')</option>';
-            }
-        }
-        $body['truk'] = $data;
         $body['alamat'] = $sopir->alamat;
         $body['telepon'] = landa()->hp($sopir->telepon);
         echo json_encode($body);

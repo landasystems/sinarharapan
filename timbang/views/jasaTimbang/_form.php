@@ -232,7 +232,6 @@
                 <td style="width:80px; text-align: "><hr></td>
             </tr>
             <tr>
-
                 <td style="width:80px;">&nbsp;</td>
                 <td style="width:80px; text-align: "><?php echo $model->netto ?> Kg</td>
             </tr>

@@ -1,3 +1,28 @@
+<style type="text/css">
+    #printNota{display: none;}
+</style>
+<style type="text/css" media="print">
+    body {visibility:hidden;}
+    #printNota{
+        visibility:visible;
+        display: block; 
+        position: absolute;top: 0;left: 0;float: left;
+        padding: 0 20px 0 0;
+    } 
+</style>
+<script>
+    function printDiv(divName)
+    {
+        var w = window.open();
+        var css = '<style media="print">body{ margin-top:0 !important}</style>';
+        var printContents = '<div style="width:100%;" class="printNota"><center>' + $("#" + divName + "").html() + '</center></div>';
+
+        $(w.document.body).html(css + printContents);
+        w.print();
+        w.window.close();
+    }
+
+</script>
 <div class="form">
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -131,28 +156,61 @@
         <div id="list"></div>
 
         <?php if (!isset($_GET['v'])) { ?>        <div class="form-actions">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'submit',
-                    'type' => 'primary',
-                    'icon' => 'ok white',
-                    'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
-                ));
-                ?>
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'reset',
-                    'icon' => 'remove',
-                    'label' => 'Reset',
-                ));
-                ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'submit',
+                'type' => 'primary',
+                'icon' => 'ok white',
+                'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
+            ));
+            ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'reset',
+                'icon' => 'remove',
+                'label' => 'Reset',
+            ));
+            ?>
             </div>
         <?php } ?>    </fieldset>
 
     <?php $this->endWidget(); ?>
 
 </div>
-
+<div class="printNota" id="printNota" style="width:100%;">
+    <center style="font-size: 11.5px;"><strong>CV Sinar Harapan</strong></center>
+    <center style="font-size: 11.5px;">Jl. Mayjen Panjaitan No. 62 Malang</center>
+    <center style="font-size: 11.5px;">Telp. (0341) 789555</center>
+    <hr>
+    <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
+        <tr>
+            <td style="text-align: left;"><b>Tanggal</b></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo date("d M Y", strtotime($model->tanggal)); ?></td>
+            <td style="width:80px; text-align: "></td>
+            <td style="text-align: "></td>
+        </tr>
+        <tr>
+            <td style="text-align: left;"><b>Sopir</b></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Bon->Sopir->nama) ? $model->Bon->Sopir->nama : "-"; ?></td>
+            <td style="width:80px; text-align: "><b></b></td>
+            <td style="text-align: "></td>
+        </tr>
+        <tr>
+            <td style="text-align: left;"><b>Hutang</b></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Bon->total) ? landa()->rp($model->Bon->total) : "-"; ?></td>
+            <td style="width:80px; text-align: "><b></b></td>
+            <td style="text-align: "></td>
+        </tr>
+        <tr>
+            <td style="text-align: left;"><b>Bayar</b></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->credit) ? landa()->rp($model->credit) : "-"; ?></td>
+            <td style="width:80px; text-align: "></td>
+            <td style="text-align: "></td>
+        </tr>
+    </table>
+    <hr>
+    <p style="text-align:center;font-size: 11.5px;"></p>
+</div>
 <script>
     $("#supir").on("change", function() {
         //var name = $("#Registration_guest_user_id").val();

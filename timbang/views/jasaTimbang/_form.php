@@ -59,7 +59,7 @@
         <div class="control-group ">
             <label class="control-label" for="JasaTimbang_police_number">Produk</label>
             <div class="controls">
-                <input class="span2" maxlength="25" name="JasaTimbang[produk]" id="JasaTimbang_produk" value="Tebu" readonly type="text">
+                <input class="span2" maxlength="25" name="JasaTimbang[produk]" id="JasaTimbang_produk" value="Tebu" type="text">
             </div>
         </div>
 

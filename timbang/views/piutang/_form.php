@@ -119,9 +119,16 @@
                             <input class="span12 angka" name="Piutang[jumlah_pupuk]" id="Piutang_jumlah_pupuk" type="text">
                             <span class="add-on">Kg</span>
                         </div>
-
+                        <?php
+                        $pupuk = 0;
+                        if($model->isNewRecord == true){
+                            $pupuk = $bunga->harga_pupuk;
+                        }else if($model->jumlah_pupuk > 0){
+                            $pupuk = $model->sub_total / $model->jumlah_pupuk;
+                        }
+                        ?>
                         <div class="input-prepend">
-                            <input class="span12 angka" name="harga_pupuk" id="harga_pupuk" type="text" value="<?php echo $bunga->harga_pupuk; ?>">
+                            <input class="span12 angka" name="harga_pupuk" id="harga_pupuk" type="text" value="<?php echo $pupuk; ?>">
                             <span class="add-on">Rp</span>
                         </div>
                     </div>

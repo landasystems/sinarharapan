@@ -64,12 +64,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'value' => '$data->customer',
         ),
         array(
-            'header' => 'Debet',
-            'name' => 'debet',
-            'value' => 'landa()->rp($data->debet)',
-        ),
-        array(
-            'header' => 'Kredit',
+            'header' => 'Total',
             'name' => 'credit',
             'value' => 'landa()->rp($data->credit)',
         ),

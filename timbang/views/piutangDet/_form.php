@@ -95,11 +95,11 @@
                     </div>
                 </div>
             </div>
-            <div class="span6">
-                <legend>Data Piutang</legend>
-                <?php
-                if ($model->isNewRecord == FALSE) {
-                    ?>
+            <?php
+            if ($model->isNewRecord == FALSE) {
+                ?>
+                <div class="span5">
+                    <legend>Data Piutang</legend>
                     <div class="control-group ">
                         <label class="control-label" for="kode_piutang">Kode Piutang</label>
                         <div class="controls">
@@ -121,10 +121,10 @@
                             </div>
                         </div>
                     </div>
-                    <?php
-                }
-                ?>
-            </div>
+                </div>
+                <?php
+            }
+            ?>
         </div>
 
         <div id="list"></div>

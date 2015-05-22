@@ -40,7 +40,7 @@ class Truk extends CActiveRecord {
         return array(
             array('surat, seling, terpal, sopir_id, is_delete, created_user_id', 'numerical', 'integerOnly' => true),
             array('kode, merk, type, kunci', 'length', 'max' => 45),
-            array('nomor_polisi, sopir_id, pajak, kir, stnk, seling, dongkrak, terpal, kunci, surat', 'required'),
+            array('nomor_polisi, pajak, kir, stnk, seling, dongkrak, terpal, kunci, surat', 'required'),
             array('nomor_polisi', 'length', 'max' => 25),
             array('pajak, kir, dongkrak, stnk, created, modified', 'safe'),
             // The following rule is used by search().

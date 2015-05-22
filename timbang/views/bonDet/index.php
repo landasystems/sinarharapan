@@ -1,7 +1,7 @@
 <?php
-$this->setPageTitle('Bayar Pinjaman');
+$this->setPageTitle('Bayar Bon');
 $this->breadcrumbs = array(
-    'Bayar Pinjaman',
+    'Bayar Bon',
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -10,7 +10,7 @@ $('.search-button').click(function(){
     return false;
 });
 $('.search-form form').submit(function(){
-    $.fn.yiiGridView.update('piutang-det-grid', {
+    $.fn.yiiGridView.update('bon-det-grid', {
         data: $(this).serialize()
     });
     return false;
@@ -48,7 +48,7 @@ $this->endWidget();
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
-    'id' => 'piutang-det-grid',
+    'id' => 'bon-det-grid',
     'dataProvider' => $model->search(),
     'type' => 'striped bordered condensed',
     'template' => '{summary}{pager}{items}{pager}',
@@ -59,9 +59,9 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'value' => 'date("d M Y",strtotime($data->tanggal))',
         ),
         array(
-            'header' => 'Customer',
-            'name' => 'piutang_id',
-            'value' => '$data->customer',
+            'header' => 'Sopir',
+            'name' => 'bon_id',
+            'value' => '$data->sopir',
         ),
         array(
             'header' => 'Total',

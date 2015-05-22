@@ -26,7 +26,7 @@
 <div class="form">
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-        'id' => 'piutang-det-form',
+        'id' => 'bon-det-form',
         'enableClientValidation' => true,
         'clientOptions' => array(
             'validateOnSubmit' => true,
@@ -43,6 +43,7 @@
         <legend>
             <p class="note">Fields dengan <span class="required">*</span> harus di isi.</p>
         </legend>
+
         <style>
             .form-horizontal .control-label {
                 float: left;
@@ -57,7 +58,7 @@
         <div class="row-fluid">
             <?php echo $form->errorSummary($model, 'Opps!!!', null, array('class' => 'alert alert-error span12')); ?>
             <div class="span6">
-                <legend>Data Customer</legend>
+                <legend>Data Supir</legend>
                 <?php
                 echo $form->datePickerRow(
                         $model, 'tanggal', array(
@@ -70,34 +71,34 @@
                 ?>
 
                 <div class="control-group ">
-                    <label class="control-label" for="customer">Customer</label>
+                    <label class="control-label" for="supir">Supir</label>
                     <div class="controls">
                         <?php
                         if ($model->isNewRecord == TRUE) {
-                            $data = array('0' => '- Pilih Customer -') + CHtml::listData(Customer::model()->findall(array('condition' => 'is_delete = 0 ')), 'id', 'nama');
+                            $data = array('0' => '- Pilih Supir -') + CHtml::listData(Sopir::model()->findall(array('condition' => 'is_delete = 0 ')), 'id', 'nama');
                             $this->widget(
                                     'bootstrap.widgets.TbSelect2', array(
                                 'asDropDownList' => true,
-                                'name' => 'customer',
+                                'name' => 'sopir',
                                 'data' => $data,
-                                'value' => isset($model->Piutang->Customer->id) ? $model->Piutang->Customer->id : "-",
+                                'value' => isset($model->Bon->Sopir->id) ? $model->Bon->Sopir->id : "-",
                                 'htmlOptions' => array(
                                     'style' => 'width:260px;',
-                                    'id' => 'customer',
+                                    'id' => 'supir',
                                 ),
                                     )
                             );
                         } else {
-                            $data = array('0' => '- Pilih Customer -') + CHtml::listData(Customer::model()->findall(array('condition' => 'is_delete = 0 ')), 'id', 'nama');
+                            $data = array('0' => '- Pilih Customer -') + CHtml::listData(Sopir::model()->findall(array('condition' => 'is_delete = 0 ')), 'id', 'nama');
                             $this->widget(
                                     'bootstrap.widgets.TbSelect2', array(
                                 'asDropDownList' => true,
-                                'name' => 'customer',
+                                'name' => 'sopir',
                                 'data' => $data,
-                                'value' => isset($model->Piutang->Customer->id) ? $model->Piutang->Customer->id : "-",
+                                'value' => isset($model->Bon->Sopir->id) ? $model->Bon->Sopir->id : "-",
                                 'htmlOptions' => array(
                                     'style' => 'width:260px;',
-                                    'id' => 'customer',
+                                    'id' => 'supir',
                                     'readonly' => true,
                                 ),
                                     )
@@ -110,13 +111,13 @@
                 <div class="control-group ">
                     <label class="control-label" for="alamat">Alamat</label>
                     <div class="controls">
-                        <textarea  readonly="1" class="span12" id="alamat"><?php echo isset($model->Piutang->Customer->alamat) ? $model->Piutang->Customer->alamat : "-"; ?></textarea>
+                        <textarea  readonly="1" class="span12" id="alamat"><?php echo isset($model->Bon->Sopir->alamat) ? $model->Bon->Sopir->alamat : "-"; ?></textarea>
                     </div>
                 </div>
                 <div class="control-group ">
                     <label class="control-label" for="eselon">Telepon</label>
                     <div class="controls">
-                        <input class="span12" maxlength="19" readonly="1" name="" id="telpon" type="text" value="<?php echo isset($model->Piutang->Customer->telepon) ? $model->Piutang->Customer->telepon : "-"; ?>">
+                        <input class="span12" maxlength="19" readonly="1" name="" id="telpon" type="text" value="<?php echo isset($model->Bon->Sopir->telepon) ? $model->Bon->Sopir->telepon : "-"; ?>">
                     </div>
                 </div>
             </div>
@@ -124,17 +125,17 @@
             if ($model->isNewRecord == FALSE) {
                 ?>
                 <div class="span5">
-                    <legend>Data Piutang</legend>
+                    <legend>Data Bon</legend>
                     <div class="control-group ">
-                        <label class="control-label" for="kode_piutang">Kode Piutang</label>
+                        <label class="control-label" for="kode_bon">Kode Bon</label>
                         <div class="controls">
-                            <p class="help-inline"><?php echo isset($model->piutang_id) ? $model->piutang_id : "-"; ?><p>
+                            <p class="help-inline"><?php echo isset($model->bon_id) ? $model->bon_id : "-"; ?><p>
                         </div>
                     </div>
                     <div class="control-group ">
-                        <label class="control-label" for="total_piutang">Total Piutang</label>
+                        <label class="control-label" for="total_bon">Total Bon</label>
                         <div class="controls">
-                            <p class="help-inline"><?php echo (isset($model->Piutang->total)) ? landa()->rp($model->Piutang->total) : landa()->rp(0) ?>
+                            <p class="help-inline"><?php echo (isset($model->Bon->total)) ? landa()->rp($model->Bon->total) : landa()->rp(0) ?>
                         </div>
                     </div>
                     <div class="control-group ">
@@ -155,21 +156,21 @@
         <div id="list"></div>
 
         <?php if (!isset($_GET['v'])) { ?>        <div class="form-actions">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'submit',
-                    'type' => 'primary',
-                    'icon' => 'ok white',
-                    'label' => $model->isNewRecord ? 'Simpan' : 'Simpan',
-                ));
-                ?>
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'reset',
-                    'icon' => 'remove',
-                    'label' => 'Reset',
-                ));
-                ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'submit',
+                'type' => 'primary',
+                'icon' => 'ok white',
+                'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
+            ));
+            ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'reset',
+                'icon' => 'remove',
+                'label' => 'Reset',
+            ));
+            ?>
             </div>
         <?php } ?>    </fieldset>
 
@@ -184,25 +185,25 @@
     <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
         <tr>
             <td style="text-align: left;"><b>Tanggal</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo date("d M Y", strtotime($model->tanggal));?></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo date("d M Y", strtotime($model->tanggal)); ?></td>
             <td style="width:80px; text-align: "></td>
             <td style="text-align: "></td>
         </tr>
         <tr>
-            <td style="text-align: left;"><b>Customer</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Piutang->Customer->nama) ? $model->Piutang->Customer->nama : "-";?></td>
+            <td style="text-align: left;"><b>Sopir</b></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Bon->Sopir->nama) ? $model->Bon->Sopir->nama : "-"; ?></td>
             <td style="width:80px; text-align: "><b></b></td>
             <td style="text-align: "></td>
         </tr>
         <tr>
             <td style="text-align: left;"><b>Hutang</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Piutang->total) ? landa()->rp($model->Piutang->total) : "-";?></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Bon->total) ? landa()->rp($model->Bon->total) : "-"; ?></td>
             <td style="width:80px; text-align: "><b></b></td>
             <td style="text-align: "></td>
         </tr>
         <tr>
             <td style="text-align: left;"><b>Bayar</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->credit) ? landa()->rp($model->credit) : "-";?></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->credit) ? landa()->rp($model->credit) : "-"; ?></td>
             <td style="width:80px; text-align: "></td>
             <td style="text-align: "></td>
         </tr>
@@ -211,12 +212,12 @@
     <p style="text-align:center;font-size: 11.5px;"></p>
 </div>
 <script>
-    $("#customer").on("change", function() {
+    $("#supir").on("change", function() {
         //var name = $("#Registration_guest_user_id").val();
         //  alert(name);
 
         $.ajax({
-            url: "<?php echo url('piutangDet/getDetail'); ?>",
+            url: "<?php echo url('bonDet/getDetail'); ?>",
             type: "POST",
             data: {id: $(this).val()},
             success: function(data) {

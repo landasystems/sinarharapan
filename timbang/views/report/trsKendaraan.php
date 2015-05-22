@@ -1,7 +1,7 @@
 <?php
-$this->setPageTitle('Laporan Rekap Bon Sopir');
+$this->setPageTitle('Laporan Perawatan Kendaraan');
 $this->breadcrumbs = array(
-    'Laporan Rekap Bon Sopir',
+    'Laporan Perawatan Kendaraan',
 );
 ?>
 
@@ -23,12 +23,31 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         echo $form->dateRangeRow(
                 $model, 'tanggal', array(
             'prepend' => '<i class="icon-calendar"></i>',
-            'value' => (isset($_POST['Bon']['tanggal'])) ? $_POST['Bon']['tanggal'] : '',
+            'value' => (isset($_POST['PerawatanTruk']['tanggal'])) ? $_POST['PerawatanTruk']['tanggal'] : '',
             'options' => array('callback' => 'js:function(start, end){console.log(start.toString("MMMM d, yyyy") + " - " + end.toString("MMMM d, yyyy"));}'),
 //            'value' => (isset($_POST['AccCoaDet']['created'])) ? $_POST['AccCoaDet']['created'] : ''
                 )
         );
         ?> 
+
+        <div class="control-group ">
+            <label class="control-label" for="Pegawai_jabatan_id">Nomor Polisi Kendaran</label>
+            <div class="controls">
+                <?php
+                $data = array('0' => '- Pilih Nopol-') + CHtml::listData(Truk::model()->findAll(array('condition'=>'is_delete = 0')), 'id', 'nomor_polisi');
+                $this->widget(
+                        'bootstrap.widgets.TbSelect2', array(
+                    'name' => 'PerawatanTruk[truk_id]',
+                    'data' => $data,
+                    'value' => (isset($_POST['PerawatanTruk']['truk_id'])) ? $_POST['PerawatanTruk']['truk_id'] : '',
+                    'options' => array(
+                        'width' => '25%;margin:0px;text-align:left',
+                )));
+                ?>
+            </div>
+        </div>
+
+
     </div>
 </div>
 <div class="form-actions">
@@ -52,7 +71,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     ));
     ?>
     <?php
-    if (!empty($_POST['Bon']['tanggal'])) {
+    if (!empty($_POST['PerawatanTruk']['tanggal'])) {
         $this->widget('bootstrap.widgets.TbButton', array(
             'type' => 'primary',
             'icon' => 'entypo-icon-printer white',
@@ -70,16 +89,18 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 
 <?php
-if (!empty($_POST['Bon']['tanggal'])) {
+if (!empty($_POST['PerawatanTruk']['tanggal'])) {
 
-    $tanggal = explode('-', $_POST['Bon']['tanggal']);
+    $tanggal = explode('-', $_POST['PerawatanTruk']['tanggal']);
     $start = $tanggal[0];
     $end = $tanggal[1];
+    $kendaraan = (isset($_POST['PerawatanTruk']['truk_id'])) ? $_POST['PerawatanTruk']['truk_id'] : '';
 
-    $this->renderPartial('_rekBonSopir', array(
+    $this->renderPartial('_trsKendaraan', array(
         'model' => $model,
         'start' => $start,
         'end' => $end,
+        'kendaraan' => $kendaraan
     ));
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-$piutang = Piutang::model()->findall(array('condition' => 'customer_id = ' . $customer_id));
+$bon = Bon::model()->findall(array('condition' => 'sopir_id = ' . $sopir_id));
 ?>
 <div class="row-fluid">
     <div class="span12">
@@ -10,25 +10,23 @@ $piutang = Piutang::model()->findall(array('condition' => 'customer_id = ' . $cu
                 <tr>
                     <th>Tanggal</th>
                     <th>Keterangan</th>
-                    <th>Jaminan</th>
-                    <th>Hutang (Rp)</th>
+                    <th>Bon (Rp)</th>
                     <th>Total Bayar (Rp)</th>
                     <th width="120px;">Bayar</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                foreach ($piutang as $val) {
+                foreach ($bon as $val) {
                     if ($val->total > $val->totalBayar) {
                         ?>
                         <tr>
                             <td>
-                                <input type="hidden" name="piutang_id[]" value="<?php echo $val->id ?>" class="piutang_id">
+                                <input type="hidden" name="bon_id[]" value="<?php echo $val->id ?>" class="piutang_id">
                                 <input type="hidden" name="total_bayar[]" value="<?php echo (!empty($val->totalBayar)) ? $val->totalBayar : 0 ?>" class="total_bayar" id="total_bayar">
                                 <?php echo date("d M Y", strtotime($val->tanggal)); ?>
                             </td>
                             <td><?php echo!empty($val->deskripsi) ? $val->deskripsi : "-"; ?></td>
-                            <td><?php echo!empty($val->jaminan) ? $val->jaminan : "-"; ?></td>
                             <td><?php echo landa()->rp($val->total); ?></td>
                             <td><span class="terbayar"><?php echo landa()->rp($val->totalBayar); ?></span></td>
                             <td>
@@ -44,11 +42,11 @@ $piutang = Piutang::model()->findall(array('condition' => 'customer_id = ' . $cu
                 ?>
             </tbody>
             <?php
-            if (!empty($piutang)) {
+            if (!empty($bon)) {
                 ?>
                 <tfoot>
                     <tr>
-                        <td colspan="5" style="text-align: right"><b>Total</b></td>
+                        <td colspan="4" style="text-align: right"><b>Total</b></td>
                         <td colspan="1"><span class="total">Rp. 0</span></td>
                     </tr>
                 </tfoot>

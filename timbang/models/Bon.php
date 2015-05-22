@@ -52,6 +52,16 @@ class Bon extends CActiveRecord {
         );
     }
 
+    public function getTotalBayar() {
+        $tot = Yii::app()->db->createCommand()
+                ->select('sum(bon_det.credit) as total')
+                ->from('bon, bon_det')
+                ->where('bon.id = bon_det.bon_id and bon.id = ' . $this->id)
+                ->queryRow();
+        $total = (isset($tot['total']) and !empty($tot['total'])) ? $tot['total'] : 0;
+        return $total;
+    }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -122,7 +132,6 @@ class Bon extends CActiveRecord {
             'sort' => array('defaultOrder' => 'id DESC')
         ));
     }
-
 
     /**
      * Returns the static model of the specified AR class.

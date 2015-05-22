@@ -1,8 +1,8 @@
 <?php
-$this->setPageTitle('Tambah Bayar Pinjaman');
+$this->setPageTitle('Tambah Bayar Bon');
 $this->breadcrumbs=array(
-	'Bayar Pinjaman'=>array('index'),
-	'Tambah',
+	'Bayar Bon'=>array('index'),
+	'Create',
 );
 
 ?>

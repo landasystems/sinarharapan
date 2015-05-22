@@ -31,28 +31,25 @@
             $totAkhir = 0;
             $totDebet = 0;
             $totCredit = 0;
-            $cId = '';
-            $criteria = new CDbCriteria();
 
-            if (!empty($customer))
-                $cId = 'AND customer_id=' . $customer;
 
             $mPiutang = Piutang::model()->findAll(array(
                 'with' => 'Customer',
-                'condition' => 'Customer.is_delete = 0 ' . $cId
+                'condition' => 'Customer.is_delete = 0 ',
+                'group'=> 'customer_id'
             ));
             foreach ($mPiutang as $val) {
                 $mBalance = PiutangDet::model()->find(array(
-                    'with' => 'Piutang.Customer',
+                    'with' => 'Piutang',
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => 'Customer.is_delete = 0 AND t.tanggal<"' . date('Y-m-d', strtotime($start)) . '" AND piutang_id=' . $val->id,
-                    'group' => 'piutang_id'
+                    'condition' => 't.tanggal<"' . date('Y-m-d', strtotime($start)) . '" AND Piutang.customer_id=' . $val->customer_id,
+//                    'group' => 'piutang_id'
                 ));
                 $mutasi = PiutangDet::model()->find(array(
-                    'with' => 'Piutang.Customer',
+                    'with' => 'Piutang',
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => 'Customer.is_delete = 0 AND (t.tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND t.tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND piutang_id=' . $val->id,
-                    'group' => 'piutang_id'
+                    'condition' => '(t.tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND t.tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND Piutang.customer_id=' . $val->customer_id,
+//                    'group' => 'piutang_id'
                 ));
 
                 $sDebet = (!empty($mBalance->sumDebet)) ? $mBalance->sumDebet : 0;
@@ -65,7 +62,7 @@
                 echo '<tr>';
                 echo '<td style="text-align:center">' . date('d m Y', strtotime($val->tanggal)) . '</td>';
                 echo '<td>' . $val->Customer->nama . '</td>';
-                echo '<td>' . $val->deskripsi . '</td>';
+                echo '<td></td>';
                 if (isset($export) && $export = 1) {
                     echo '<td style="text-align:right">' . $saldoAwal . '</td>';
                     echo '<td style="text-align:right">' . $debet . '</td>';

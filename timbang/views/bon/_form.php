@@ -64,10 +64,7 @@
                 <div class="control-group ">
                     <label class="control-label" for="eselon">Telepon</label>
                     <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">+62</span>
-                            <input class="span15" maxlength="19" readonly="1" name="" id="telepon" type="text" value="<?php echo (isset($model->Sopir->telepon)) ? $model->Sopir->telepon : '-' ?>">
-                        </div>
+                        <input class="span15" maxlength="19" readonly="1" name="" id="telepon" type="text" value="<?php echo (isset($model->Sopir->telepon)) ? $model->Sopir->telepon : '-' ?>">
                     </div>
                 </div>
 
@@ -111,7 +108,7 @@
 
 </div>
 <script>
-    $("#Bon_sopir_id").on("change", function () {
+    $("#Bon_sopir_id").on("change", function() {
         //var name = $("#Registration_guest_user_id").val();
         //  alert(name);
 
@@ -119,7 +116,7 @@
             url: "<?php echo url('sopir/getDetail'); ?>",
             type: "POST",
             data: {id: $(this).val()},
-            success: function (data) {
+            success: function(data) {
 
                 obj = JSON.parse(data);
                 $("#telepon").val(obj.telpon);

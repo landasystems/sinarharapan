@@ -11,7 +11,7 @@
             <tr> 
 
                 <th style="text-align:center">Tanggal</th>
-                <th style="text-align:center">Nama Customer</th>
+                <th style="text-align:center">NOPOL Kendaraan</th>
                 <th style="text-align:center">Keterangan</th>
                 <th style="text-align:center;width: 12%">Saldo Awal</th>
                 <th style="text-align:center;width: 12%">Debet</th>
@@ -31,26 +31,24 @@
             $totAkhir = 0;
             $totDebet = 0;
             $totCredit = 0;
-            $cId = '';
-            $criteria = new CDbCriteria();
-
-            if (!empty($kendaraan))
-                $cId = 'AND truk_id=' . $kendaraan;
 
             $mPerawatan = PerawatanTruk::model()->findAll(array(
-                'with' => 'Truk',
-                'condition' => 'Truk.is_delete = 0 ' . $cId
+                'with' => array('Truk'),
+                'condition' => 'Truk.is_delete = 0',
+                'group' => 'truk_id'
             ));
             foreach ($mPerawatan as $val) {
                 $mBalance = PerawatanTrukDet::model()->find(array(
+                    'with' => array('PerawatanTruk'),
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => 'tanggal<"' . date('Y-m-d', strtotime($start)) . '" AND perawatan_truk_id=' . $val->id,
-                    'group' => 'perawatan_truk_id'
+                    'condition' => 'PerawatanTruk.tanggal<"' . date('Y-m-d', strtotime($start)) . '" AND PerawatanTruk.truk_id=' . $val->truk_id,
+//                    'group' => 'perawatan_truk_id'
                 ));
                 $mutasi = PerawatanTrukDet::model()->find(array(
+                    'with' => array('PerawatanTruk'),
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => '(tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND perawatan_truk_id=' . $val->id,
-                    'group' => 'perawatan_truk_id'
+                    'condition' => '(PerawatanTruk.tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND PerawatanTruk.tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND PerawatanTruk.truk_id=' . $val->truk_id,
+//                    'group' => 'perawatan_truk_id'
                 ));
 
                 $sDebet = (!empty($mBalance->sumDebet)) ? $mBalance->sumDebet : 0;
@@ -62,8 +60,8 @@
 
                 echo '<tr>';
                 echo '<td style="text-align:center">' . date('d m Y', strtotime($val->tanggal)) . '</td>';
-                echo '<td>' . $val->Sopir->nama . '</td>';
-                echo '<td>' . $val->deskripsi . '</td>';
+                echo '<td>' . $val->Truk->nomor_polisi. '</td>';
+                echo '<td></td>';
                 if (isset($export) && $export = 1) {
                     echo '<td style="text-align:right">' . $saldoAwal . '</td>';
                     echo '<td style="text-align:right">' . $debet . '</td>';

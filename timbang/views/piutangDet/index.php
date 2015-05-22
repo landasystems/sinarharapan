@@ -54,25 +54,24 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'template' => '{summary}{pager}{items}{pager}',
     'columns' => array(
         array(
-          'header' => 'Tanggal',
-          'name' => 'tanggal',
-          'value' => 'date("d M Y",strtotime($data->tanggal))',
-        ),
-       
-        array(
-          'header' => 'Customer',
-          'name' => 'piutang_id',
-          'value' => '$data->customer',
+            'header' => 'Tanggal',
+            'name' => 'tanggal',
+            'value' => 'date("d M Y",strtotime($data->tanggal))',
         ),
         array(
-          'header' => 'Debet',
-          'name' => 'debet',
-          'value' => 'landa()->rp($data->debet)',
+            'header' => 'Customer',
+            'name' => 'piutang_id',
+            'value' => '$data->customer',
         ),
-         array(
-          'header' => 'Kredit',
-          'name' => 'credit',
-          'value' => 'landa()->rp($data->credit)',
+        array(
+            'header' => 'Debet',
+            'name' => 'debet',
+            'value' => 'landa()->rp($data->debet)',
+        ),
+        array(
+            'header' => 'Kredit',
+            'name' => 'credit',
+            'value' => 'landa()->rp($data->credit)',
         ),
         /*
           'created',
@@ -84,20 +83,21 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'buttons' => array(
                 'view' => array(
                     'label' => 'Lihat',
+                    'visible' => '($data->debet == NULL or $data->debet == 0)',
                     'options' => array(
                         'class' => 'btn btn-small view'
                     )
                 ),
                 'update' => array(
                     'label' => 'Edit',
-                     'visible' => '($data->debet == NULL or $data->debet == 0)',
+                    'visible' => '($data->debet == NULL or $data->debet == 0)',
                     'options' => array(
                         'class' => 'btn btn-small update'
                     )
                 ),
                 'delete' => array(
                     'label' => 'Hapus',
-                      'visible' => '($data->debet == NULL or $data->debet == 0)',
+                    'visible' => '($data->debet == NULL or $data->debet == 0)',
                     'options' => array(
                         'class' => 'btn btn-small delete'
                     )

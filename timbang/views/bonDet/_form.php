@@ -99,8 +99,8 @@
             <?php
             if ($model->isNewRecord == FALSE) {
                 ?>
-                <div class="span6">
-                    <legend>Data Piutang</legend>
+                <div class="span5">
+                    <legend>Data Bon</legend>
                     <div class="control-group ">
                         <label class="control-label" for="kode_bon">Kode Bon</label>
                         <div class="controls">

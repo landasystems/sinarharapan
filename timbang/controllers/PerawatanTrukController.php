@@ -121,6 +121,28 @@ class PerawatanTrukController extends Controller {
             'model' => $model,
         ));
     }
+    
+     public function actionGenerateExcel() {
+        $truk_id = $_GET['truk_id'];
+        $tanggal = $_GET['tanggal'];
+
+        $criteria = new CDbCriteria;
+        if (!empty($truk_id))
+        $criteria->compare('truk_id', $truk_id, true);
+         if (!empty($tanggal)) {
+            $dt = explode(" - ", $tanggal);
+            $start = $dt[0];
+            $end = $dt[1];
+            $criteria->addCondition('tanggal >= "' . $start . '" and tanggal <= "' . $end . '"');
+        }
+        
+        $model = PerawatanTruk::model()->findAll($criteria);
+
+        Yii::app()->request->sendFile('Data Perawatan Truk -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
+    }
 
     /**
      * Deletes a particular model.

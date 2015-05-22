@@ -30,7 +30,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
 	'items'=>array(
 		array('label'=>'Tambah', 'icon'=>'icon-plus', 'url'=>Yii::app()->controller->createUrl('create'), 'linkOptions'=>array()),
                 array('label'=>'List Data', 'icon'=>'icon-th-list', 'url'=>Yii::app()->controller->createUrl('index'),'active'=>true, 'linkOptions'=>array()),
-		array('label'=>'Pencarian', 'icon'=>'icon-search', 'url'=>'#', 'linkOptions'=>array('class'=>'search-button')),
+		array('label'=>'Pencarian & Export Excel', 'icon'=>'icon-search', 'url'=>'#', 'linkOptions'=>array('class'=>'search-button')),
 	),
 ));
 $this->endWidget();
@@ -49,9 +49,9 @@ $this->endWidget();
 	'id'=>'perawatan-truk-grid',
 	'dataProvider'=>$model->search(),
         'type'=>'striped bordered condensed',
-        'template'=>'{summary}{pager}{items}{pager}',
+        'template'=>'{items}{pager}{summary}',
 	'columns'=>array(
-		'id',
+//		'id',
 		array(
                     'header' => 'Truk',
                     'name' => 'truk_id',

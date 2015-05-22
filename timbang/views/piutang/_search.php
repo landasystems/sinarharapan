@@ -53,13 +53,19 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
         <?php echo $form->radioButtonListRow($model, 'type', Piutang::model()->ArrPinjaman()); ?>
 
-       
+
     </div></div>
 
 
 
 <div class="form-actions">
     <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'primary', 'icon' => 'search white', 'label' => 'Pencarian')); ?>
+    <?php
+    $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'success', 'icon' => 'entypo-icon-export', 'label' => 'Export Excel',
+        'htmlOptions' => array(
+            'onclick' => 'excel()'
+    )));
+    ?>  
     <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'button', 'icon' => 'icon-remove-sign white', 'label' => 'Reset', 'htmlOptions' => array('class' => 'btnreset btn-small'))); ?>
 </div>
 
@@ -80,5 +86,20 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             });
         });
     })
+    
+    function excel(){
+        
+        if (document.getElementById('Piutang_type_0').checked) {
+            var type = document.getElementById('Piutang_type_0').value;
+        } else if (document.getElementById('Piutang_type_1').checked) {
+            var type = document.getElementById('Piutang_type_1').value;
+        } else{
+            var type ='';
+        }
+        
+        var customer_id = $("#Piutang_customer_id").val();
+        
+        window.open("<?php echo url("piutang/GenerateExcel")?>?type="+type+"&customer_id="+customer_id);
+    }
 </script>
 

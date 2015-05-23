@@ -274,7 +274,7 @@
             /*border: 1px solid #000;*/
         }
     </style>
-    <table width="100%" id="table">
+    <table width="100%" id="table" style="font-size: 12px;">
         <tr>
             <td><b>No</b></td>
             <td><b>Keterangan</b></td>

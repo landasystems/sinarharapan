@@ -78,10 +78,6 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                 'value' => '$data->id',
             ),
         ),
-        array(
-            'name' => 'sopir_id',
-            'value' => '$data->sopir',
-        ),
         'nomor_polisi',
         'merk',
         'type',

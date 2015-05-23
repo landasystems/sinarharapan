@@ -91,9 +91,13 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         'type',
         /*
           'sub_total',
-          'bunga',
-          'total',
-          'status',
+          'bunga',*/
+        array(
+            'name' => 'total',
+            'value' => 'landa()->rp($data->total)',
+        ),
+//          'total',
+         /* 'status',
           'created_user_id',
           'created',
           'modified',

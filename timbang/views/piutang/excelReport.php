@@ -8,6 +8,7 @@
             <th width="80px">KETERANGAN</th> 		
             <th width="80px">TANGGAL</th>
             <th width="80px">PINJAMAN</th>
+            <th width="80px">TOTAL</th>
             
         </tr>
         <?php foreach ($model as $row): ?>
@@ -17,6 +18,7 @@
             <td><?php echo $row->deskripsi; ?></td>
             <td><?php echo $row->tanggalTimbang; ?></td>
             <td><?php echo $row->type; ?></td>
+            <td><?php echo landa()->rp($row->total); ?></td>
         </tr>
         <?php endforeach;?>
     </table>

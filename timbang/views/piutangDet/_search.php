@@ -5,7 +5,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'method' => 'get',
         ));
 ?>
-
+<div class="row-fluid">
+    <div class="span5">
 <?php
 echo $form->dateRangeRow(
         $model, 'tanggal', array(
@@ -16,7 +17,7 @@ echo $form->dateRangeRow(
         )
 );
 ?>
-
+ </div> <div class="span5">
 <?php
 $data = array('0' => '- Semua Customer -') + CHtml::listData(Customer::model()->findall(array('condition' => 'is_delete = 0')), 'id', 'nama');
 echo $form->select2Row($model, 'piutang_id', array(
@@ -30,18 +31,24 @@ echo $form->select2Row($model, 'piutang_id', array(
         )
 );
 ?>  
-
+</div></div>
 <div class="form-actions">
-<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'primary', 'icon' => 'search white', 'label' => 'Pencarian')); ?>
-<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'button', 'icon' => 'icon-remove-sign white', 'label' => 'Reset', 'htmlOptions' => array('style'=>'margin-left:5px;','class' => 'btnreset btn-small'))); ?>
+    <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'primary', 'icon' => 'search white', 'label' => 'Pencarian')); ?>
+    <?php
+    $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'success', 'icon' => 'entypo-icon-export', 'label' => 'Export Excel',
+        'htmlOptions' => array(
+            'onclick' => 'excel()'
+    )));
+    ?>  
+    <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'button', 'icon' => 'icon-remove-sign white', 'label' => 'Reset', 'htmlOptions' => array('style' => 'margin-left:5px;', 'class' => 'btnreset btn-small'))); ?>
 </div>
 
 <?php $this->endWidget(); ?>
 
 <script type="text/javascript">
-    jQuery(function($) {
-        $(".btnreset").click(function() {
-            $(":input", "#search-piutang-det-form").each(function() {
+    jQuery(function ($) {
+        $(".btnreset").click(function () {
+            $(":input", "#search-piutang-det-form").each(function () {
                 var type = this.type;
                 var tag = this.tagName.toLowerCase(); // normalize case
                 if (type == "text" || type == "password" || tag == "textarea")
@@ -53,5 +60,10 @@ echo $form->select2Row($model, 'piutang_id', array(
             });
         });
     })
+    function excel(){
+        var tanggal = $('#PiutangDet_tanggal').val();
+        var piutang = $('#PiutangDet_piutang_id').val();
+        window.open("<?php echo url("piutangDet/generateExcel")?>?tanggal="+tanggal+"&piutang="+piutang);
+    }
 </script>
 

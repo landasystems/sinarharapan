@@ -65,7 +65,7 @@ class Piutang extends CActiveRecord {
                 ->from('piutang, piutang_det')
                 ->where('piutang.id = piutang_det.piutang_id and piutang.id = ' . $this->id)
                 ->queryRow();
-        $total = (isset($tot['total']) and !empty($tot['total'])) ? $tot['total'] : 0;
+        $total = (isset($tot['total']) and ! empty($tot['total'])) ? $tot['total'] : 0;
         return $total;
     }
 
@@ -129,6 +129,10 @@ class Piutang extends CActiveRecord {
 
     public function getCustomer() {
         return (!empty($this->Customer->nama)) ? $this->Customer->nama : '-';
+    }
+
+    public function getTanggalTimbang() {
+        return (!empty(date('d-m-Y', strtotime($this->tanggal)))) ? date('d-m-Y', strtotime($this->tanggal)) : '-';
     }
 
     public function arrPinjaman() {

@@ -159,6 +159,31 @@ class BonDetController extends Controller {
             'model' => $model,
         ));
     }
+    
+      public function actionGenerateExcel() {
+        $tanggal = $_GET['tanggal'];
+        $bon_id = $_GET['bon_id'];
+        
+        $criteria = new CDbCriteria;
+        if (!empty($tanggal)) {
+            $dt = explode(" - ", $tanggal);
+            $start = $dt[0];
+            $end = $dt[1];
+            $criteria->addCondition('t.tanggal >= "' . $start . '" and t.tanggal <= "' . $end . '"');
+        }
+        if (!empty($bon_id))
+            $criteria->addCondition('Bon.sopir_id = "' . $bon_id. '"');
+        
+        $criteria->addCondition('t.debet = 0 or t.debet is null');
+        
+        $model = BonDet::model()->findAll($criteria);
+
+        Yii::app()->request->sendFile('Data Bayar Bon -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
+        
+    }
 
     /**
      * Returns the data model based on the primary key given in the GET variable.

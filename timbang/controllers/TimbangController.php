@@ -148,8 +148,7 @@ class TimbangController extends Controller {
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        }
-        else
+        } else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -184,6 +183,24 @@ class TimbangController extends Controller {
         $this->render('index', array(
             'model' => $model,
         ));
+    }
+
+    public function actionGenerateExcel() {
+        $customer_id = $_GET['customer_id'];
+        $nomor_polisi = $_GET['nomor_polisi'];
+
+        $criteria = new CDbCriteria;
+        if (!empty($customer_id))
+        $criteria->compare('t.customer_id', $customer_id, true);
+        if (!empty($nomor_polisi))
+        $criteria->compare('nomor_polisi', $nomor_polisi, true);
+        
+        $model = Timbang::model()->findAll($criteria);
+
+        Yii::app()->request->sendFile('Data Transaksi Timbang -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
     }
 
     /**

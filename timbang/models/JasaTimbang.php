@@ -135,6 +135,7 @@ class JasaTimbang extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+
     protected function beforeValidate() {
         if (empty($this->created_user_id)) {
             $this->created_user_id = Yii::app()->user->id;
@@ -143,11 +144,16 @@ class JasaTimbang extends CActiveRecord {
         }
         return parent::beforeValidate();
     }
-    
-    public function getNamaCustomer(){
-        return (isset($this->Customer->nama)) ? $this->Customer->nama :'';
+
+    public function getNamaCustomer() {
+        return (isset($this->Customer->nama)) ? $this->Customer->nama : '';
     }
-    public function getTotalRp(){
+
+    public function getTanggalTimbang() {
+        return (!empty(date('d-m-Y', strtotime($this->tanggal_timbang1)))) ? date('d-m-Y', strtotime($this->tanggal_timbang1)) : '-';
+    }
+
+    public function getTotalRp() {
         return landa()->rp($this->total);
     }
 

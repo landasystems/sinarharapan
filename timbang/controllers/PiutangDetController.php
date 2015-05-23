@@ -160,6 +160,30 @@ class PiutangDetController extends Controller {
         ));
     }
 
+    public function actionGenerateExcel() {
+        $tanggal = $_GET['tanggal'];
+        $piutang = $_GET['piutang'];
+
+        $criteria = new CDbCriteria;
+        if (!empty($tanggal)) {
+            $dt = explode(" - ", $tanggal);
+            $start = $dt[0];
+            $end = $dt[1];
+            $criteria->addCondition('t.tanggal >= "' . $start . '" and t.tanggal <= "' . $end . '"');
+        };
+        if (!empty($piutang))
+            $criteria->addCondition('Piutang.customer_id = "' . $piutang . '"');
+
+        $criteria->addCondition('t.debet = 0 or t.debet is null');
+
+        $model = PiutangDet::model()->findAll($criteria);
+
+        Yii::app()->request->sendFile('Data Transaksi Bayar Pinjaman -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
+    }
+
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.

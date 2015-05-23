@@ -111,6 +111,7 @@
                                 ?>
                                 <tbody>
                                     <?php
+                                    $no=1;
                                     $total = 0;
                                     foreach ($detail as $val) {
                                         ?>
@@ -131,14 +132,19 @@
                                             </td>
                                             <?php
                                             if (!isset($_GET['v'])) {
+                                                if($no <= 1){
                                                 echo '<td align="center">
-                                            <a href="#" class="btn btn-success" onclick="addrow()"><i class="iconic-icon-plus-alt white"></i></a>
-                                      </td>';
+                                                            <a href="#" class="btn btn-success" onclick="addrow()"><i class="iconic-icon-plus-alt white"></i></a>
+                                                      </td>';
+                                                }else{
+                                                    echo '<td align="center"><a href="#" class="btn btn-danger" onclick="$(this).parent().parent().remove(); calculate();"><i class="icon-remove-sign white"></i></a></td>';
+                                                }
                                             }
                                             ?>
                                         </tr>
                                         <?php
                                         $total += $val->credit;
+                                        $no++;
                                     }
                                     ?>
                                 </tbody>
@@ -220,7 +226,6 @@
 </div>
 <script>
     function removeRow() {
-        alert("asdads");
         $(this).remove();
     }
     function addrow() {
@@ -230,9 +235,8 @@
         row += '<td><div class="input-prepend"><span class="add-on">Rp</span><input class="angka span12" name="hargaDet[]" id="hargaDet" type="text" onkeyup="calculate()" value="0"></div></td>';
         row += '<td><input type="text" name="jumlahDet[]" class="span3" id="jumlahDet" value="1" onkeyup="calculate()"></td>';
         row += '<td><div class="input-prepend"><span class="add-on">Rp</span><input class="angka span12" name="subTotalDet[]" id="subTotalDet" type="text" readonly="true" value="0"></div></td>';
-        row += '<td align="center"><a href="#" class="btn btn-danger" onclick="$(this).parent().parent().remove(); calculate"><i class="icon-remove-sign white"></i></a></td></tr>';
-//                                            $("#detail tr:last").after(row);
-        $("#detail tbody").append(row);
+        row += '<td align="center"><a href="#" class="btn btn-danger" onclick="$(this).parent().parent().remove(); calculate();"><i class="icon-remove-sign white"></i></a></td></tr>';
+       $("#detail tbody").append(row);
     }
     function calculate() {
         var total = 0;
@@ -240,8 +244,8 @@
             var harga = parseInt($(this).parent().parent().find("#hargaDet").val());
             var jumlah = parseInt($(this).parent().parent().find("#jumlahDet").val());
             var subtotal = harga * jumlah;
-            total += subtotal;
             $(this).parent().parent().find("#subTotalDet").val(subtotal);
+            total += subtotal;
         });
         $("#total").val(total);
     }

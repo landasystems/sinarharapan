@@ -1,7 +1,7 @@
 <div id="printArea">
     <table width="100%">
         <tr>
-            <td  style="text-align: center" colspan="6"><h2>Laporan Rekap Hutang Customer</h2>
+            <td  style="text-align: center" colspan="4"><h2>Laporan Rekap Hutang Customer</h2>
                 <h4><?php echo date('d M Y', strtotime($start)) . " - " . date('d M Y', strtotime($end)); ?></h4>
                 <hr></td>
         </tr>   
@@ -10,9 +10,7 @@
         <thead>
             <tr> 
 
-                <th style="text-align:center">Tanggal</th>
                 <th style="text-align:center">Nama Customer</th>
-                <th style="text-align:center">Keterangan</th>
                 <th style="text-align:center;width: 12%">Saldo Awal</th>
                 <th style="text-align:center;width: 12%">Debet</th>
                 <th style="text-align:center;width: 12%">Credit</th>
@@ -60,9 +58,7 @@
                 $saldoAkhir = $saldoAwal + $debet - $credit;
 
                 echo '<tr>';
-                echo '<td style="text-align:center">' . date('d m Y', strtotime($val->tanggal)) . '</td>';
                 echo '<td>' . $val->Customer->nama . '</td>';
-                echo '<td></td>';
                 if (isset($export) && $export = 1) {
                     echo '<td style="text-align:right">' . $saldoAwal . '</td>';
                     echo '<td style="text-align:right">' . $debet . '</td>';
@@ -84,7 +80,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="3">Total</th>
+                <th>Total</th>
                 <?php if (isset($export) && $export = 1) { ?>
                     <th style="text-align:right !important"><?php echo $totAwal; ?></th>
                     <th style="text-align:right !important"><?php echo $totDebet; ?></th>

@@ -76,6 +76,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                 'value' => '$data->id',
             ),
         ),
+        'kode',
         array(
             'type' => 'raw',
             'header'=>'Customer',

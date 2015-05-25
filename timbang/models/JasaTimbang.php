@@ -66,7 +66,7 @@ class JasaTimbang extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'kode' => 'Kode',
+            'kode' => 'No. Trans',
             'customer' => 'Customer',
             'nomor_polisi' => 'Nomor Polisi',
             'produk' => 'Produk',

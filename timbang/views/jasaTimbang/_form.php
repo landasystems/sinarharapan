@@ -66,54 +66,69 @@
 
 
         <?php echo $form->textFieldRow($model, 'nomor_polisi', array('class' => 'span2', 'maxlength' => 25)); ?>
-        <?php echo $form->textFieldRow($model, 'kode', array('class' => 'span2', 'maxlength' => 25)); ?>
 
         <fieldset>
             <legend>Info JasaTimbangan</legend>
         </fieldset>
+        <?php echo $form->textFieldRow($model, 'kode', array('class' => 'span2', 'maxlength' => 25, 'hint' => '<span aria-hidden="true" class="entypo-icon-info-circle"></span> Kosongkan kode, untuk generate otomatis')); ?>
         <div class="row-fluid">
-            <div class="span5">
+            <div class="span3">
                 <div class="control-group ">
-                    <label class="control-label" for="JasaTimbang_police_number">Berat 1</label>
+                    <label class="control-label" for="JasaTimbang_police_number">Tanggal Berat 1</label>
                     <div class="controls">
                         <?php
                         echo $form->datepickerRow(
                                 $model, 'tanggal_timbang1', array(
+                            'style' => 'width:80px',
                             'options' => array('language' => 'id', 'format' => 'yyyy-mm-dd'),
                             'prepend' => '<i class="icon-calendar"></i>', 'labelOptions' => array('label' => false)
                                 )
                         );
                         ?>
 
-                        <div class="input-append">
-                            <input class="span6 angka" name="JasaTimbang[berat_timbang1]" id="JasaTimbang_berat_timbang1" value="<?php echo (isset($model->berat_timbang1)) ? $model->berat_timbang1 : '' ?>" type="text">
-                            <span class="add-on">Kg</span>
-                        </div>
+
                         <?php // echo $form->textFieldRow($model, 'berat_timbang1', array('class' => 'span3', 'labelOptions' => array('label' => false))); ?>
 
                     </div>
                 </div>
                 <div class="control-group ">
-                    <label class="control-label" for="JasaTimbang_police_number">Berat 2</label>
+                    <label class="control-label" for="JasaTimbang_police_number">Tanggal Berat 2</label>
                     <div class="controls">
                         <?php
                         echo $form->datepickerRow(
                                 $model, 'tanggal_timbang2', array(
+                            'style' => 'width:80px',
                             'options' => array('language' => 'id', 'format' => 'yyyy-mm-dd'),
                             'prepend' => '<i class="icon-calendar"></i>', 'labelOptions' => array('label' => false)
                                 )
                         );
                         ?>
-                        <div class="input-append">
-                            <input class="span6 angka" name="JasaTimbang[berat_timbang2]" id="JasaTimbang_berat_timbang2" value="<?php echo (isset($model->berat_timbang2)) ? $model->berat_timbang2 : 0 ?>" type="text">
-                            <span class="add-on">Kg</span>
-                        </div>
+                        
                         <?php // echo $form->textFieldRow($model, 'berat_timbang2', array('class' => 'span3', 'labelOptions' => array('label' => false))); ?>
 
                     </div>
                 </div>
             </div>
             <div class="span6">
+
+                <div class="control-group ">
+                    <label class="control-label" for="JasaTimbang_police_number">Berat 1</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input class="span6 angka" name="JasaTimbang[berat_timbang1]" id="JasaTimbang_berat_timbang1" value="<?php echo (isset($model->berat_timbang1)) ? $model->berat_timbang1 : '' ?>" type="text">
+                            <span class="add-on">Kw</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group ">
+                    <label class="control-label" for="JasaTimbang_police_number">Berat 2</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input class="span6 angka" name="JasaTimbang[berat_timbang2]" id="JasaTimbang_berat_timbang2" value="<?php echo (isset($model->berat_timbang2)) ? $model->berat_timbang2 : 0 ?>" type="text">
+                            <span class="add-on">Kw</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="control-group ">
                     <label class="control-label" for="JasaTimbang_police_number">Rafaksi</label>
                     <div class="controls">
@@ -263,22 +278,22 @@
         var berat2 = parseInt($("#JasaTimbang_berat_timbang2").val());
         var rafaksi = parseInt($("#JasaTimbang_rafaksi").val());
         var harga = parseInt($("#JasaTimbang_harga").val());
-        var netto = berat1 - berat2 - rafaksi;
+        var netto = (berat1*100) - (berat2*100) - rafaksi;
         var total = netto * harga;
         $("#JasaTimbang_netto").val(netto);
         $("#JasaTimbang_total").val(total);
     }
 
-    $("body").on("keyup", "#JasaTimbang_berat_timbang1", function() {
+    $("body").on("keyup", "#JasaTimbang_berat_timbang1", function () {
         calculate();
     });
-    $("body").on("keyup", "#JasaTimbang_berat_timbang2", function() {
+    $("body").on("keyup", "#JasaTimbang_berat_timbang2", function () {
         calculate();
     });
-    $("body").on("keyup", "#JasaTimbang_rafaksi", function() {
+    $("body").on("keyup", "#JasaTimbang_rafaksi", function () {
         calculate();
     });
-    $("body").on("keyup", "#JasaTimbang_harga", function() {
+    $("body").on("keyup", "#JasaTimbang_harga", function () {
         calculate();
     });
 </script>

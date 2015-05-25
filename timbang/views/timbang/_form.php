@@ -95,12 +95,12 @@
                 <input class="span2" maxlength="25" name="Timbang[produk]" id="Timbang_produk" value="Tebu" readonly type="text">
             </div>
         </div>
-        <?php echo $form->textFieldRow($model, 'nomor_polisi', array('class' => 'span3', 'maxlength' => 25)); ?>
+        <?php echo $form->textFieldRow($model, 'nomor_polisi', array('class' => 'span2', 'maxlength' => 25)); ?>
 
         <fieldset>
             <legend>Info Timbangan</legend>
         </fieldset>
-        <?php echo $form->textFieldRow($model, 'kode', array('class' => 'angka', 'maxlength' => 25)); ?>
+        <?php echo $form->textFieldRow($model, 'kode', array('class' => 'angka', 'maxlength' => 25,'hint'=>'<span aria-hidden="true" class="entypo-icon-info-circle"></span> Kosongkan kode, untuk generate otomatis')); ?>
         <div class="row-fluid">
             <div class="span3">
                 <div class="control-group ">
@@ -138,7 +138,7 @@
                     <div class="controls">
                         <div class="input-append">
                             <input class="span6 angka" name="Timbang[berat_timbang1]" id="Timbang_berat_timbang1" value="<?php echo (isset($model->berat_timbang1)) ? $model->berat_timbang1 : '' ?>" type="text">
-                            <span class="add-on">Kg</span>
+                            <span class="add-on">Kw</span>
                         </div>
                     </div>
                 </div>
@@ -147,7 +147,7 @@
                     <div class="controls">
                         <div class="input-append">
                             <input class="span6 angka" name="Timbang[berat_timbang2]" id="Timbang_berat_timbang2" value="<?php echo (isset($model->berat_timbang2)) ? $model->berat_timbang2 : 0 ?>" type="text">
-                            <span class="add-on">Kg</span>
+                            <span class="add-on">Kw</span>
                         </div>
                     </div>
                 </div>
@@ -181,7 +181,7 @@
                         <div class="input-prepend">
                             <span class="add-on">Rp</span>
                             <input class="span7 angka" name="Timbang[harga]" value="<?php echo (isset($model->harga)) ? $model->harga : $bunga->harga_tebu ?>" id="Timbang_harga" type="text">
-                            <span class="add-on">/Kg</span>
+                            <span class="add-on">/ Kg</span>
                         </div>
                     </div>
                 </div>
@@ -321,7 +321,7 @@
         var berat2 = parseInt($("#Timbang_berat_timbang2").val());
         var rafaksi = parseInt($("#Timbang_rafaksi").val());
         var harga = parseInt($("#Timbang_harga").val());
-        var netto = berat1 - berat2 - rafaksi;
+        var netto = (berat1*100) - (berat2*100) - rafaksi;
         var total = netto * harga;
         $("#Timbang_netto").val(netto);
         $("#Timbang_total").val(total);

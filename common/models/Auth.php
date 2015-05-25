@@ -143,7 +143,7 @@ class Auth extends CActiveRecord {
                 )),
             array('visible' => landa()->checkAccess('rkpCostumer', 'r'), 'label' => '<span class="icon16  eco-article "></span>Rekap', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('rkpCostumer', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Hutang Customer', 'url' => url('report/rekapHutCustomer'), 'auth_id' => 'rkpCostumer'),
-                    array('visible' => landa()->checkAccess('rkpSopir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Piutang Sopir', 'url' => url('report/rekapBonSopir'), 'auth_id' => 'rkpSopir'),
+                    array('visible' => landa()->checkAccess('rkpSopir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bon Sopir', 'url' => url('report/rekapBonSopir'), 'auth_id' => 'rkpSopir'),
                     array('visible' => landa()->checkAccess('rkpKendaraan', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Kendaraan', 'url' => url('report/rekapKendaraan'), 'auth_id' => 'rkpKendaraan'),
                 )),
         );

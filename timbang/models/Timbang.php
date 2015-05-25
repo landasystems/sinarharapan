@@ -65,7 +65,7 @@ class Timbang extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'kode' => 'Kode',
+            'kode' => 'No. Trans',
             'customer_id' => 'Customer',
             'nomor_polisi' => 'Plat Nomor',
             'produk' => 'Produk',

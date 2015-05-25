@@ -1,21 +1,20 @@
 <?php
-$this->pageTitle = 'Dashboard - Selamat Datang di Area Administrator';
+$this->pageTitle = 'Balance and Transportation Service';
 ?>
-
 <div class="row-fluid">
     <div class="span8">
         <div class="row-fluid">
             <div class="img-polaroid span6" style="padding: 15px">
-                <b>CV Sinar Harapan (Kedungkandang)</b><br/>
-                <i class="icon-home"></i> Jln. Nirwana, Pakis<br/>
-                <i class="icon-user"></i> (0341) 647 392<br/>
-                <i class="icon-envelope"></i> sinarharapan1@gmail.com
+                <b>PT Sinar Harapan</b><br/>
+                <i class="icon-home"></i> Jln. Raya Sumber Pasir Km 5, Pakis, Malang<br/>
+                <i class="icon-user"></i> (0341) 789 555<br/>
+                <i class="icon-envelope"></i> cv.sinarharapan84@yahoo.com
             </div>  
             <div class="img-polaroid span6" style="padding: 15px">
-                <b>CV Sinar Harapan (Kasin)</b><br/>
-                <i class="icon-home"></i> Jln. Brigjen Katamso, Pulosari<br/>
-                <i class="icon-user"></i> (0341) 647 392<br/>
-                <i class="icon-envelope"></i> sinarharapan1@gmail.com
+                <b>PT Sinar Harapan (Talok)</b><br/>
+                <i class="icon-home"></i> Jln. Raya Gatot Subroto, Talok<br/>
+                <i class="icon-user"></i> -<br/>
+                <i class="icon-envelope"></i> -
             </div>
         </div>
     </div>

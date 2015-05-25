@@ -40,19 +40,9 @@ class GirikController extends Controller {
         );
     }
 
-    public function actionAmbilTruk() {
+    public function actionGetDetail() {
         $id = $_POST['id'];
-        $data = '';
-        $truk = Truk::model()->findAll(array('condition' => 'sopir_id=' . $id));
         $sopir = Sopir::model()->findByPk($id);
-        if (empty($truk)) {
-            $data = '<option>Tidak ada truk</option>';
-        } else {
-            foreach ($truk as $val) {
-                $data .= '<option value=' . $val->id . '>' . $val->merk . ' (' . $val->nomor_polisi . ')</option>';
-            }
-        }
-        $body['truk'] = $data;
         $body['alamat'] = $sopir->alamat;
         $body['telepon'] = landa()->hp($sopir->telepon);
         echo json_encode($body);
@@ -177,6 +167,35 @@ class GirikController extends Controller {
         $this->render('index', array(
             'model' => $model,
         ));
+    }
+    
+     public function actionGenerateExcel() {
+        $tanggal = $_GET['tanggal'];
+        $nomor_girik = $_GET['nomor_girik'];
+        $sopir_id = $_GET['sopir_id'];
+        $truk_id = $_GET['truk_id'];
+        
+        $criteria = new CDbCriteria;
+        if (!empty($tanggal)) {
+            $dt = explode(" - ", $tanggal);
+            $start = $dt[0];
+            $end = $dt[1];
+            $criteria->addCondition('tanggal >= "' . $start . '" and tanggal <= "' . $end . '"');
+        }
+        if (!empty($nomor_girik))
+        $criteria->compare('nomor_girik', $nomor_girik, true);
+        if (!empty($sopir_id))
+        $criteria->compare('sopir_id', $sopir_id, true);
+        if (!empty($truk_id))
+        $criteria->compare('truk_id', $truk_id, true);
+        
+        $model = Girik::model()->findAll($criteria);
+
+        Yii::app()->request->sendFile('Data Girik -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
+        
     }
 
     public function actionGetListSopir() {

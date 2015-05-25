@@ -1,8 +1,37 @@
+<style type="text/css">
+    #printNota{display: none;}
+</style>
+<style type="text/css" media="print">
+    body {visibility:hidden;}
+    #printNota{
+        visibility:visible;
+        display: block; 
+        position: absolute;top: 0;left: 0;float: left;
+        padding: 0 20px 0 0;
+    } 
+</style>
+<script>
+    function printDiv(divName)
+    {
+        var w = window.open();
+        var css = '<style media="print">body{ margin-top:0 !important}</style>';
+        var printContents = '<div style="width:100%;" class="printNota"><center>' + $("#" + divName + "").html() + '</center></div>';
+
+        $(w.document.body).html(css + printContents);
+        w.print();
+        w.window.close();
+    }
+
+</script>
 <div class="form">
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         'id' => 'girik-form',
-        'enableAjaxValidation' => false,
+        'enableClientValidation' => true,
+        'clientOptions' => array(
+            'validateOnSubmit' => true,
+            'type' => 'horizontal',
+        ),
         'method' => 'post',
         'type' => 'horizontal',
         'htmlOptions' => array(
@@ -11,7 +40,7 @@
     ));
     $pengaturan = Pengaturan::model()->findByPk(1);
     if ($model->isNewRecord == TRUE) {
-        $ongkos = (!empty($pengaturan->harga_tebu)) ? $pengaturan->harga_tebu : 0;
+        $ongkos = (!empty($pengaturan->ongkos_sopir)) ? $pengaturan->ongkos_sopir : 0;
     } else {
         $ongkos = $model->ongkos;
     }
@@ -21,8 +50,8 @@
             <p class="note">Fields dengan <span class="required">*</span> harus di isi.</p>
         </legend>
 
-        <?php echo $form->errorSummary($model, 'Opps!!!', null, array('class' => 'alert alert-error span12')); ?>
         <div class="row-fluid">
+            <?php echo $form->errorSummary($model, 'Opps!!!', null, array('class' => 'alert alert-error span12')); ?>
             <div class="span5">
                 <?php
                 echo $form->datepickerRow(
@@ -33,8 +62,6 @@
                 );
                 ?>
                 <?php
-//                $idsopir = isset($model->sopir_id) ? $model->sopir_id : 0;
-//                $namaSopir = isset($model->Sopir->nama) ? $model->Sopir->nama : 0;
                 $data = array('0' => '- Pilih Sopir -') + CHtml::listData(Sopir::model()->findall(array('condition' => 'is_delete = 0 ')), 'id', 'nama');
                 echo $form->select2Row($model, 'sopir_id', array(
                     'asDropDownList' => true,
@@ -77,17 +104,9 @@
                 <?php echo $form->textFieldRow($model, 'nomor_girik', array('class' => 'span6')); ?>
 
                 <?php echo $form->textFieldRow($model, 'berat', array('class' => 'angka span12', 'append' => 'Kg', 'onkeyup' => 'calculate()')); ?>
-                <div class="control-group ">
-                    <label class="control-label" for="ongkos">
-                        Ongkos
-                    </label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">Rp</span>
-                            <input class="angka span12" name="ongkos" id="ongkos" type="text" onkeyup="calculate()" value="<?php echo $ongkos; ?>">
-                        </div>
-                    </div>
-                </div>
+
+                <?php echo $form->textFieldRow($model, 'ongkos', array('class' => 'angka span12', 'prepend' => 'Rp', 'onkeyup' => 'calculate()', 'value' => $ongkos, 'append' => '/ Kw')); ?>
+
                 <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span12', 'prepend' => 'Rp', 'readonly' => true)); ?>
 
                 <?php echo $form->textFieldRow($model, 'solar', array('class' => 'angka span12', 'prepend' => 'Rp', 'value' => (!empty($pengaturan->solar)) ? $pengaturan->solar : 0, 'onkeyup' => 'calculate()')); ?>
@@ -103,54 +122,87 @@
 
 
         <?php if (!isset($_GET['v'])) { ?>        <div class="form-actions">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'submit',
-                    'type' => 'primary',
-                    'icon' => 'ok white',
-                    'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
-                ));
-                ?>
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'reset',
-                    'icon' => 'remove',
-                    'label' => 'Reset',
-                ));
-                ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'submit',
+                'type' => 'primary',
+                'icon' => 'ok white',
+                'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
+            ));
+            ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'reset',
+                'icon' => 'remove',
+                'label' => 'Reset',
+            ));
+            ?>
             </div>
         <?php } ?>    </fieldset>
 
     <?php $this->endWidget(); ?>
 
 </div>
+<div class="printNota" id="printNota" style="width:100%;">
+    <center style="font-size: 11.5px;"><strong>CV Sinar Harapan</strong></center>
+    <center style="font-size: 11.5px;">Jl. Mayjen Panjaitan No. 62 Malang</center>
+    <center style="font-size: 11.5px;">Telp. (0341) 789555</center>
+    <hr>
+    <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
+        <tr>
+            <td style="text-align: left;"><b>Tanggal</b></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo date("d M Y", strtotime($model->tanggal));?></td>
+            <td style="width:80px; text-align: "><b>Berat</b></td>
+            <td style="text-align: "><?php echo $model->berat?> Kg</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;"><b>Sopir</b></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Sopir->nama) ? $model->Sopir->nama : "-";?></td>
+            <td style="width:80px; text-align: "><b>Solar</b></td>
+            <td style="text-align: "><?php echo landa()->rp($model->solar)?></td>
+        </tr>
+        <tr>
+            <td style="text-align: left;"><b>Truk</b></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Truk->nama) ? $model->Truk->nama : "-";?></td>
+            <td style="width:80px; text-align: "><b>Ongkos Sopir</b></td>
+            <td style="text-align: "><?php echo landa()->rp($model->fee_sopir);?></td>
+        </tr>
+        <tr>
+            <td style="text-align: left;"><b>No Girik</b></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo $model->nomor_girik?></td>
+            <td style="width:80px; text-align: "></td>
+            <td style="text-align: "></td>
+        </tr>
+    </table>
+    <hr>
+    <p style="text-align:center;font-size: 11.5px;"></p>
+</div>
 <script type="text/javascript">
-                                function calculate() {
-                                    var berat = parseInt($("#Girik_berat").val());
-                                    var ongkos = parseInt($("#ongkos").val());
-                                    var solar = parseInt($("#Girik_solar").val());
-                                    var persentasi_truk = $("#fee_truk").val();
-                                    var persentasi_sopir = $("#fee_sopir").val();
-                                    var total = berat * ongkos;
-                                    $("#Girik_total").val(total);
-                                    $("#Girik_fee_truk").val(total * persentasi_truk);
-                                    $("#Girik_fee_sopir").val((total * persentasi_truk) - solar);
-                                }
-//                                $(document).ready(function() {
-//                                    $("#Girik_sopir_id").change(function() {
-//                                        $.ajax(
-//                                                {
-//                                                    type: "POST",
-//                                                    url: "<?php echo url('girik/ambilTruk'); ?>",
-//                                                    data: {id: $(this).val()},
-//                                                    success: function(data)
-//                                                    {
-//                                                        obj = JSON.parse(data);
-//                                                        $("#Girik_truk_id").html(obj.body);
-//                                                        $("#alamat").html(obj.alamat);
-//                                                        $("#telepon").val(obj.telepon);
-//                                                    }
-//                                                });
-//                                    });
-//                                });
+    function calculate() {
+        var berat = parseFloat($("#Girik_berat").val() / 1000);
+        var ongkos = parseInt($("#Girik_ongkos").val());
+        var solar = parseInt($("#Girik_solar").val());
+        var persentasi_truk = parseFloat($("#fee_truk").val());
+        var persentasi_sopir = parseFloat($("#fee_sopir").val());
+        var total = berat * ongkos;
+        $("#Girik_total").val(total);
+        $("#Girik_fee_truk").val(total * persentasi_truk);
+        $("#Girik_fee_sopir").val((total * persentasi_sopir) - solar);
+    }
+    $(document).ready(function() {
+        $("#Girik_sopir_id").change(function() {
+            $.ajax(
+                    {
+                        type: "POST",
+                        url: "<?php echo url('girik/getDetail'); ?>",
+                        data: {id: $(this).val()},
+                        success: function(data)
+                        {
+                            obj = JSON.parse(data);
+                            $("#alamat").html(obj.alamat);
+                            $("#telepon").val(obj.telepon);
+                        }
+                    });
+        });
+    });
 </script>

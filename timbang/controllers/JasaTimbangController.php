@@ -170,6 +170,22 @@ class JasaTimbangController extends Controller {
             'model' => $model,
         ));
     }
+    
+    public function actionGenerateExcel() {
+        $customer = $_GET['customer'];
+        
+        $criteria = new CDbCriteria;
+        if (!empty($customer))
+        $criteria->compare('customer', $customer, true);
+        
+        $model = JasaTimbang::model()->findAll($criteria);
+
+        Yii::app()->request->sendFile('Data Transaksi Jasa Timbang -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
+        
+    }
 
     /**
      * Returns the data model based on the primary key given in the GET variable.

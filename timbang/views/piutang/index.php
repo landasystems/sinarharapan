@@ -29,7 +29,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
     'items' => array(
         array('label' => 'Tambah', 'icon' => 'icon-plus', 'url' => Yii::app()->controller->createUrl('create'), 'linkOptions' => array()),
         array('label' => 'List Data', 'icon' => 'icon-th-list', 'url' => Yii::app()->controller->createUrl('index'), 'active' => true, 'linkOptions' => array()),
-        array('label' => 'Pencarian', 'icon' => 'icon-search', 'url' => '#', 'linkOptions' => array('class' => 'search-button')),
+        array('label' => 'Pencarian & Export Excel', 'icon' => 'icon-search', 'url' => '#', 'linkOptions' => array('class' => 'search-button')),
     ),
 ));
 $this->endWidget();
@@ -83,13 +83,21 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         
         'jaminan',
         'deskripsi',
-        'tanggal',
+        array(
+            'name' => 'tanggal',
+            'value' => '$data->tanggalTimbang',
+        ),
+//        'tanggal',
         'type',
         /*
           'sub_total',
-          'bunga',
-          'total',
-          'status',
+          'bunga',*/
+        array(
+            'name' => 'total',
+            'value' => 'landa()->rp($data->total)',
+        ),
+//          'total',
+         /* 'status',
           'created_user_id',
           'created',
           'modified',

@@ -54,17 +54,17 @@
                 <input class="span4" maxlength="25" name="JasaTimbang[customer]" id="JasaTimbang_customer" value="<?php echo (isset($model->customer)) ? $model->customer : '' ?>"  type="text">
             </div>
         </div>
-         <?php echo $form->textFieldRow($model, 'telepon', array('class' => 'span3', 'maxlength' => 25)); ?>
+        <?php echo $form->textFieldRow($model, 'telepon', array('class' => 'span3', 'maxlength' => 25)); ?>
         <?php echo $form->textFieldRow($model, 'alamat', array('class' => 'span3', 'maxlength' => 25)); ?>
         <div class="control-group ">
             <label class="control-label" for="JasaTimbang_police_number">Produk</label>
             <div class="controls">
-                <input class="span2" maxlength="25" name="JasaTimbang[produk]" id="JasaTimbang_produk" value="Tebu" readonly type="text">
+                <input class="span2" maxlength="25" name="JasaTimbang[produk]" id="JasaTimbang_produk" value="Tebu" type="text">
             </div>
         </div>
 
 
-       
+
         <?php echo $form->textFieldRow($model, 'nomor_polisi', array('class' => 'span2', 'maxlength' => 25)); ?>
         <?php echo $form->textFieldRow($model, 'kode', array('class' => 'span2', 'maxlength' => 25)); ?>
 
@@ -150,21 +150,21 @@
             </div>
         </div>
         <?php if (!isset($_GET['v'])) { ?>        <div class="form-actions">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'submit',
-                    'type' => 'primary',
-                    'icon' => 'ok white',
-                    'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
-                ));
-                ?>
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'reset',
-                    'icon' => 'remove',
-                    'label' => 'Reset',
-                ));
-                ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'submit',
+                'type' => 'primary',
+                'icon' => 'ok white',
+                'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
+            ));
+            ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'reset',
+                'icon' => 'remove',
+                'label' => 'Reset',
+            ));
+            ?>
             </div>
         <?php } ?>    </fieldset>
 
@@ -181,7 +181,7 @@
             <tr>
                 <td style="text-align: left;"><b>Customer</b></td>
                 <td style="width:80px; text-align: " colspan="2"><?php echo $model->customer ?></td>
-                
+
                 <td style="width:80px; text-align: "><b>No Truck</b></td>
                 <td style="width:80px; text-align: "><?php echo $model->nomor_polisi ?></td>
 
@@ -189,14 +189,14 @@
             <tr>
                 <td style="text-align: left;"><b>No Telp</b></td>
                 <td style="width:80px; text-align: " colspan="2"><?php echo $model->telepon ?></td>
-                
+
                 <td style="width:80px; text-align: "><b>Product</b></td>
                 <td style="width:80px; text-align: "><?php echo $model->produk ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>Alamat</b></td>
                 <td style="width:80px; text-align: " colspan="2"><?php echo $model->alamat ?></td>
-                
+
                 <td style="width:80px; text-align: "><b>Tanggal</b></td>
                 <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->created)) ?></td>
             </tr>
@@ -206,45 +206,50 @@
             <tr style="height: 20px;">
                 <td colspan="6"><hr style="border-top: 3px double #8c8b8b;"></td>
             </tr>
-             <tr>
+            <tr>
                 <td style="text-align: left;"><b>Timbang 1</b></td>
                 <td style="width:80px; text-align: " colspan="2"><?php echo $model->berat_timbang1 ?> Kg</td>
                 <td style="width:80px; text-align: "></td>
                 <td style="width:80px; text-align: "><b>Date</b></td>
                 <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->tanggal_timbang1)) ?></td>
-             </tr>
-             <tr>
+            </tr>
+            <tr>
                 <td style="text-align: left;"><b>Timbang 2</b></td>
                 <td style="width:80px; text-align: " colspan="2"><?php echo $model->berat_timbang2 ?> Kg</td>
                 <td style="width:80px; text-align: "></td>
                 <td style="width:80px; text-align: "><b>Date</b></td>
                 <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->tanggal_timbang2)) ?></td>
-             </tr>
-             <tr>
-                
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>Rafaksi</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $model->rafaksi ?> Kg</td>
+                <td style="width:80px; text-align: "></td>
+                <td style="width:80px; text-align: "></td>
+                <td style="width:80px; text-align: "></td>
+            </tr>
+            <tr>
                 <td style="width:80px;">&nbsp;</td>
                 <td style="width:80px; text-align: "><hr></td>
-             </tr>
-             <tr>
-                
+            </tr>
+            <tr>
                 <td style="width:80px;">&nbsp;</td>
                 <td style="width:80px; text-align: "><?php echo $model->netto ?> Kg</td>
-             </tr>
-              <tr>
-                
+            </tr>
+            <tr>
+
                 <td style="width:80px; text-align:right " colspan="5">Juru Timbang</td>
-               
+
             </tr>
-              <tr>
-                
+            <tr>
+
                 <td style="width:80px; text-align:right " colspan="5">&nbsp;</td>
-               
+
             </tr>
-              <tr>
-                
-                
+            <tr>
+
+
                 <td style="width:80px; text-align:right " colspan="5">_____________</td>
-               
+
             </tr>
         </table>
         <hr>

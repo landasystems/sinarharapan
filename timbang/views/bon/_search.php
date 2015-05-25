@@ -69,11 +69,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'primary', 'icon' => 'search white', 'label' => 'Pencarian')); ?>
 
     <?php
-    $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'primary', 'icon' => 'icon', 'label' => 'Export Excel',
+    $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'success', 'icon' => 'entypo-icon-export', 'label' => 'Export Excel',
         'htmlOptions' => array(
             'onclick' => 'excel()'
     )));
-    ?>
+    ?> 
 
     <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'button', 'icon' => 'icon-remove-sign white', 'label' => 'Reset', 'htmlOptions' => array('class' => 'btnreset btn-small'))); ?>
 </div>
@@ -102,8 +102,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         var Bon_tanggal = $('#Bon_tanggal').val();
         var Bon_total = $('#Bon_total').val();
         var Bon_deskripsi = $('#Bon_deskripsi').val();
-       
-       window.open("<?php echo url('bon/GenerateExcel') ?>?Bon_sopir_id="+Bon_sopir_id+"&Bon_sopir_id="+Bon_sopir_id+"&Bon_tanggal="+Bon_tanggal+"&Bon_total="+Bon_total+"&Bon_deskripsi"+Bon_deskripsi);
+
+        window.open("<?php echo url('bon/GenerateExcel') ?>?Bon_sopir_id=" + Bon_sopir_id + "&Bon_sopir_id=" + Bon_sopir_id + "&Bon_tanggal=" + Bon_tanggal + "&Bon_total=" + Bon_total + "&Bon_deskripsi" + Bon_deskripsi);
     }
 </script>
 

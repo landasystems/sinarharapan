@@ -172,6 +172,24 @@ class PiutangController extends Controller {
             'model' => $model,
         ));
     }
+    
+    public function actionGenerateExcel() {
+        $type = $_GET['type'];
+        $customer_id = $_GET['customer_id'];
+
+        $criteria = new CDbCriteria;
+        if (!empty($type))
+        $criteria->compare('type', $type, true);
+        if (!empty($customer_id))
+        $criteria->compare('customer_id', $customer_id, true);
+        
+        $model = Piutang::model()->findAll($criteria);
+
+        Yii::app()->request->sendFile('Data Transaksi Pinjaman -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
+                    'model' => $model
+                        ), true)
+        );
+    }
 
     /**
      * Returns the data model based on the primary key given in the GET variable.

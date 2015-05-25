@@ -261,6 +261,13 @@
                 <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->tanggal_timbang2)) ?></td>
             </tr>
             <tr>
+                <td style="text-align: left;"><b>Rafaksi</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $model->rafaksi ?> Kg</td>
+                <td style="width:80px; text-align: "></td>
+                <td style="width:80px; text-align: "></td>
+                <td style="width:80px; text-align: "></td>
+            </tr>
+            <tr>
 
                 <td style="width:80px;">&nbsp;</td>
                 <td style="width:80px; text-align: "><hr></td>
@@ -292,7 +299,7 @@
     </div>
 <?php } ?>
 <script>
-    $("#Timbang_customer_id").on("change", function () {
+    $("#Timbang_customer_id").on("change", function() {
         //var name = $("#Registration_guest_user_id").val();
         //  alert(name);
 
@@ -300,7 +307,7 @@
             url: "<?php echo url('customer/getDetail'); ?>",
             type: "POST",
             data: {id: $(this).val()},
-            success: function (data) {
+            success: function(data) {
 
                 obj = JSON.parse(data);
                 $("#telpon").val(obj.telpon);
@@ -320,16 +327,16 @@
         $("#Timbang_total").val(total);
     }
 
-    $("body").on("keyup", "#Timbang_berat_timbang1", function () {
+    $("body").on("keyup", "#Timbang_berat_timbang1", function() {
         calculate();
     });
-    $("body").on("keyup", "#Timbang_berat_timbang2", function () {
+    $("body").on("keyup", "#Timbang_berat_timbang2", function() {
         calculate();
     });
-    $("body").on("keyup", "#Timbang_rafaksi", function () {
+    $("body").on("keyup", "#Timbang_rafaksi", function() {
         calculate();
     });
-    $("body").on("keyup", "#Timbang_harga", function () {
+    $("body").on("keyup", "#Timbang_harga", function() {
         calculate();
     });
 </script>

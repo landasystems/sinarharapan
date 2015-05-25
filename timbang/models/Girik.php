@@ -37,7 +37,7 @@ class Girik extends CActiveRecord {
             array('tanggal, sopir_id, truk_id, nomor_girik', 'required'),
             array('id, nomor_girik, total, solar, fee_sopir, fee_truk, sopir_id, truk_id, created_user_id', 'numerical', 'integerOnly' => true),
             array('berat', 'numerical'),
-            array('tanggal, created, modified', 'safe'),
+            array('tanggal, created, modified, ongkos', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, tanggal, nomor_girik, berat, total, solar, fee_sopir, fee_truk, sopir_id, truk_id, created_user_id, created, modified', 'safe', 'on' => 'search'),
@@ -85,9 +85,13 @@ class Girik extends CActiveRecord {
     public function getSopir() {
         return (!empty($this->Sopir->nama)) ? $this->Sopir->nama : '-';
     }
-    
+
+    public function getTruk() {
+        return (!empty($this->Truk->nama)) ? $this->Truk->nama : '-';
+    }
+
     public function getTanggalTrans() {
-        return (!empty($this->tanggal)) ? date("d M Y",  strtotime($this->tanggal)) : '-';
+        return (!empty($this->tanggal)) ? date("d M Y", strtotime($this->tanggal)) : '-';
     }
 
     /**
@@ -107,25 +111,25 @@ class Girik extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-            if (!empty($this->tanggal)) {
-                $dt = explode(" - ",$this->tanggal);
-                $start = $dt[0];
-                $end = $dt[1];
-                $criteria->addCondition('tanggal >= "'.$start.'" and tanggal <= "'.$end.'"');
-            }
+        if (!empty($this->tanggal)) {
+            $dt = explode(" - ", $this->tanggal);
+            $start = $dt[0];
+            $end = $dt[1];
+            $criteria->addCondition('tanggal >= "' . $start . '" and tanggal <= "' . $end . '"');
+        }
 
-            if (!empty($this->nomor_girik))
-                $criteria->addCondition('nomor_girik = "' . $this->nomor_girik . '"');
-
-
-            if (!empty($this->sopir_id))
-                $criteria->addCondition('sopir_id = "' . $this->sopir_id . '"');
+        if (!empty($this->nomor_girik))
+            $criteria->addCondition('nomor_girik = "' . $this->nomor_girik . '"');
 
 
-            if (!empty($this->truk_id))
-                $criteria->addCondition('truk_id = "' . $this->truk_id . '"');
-           
-        
+        if (!empty($this->sopir_id))
+            $criteria->addCondition('sopir_id = "' . $this->sopir_id . '"');
+
+
+        if (!empty($this->truk_id))
+            $criteria->addCondition('truk_id = "' . $this->truk_id . '"');
+
+
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array('defaultOrder' => 'id DESC')

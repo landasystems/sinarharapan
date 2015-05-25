@@ -27,40 +27,38 @@
 
                 <?php echo $form->textFieldRow($model, 'type', array('class' => 'span14', 'maxlength' => 60)); ?>
 
-
-
                 <?php
-                $idsopir = isset($model->sopir_id) ? $model->sopir_id : 0;
-                $namaSopir = isset($model->Sopir->nama) ? $model->Sopir->nama : 0;
-                echo $form->select2Row($model, 'sopir_id', array(
-                    'asDropDownList' => false,
-                    'options' => array(
-                        'placeholder' => t('choose', 'global'),
-                        'allowClear' => true,
-                        'width' => '260px',
-                        'minimumInputLength' => '3',
-                        'ajax' => array(
-                            'url' => Yii::app()->createUrl('truk/getListSopir'),
-                            'dataType' => 'json',
-                            'data' => 'js:function(term, page) { 
-                                                        return {
-                                                            q: term 
-                                                        }; 
-                                                    }',
-                            'results' => 'js:function(data) { 
-                                                        return {
-                                                            results: data
-                                                            
-                                                        };
-                                                    }',
-                        ),
-                        'initSelection' => 'js:function(element, callback) 
-                            { 
-                                 callback({id: ' . $idsopir . ', text: "' . $namaSopir . '" });
-                            }',
-                    ),
-                        )
-                );
+//                $idsopir = isset($model->sopir_id) ? $model->sopir_id : 0;
+//                $namaSopir = isset($model->Sopir->nama) ? $model->Sopir->nama : 0;
+//                echo $form->select2Row($model, 'sopir_id', array(
+//                    'asDropDownList' => false,
+//                    'options' => array(
+//                        'placeholder' => t('choose', 'global'),
+//                        'allowClear' => true,
+//                        'width' => '260px',
+//                        'minimumInputLength' => '3',
+//                        'ajax' => array(
+//                            'url' => Yii::app()->createUrl('truk/getListSopir'),
+//                            'dataType' => 'json',
+//                            'data' => 'js:function(term, page) { 
+//                                                        return {
+//                                                            q: term 
+//                                                        }; 
+//                                                    }',
+//                            'results' => 'js:function(data) { 
+//                                                        return {
+//                                                            results: data
+//                                                            
+//                                                        };
+//                                                    }',
+//                        ),
+//                        'initSelection' => 'js:function(element, callback) 
+//                            { 
+//                                 callback({id: ' . $idsopir . ', text: "' . $namaSopir . '" });
+//                            }',
+//                    ),
+//                        )
+//                );
                 ?>
             </div>
             <div class="span5">
@@ -105,7 +103,7 @@
 
                 <?php echo $form->radioButtonListRow($model, 'terpal', Truk::model()->ArrSurat()); ?>
                 <?php echo $form->radioButtonListRow($model, 'dongkrak', Truk::model()->ArrSurat()); ?>
-                </div><div class="span4">
+            </div><div class="span4">
                 <?php echo $form->radioButtonListRow($model, 'kunci', Truk::model()->ArrSurat()); ?>
 
             </div></div>

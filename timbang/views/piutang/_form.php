@@ -37,6 +37,9 @@
         )
     ));
     ?>
+    <?php
+    $bunga = Pengaturan::model()->findByPk(1);
+    ?>
     <fieldset>
         <legend>
             <p class="note">Fields dengan <span class="required">*</span> harus di isi.</p>
@@ -90,10 +93,7 @@
                 <div class="control-group ">
                     <label class="control-label" for="eselon">Telepon</label>
                     <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">+62</span>
-                            <input class="span12" maxlength="19" readonly="1" name="" id="telpon" type="text" value="<?php echo (isset($model->Customer->telepon)) ? $model->Customer->telepon : '-' ?>">
-                        </div>
+                        <input class="span12" maxlength="19" readonly="1" name="" id="telpon" type="text" value="<?php echo (isset($model->Customer->telepon)) ? $model->Customer->telepon : '-' ?>">
                     </div>
                 </div>
                 <?php echo $form->textFieldRow($model, 'jaminan', array('class' => 'span12', 'maxlength' => 150)); ?>
@@ -119,13 +119,22 @@
                             <input class="span12 angka" name="Piutang[jumlah_pupuk]" id="Piutang_jumlah_pupuk" type="text">
                             <span class="add-on">Kg</span>
                         </div>
+                        <?php
+                        $pupuk = 0;
+                        if($model->isNewRecord == true){
+                            $pupuk = $bunga->harga_pupuk;
+                        }else if($model->jumlah_pupuk > 0){
+                            $pupuk = $model->sub_total / $model->jumlah_pupuk;
+                        }
+                        ?>
+                        <div class="input-prepend">
+                            <input class="span12 angka" name="harga_pupuk" id="harga_pupuk" type="text" value="<?php echo $pupuk; ?>">
+                            <span class="add-on">Rp</span>
+                        </div>
                     </div>
                 </div>
-                <?php echo $form->textFieldRow($model, 'sub_total', array('class' => 'span12')); ?>
+                <?php echo $form->textFieldRow($model, 'sub_total', array('class' => 'angka span12', 'prepend' => 'Rp')); ?>
 
-                <?php
-                $bunga = Pengaturan::model()->findByPk(1);
-                ?>
                 <div class="control-group ">
                     <label class="control-label" for="Piutang_bunga">Bunga</label>
                     <div class="controls">
@@ -140,21 +149,21 @@
 
 
         <?php if (!isset($_GET['v'])) { ?>        <div class="form-actions">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'submit',
-                    'type' => 'primary',
-                    'icon' => 'ok white',
-                    'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
-                ));
-                ?>
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'reset',
-                    'icon' => 'remove',
-                    'label' => 'Reset',
-                ));
-                ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'submit',
+                'type' => 'primary',
+                'icon' => 'ok white',
+                'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
+            ));
+            ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'reset',
+                'icon' => 'remove',
+                'label' => 'Reset',
+            ));
+            ?>
             </div>
         <?php } ?>    </fieldset>
 
@@ -171,18 +180,20 @@
             <tr>
                 <td style="text-align: left;"><b>Customer</b></td>
                 <td style="width:80px; text-align: " colspan="2">fgdfg</td>
-                
+
                 <td style="width:80px; text-align: "><b>No Truck</b></td>
                 <td style="width:80px; text-align: ">fgdfg</td>
 
             </tr>
-            
+
         </table>
         <hr>
         <p style="text-align:center;font-size: 11.5px;"></p>
     </div>
 <?php } ?>
 <script>
+    $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:none");
+
     function calculate() {
         var jumlah = parseInt($("#Piutang_sub_total").val());
         var bunga = parseInt($("#Piutang_bunga").val());
@@ -195,6 +206,12 @@
     });
     $("body").on("keyup", "#Piutang_bunga", function() {
         calculate();
+    });
+    
+    $("body").on("keyup", "#Piutang_jumlah_pupuk, #harga_pupuk", function() {
+       var jumlah = parseInt($("#Piutang_jumlah_pupuk").val()) * parseInt($("#harga_pupuk").val());
+       $("#Piutang_sub_total").val(jumlah);
+       calculate();
     });
 
     $("body").on("click", ".radio", function() {
@@ -226,6 +243,8 @@
     });
 <?php
 if ($model->type == "uang") {
+    echo '$("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:none");';
+} else if ($model->isNewRecord == True) {
     echo '$("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:none");';
 } else {
     echo '$("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:");';

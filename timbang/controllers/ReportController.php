@@ -40,7 +40,7 @@ class ReportController extends Controller {
             ),
             array('allow', // d
                 'actions' => array('rekapKendaraan'),
-                'expression' => 'app()->controller->isValidAccess(rkpKendaraan,"r")'
+                'expression' => 'app()->controller->isValidAccess("rkpKendaraan","r")'
             )
         );
     }

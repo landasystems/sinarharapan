@@ -56,7 +56,7 @@ class JasaTimbang extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'Customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
+//            'Customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
         );
     }
 
@@ -145,13 +145,13 @@ class JasaTimbang extends CActiveRecord {
         return parent::beforeValidate();
     }
 
-    public function getNamaCustomer() {
-        return (isset($this->Customer->nama)) ? $this->Customer->nama : '';
-    }
-
-    public function getTanggalTimbang() {
-        return (!empty(date('d-m-Y', strtotime($this->tanggal_timbang1)))) ? date('d-m-Y', strtotime($this->tanggal_timbang1)) : '-';
-    }
+//    public function getNamaCustomer() {
+////        return (isset($this->Customer->nama)) ? $this->Customer->nama : '';
+//    }
+//
+//    public function getTanggalTimbang() {
+////        return (!empty(date('d-m-Y', strtotime($this->tanggal_timbang1)))) ? date('d-m-Y', strtotime($this->tanggal_timbang1)) : '-';
+//    }
 
     public function getTotalRp() {
         return landa()->rp($this->total);

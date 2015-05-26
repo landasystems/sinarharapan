@@ -75,6 +75,7 @@ class PiutangDetController extends Controller {
         if (isset($_POST['PiutangDet'])) {
             for ($i = 0; $i < count($_POST['piutang_id']); $i++) {
                 if ($_POST['bayar'][$i] > 0) {
+                    $model = new PiutangDet;
                     $model->tanggal = $_POST['PiutangDet']['tanggal'];
                     $model->credit = $_POST['bayar'][$i];
                     $model->piutang_id = $_POST['piutang_id'][$i];

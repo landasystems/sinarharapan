@@ -18,14 +18,13 @@ $piutang = Piutang::model()->findall(array('condition' => 'customer_id = ' . $cu
             </thead>
             <tbody>
                 <?php
-                $no = 0;
                 foreach ($piutang as $val) {
                     if ($val->total > $val->totalBayar) {
                         ?>
                         <tr>
                             <td>
-                                <input type="hidden" name="piutang_id[<?php echo $no; ?>]" value="<?php echo $val->id ?>" class="piutang_id">
-                                <input type="hidden" name="total_bayar[<?php echo $no; ?>]" value="<?php echo (!empty($val->totalBayar)) ? $val->totalBayar : 0 ?>" class="total_bayar" id="total_bayar">
+                                <input type="hidden" name="piutang_id[]" value="<?php echo $val->id ?>" class="piutang_id">
+                                <input type="hidden" name="total_bayar[]" value="<?php echo (!empty($val->totalBayar)) ? $val->totalBayar : 0 ?>" class="total_bayar" id="total_bayar">
                                 <?php echo date("d M Y", strtotime($val->tanggal)); ?>
                             </td>
                             <td><?php echo!empty($val->deskripsi) ? $val->deskripsi : "-"; ?></td>
@@ -35,13 +34,12 @@ $piutang = Piutang::model()->findall(array('condition' => 'customer_id = ' . $cu
                             <td>
                                 <div class="input-prepend">
                                     <span class="add-on">Rp</span>
-                                    <input class="angka span12" name="bayar[<?php echo $no; ?>]" id="bayar" type="text" onkeyup="calculate()" value="0">
+                                    <input class="angka span12" name="bayar[]" id="bayar" type="text" onkeyup="calculate()" value="0">
                                 </div>
                             </td>
                         </tr>
                         <?php
                     }
-                    $no++;
                 }
                 ?>
             </tbody>

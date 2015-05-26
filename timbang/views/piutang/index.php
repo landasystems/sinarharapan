@@ -83,16 +83,17 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                 'value' => '$data->id',
             ),
         ),
+        
+        array(
+            'name' => 'tanggal',
+            'value' => 'date("d M Y",strtotime($data->tanggal))',
+        ),
         array(
             'name' => 'customer_id',
             'value' => '$data->customer',
         ),
         'jaminan',
         'deskripsi',
-        array(
-            'name' => 'tanggal',
-            'value' => 'date("d M Y",strtotime($data->tanggal))',
-        ),
 //        'tanggal',
         'type',
         /*
@@ -101,6 +102,11 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'total',
             'value' => 'landa()->rp($data->total)',
+        ),
+        
+        array(
+            'name' => 'lunas',
+            'value' => '($data->lunas == 0) ? "Belum Lunas" : "Lunas"',
         ),
 //          'total',
         /* 'status',

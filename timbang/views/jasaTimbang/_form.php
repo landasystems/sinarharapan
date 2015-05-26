@@ -114,7 +114,7 @@
                     <div class="controls">
                         <div class="input-append">
                             <input class="span6 angka" name="JasaTimbang[berat_timbang1]" id="JasaTimbang_berat_timbang1" value="<?php echo (isset($model->berat_timbang1)) ? $model->berat_timbang1 : '' ?>" type="text">
-                            <span class="add-on">Kw</span>
+                            <span class="add-on">Kg</span>
                         </div>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                     <div class="controls">
                         <div class="input-append">
                             <input class="span6 angka" name="JasaTimbang[berat_timbang2]" id="JasaTimbang_berat_timbang2" value="<?php echo (isset($model->berat_timbang2)) ? $model->berat_timbang2 : 0 ?>" type="text">
-                            <span class="add-on">Kw</span>
+                            <span class="add-on">Kg</span>
                         </div>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
 
                         <div class="input-append">
                             <input class="span6 angka" name="JasaTimbang[rafaksi]" id="JasaTimbang_rafaksi" value="<?php echo (isset($model->rafaksi)) ? $model->rafaksi : $bunga->rafaksi ?>" type="text">
-                            <span class="add-on">Kg</span>
+                            <span class="add-on">Kw</span>
                         </div>
                         <?php // echo $form->textFieldRow($model, 'berat_timbang2', array('class' => 'span3', 'labelOptions' => array('label' => false))); ?>
 
@@ -146,8 +146,8 @@
                     <div class="controls">
 
                         <div class="input-append">
-                            <input class="span6 angka" name="JasaTimbang[netto]" id="JasaTimbang_netto" value="<?php echo (isset($model->netto)) ? $model->netto : '' ?>" readonly type="text">
-                            <span class="add-on">Kg</span>
+                            <input class="span6 angka" name="JasaTimbang[netto]" id="JasaTimbang_netto" value="<?php echo (isset($model->netto)) ? $model->netto : '' ?>" type="text">
+                            <span class="add-on">Kw</span>
                         </div>
                         <?php // echo $form->textFieldRow($model, 'berat_timbang2', array('class' => 'span3', 'labelOptions' => array('label' => false))); ?>
 
@@ -276,9 +276,9 @@
     function calculate() {
         var berat1 = parseInt($("#JasaTimbang_berat_timbang1").val());
         var berat2 = parseInt($("#JasaTimbang_berat_timbang2").val());
-        var rafaksi = parseInt($("#JasaTimbang_rafaksi").val());
+        var rafaksi = parseFloat($("#JasaTimbang_rafaksi").val() * 100);
         var harga = parseInt($("#JasaTimbang_harga").val());
-        var netto = (berat1 * 100) - (berat2 * 100) - rafaksi;
+        var netto = Math.round(((berat1) - (berat2) - rafaksi) / 100);
         var total = netto * harga;
         $("#JasaTimbang_netto").val(netto);
         $("#JasaTimbang_total").val(total);

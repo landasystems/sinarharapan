@@ -43,7 +43,13 @@
         <legend>
             <p class="note">Fields dengan <span class="required">*</span> harus di isi.</p>
         </legend>
-        <div class="alert alert-success" role="alert"><?php echo Yii::app()->user->getFlash('sukses'); ?></div>
+        <?php
+        if (isset($_POST['PiutangDet'])) {
+            ?>
+            <div class="alert alert-success" role="alert"><?php echo Yii::app()->user->getFlash('sukses'); ?></div>
+            <?php
+        }
+        ?>
         <style>
             .form-horizontal .control-label {
                 float: left;
@@ -135,7 +141,18 @@
                     <div class="control-group ">
                         <label class="control-label" for="total_piutang">Total Piutang</label>
                         <div class="controls">
-                            <p class="help-inline"><?php echo (isset($model->Piutang->total)) ? landa()->rp($model->Piutang->total) : landa()->rp(0) ?>
+                            <p class="help-inline"><?php echo (isset($model->Piutang->sub_total)) ? landa()->rp($model->Piutang->sub_total) : landa()->rp(0) ?>
+                        </div>
+                    </div>
+                    <div class="control-group ">
+                        <label class="control-label" for="total_piutang">Bunga</label>
+                        <div class="controls">
+                            <p class="help-inline">
+                                <?php
+                                $subTotal = isset($model->Piutang->sub_total) ? $model->Piutang->sub_total : 0;
+                                $bunga = isset($model->Piutang->bunga) ? $model->Piutang->bunga : 0;
+                                echo $subTotal * ($bunga / 100)
+                                ?>
                         </div>
                     </div>
                     <div class="control-group ">

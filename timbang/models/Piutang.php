@@ -139,6 +139,11 @@ class Piutang extends CActiveRecord {
         $terpal = array('uang' => 'Uang', 'pupuk' => 'Pupuk');
         return $terpal;
     }
+    
+    public function arrLunas() {
+        $terpal = array('0' => 'Belum Lunas', '1' => 'Lunas');
+        return $terpal;
+    }
 
     /**
      * Returns the static model of the specified AR class.

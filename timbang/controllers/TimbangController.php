@@ -156,7 +156,7 @@ class TimbangController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-
+        $criteria = new CDbCriteria();
         $model = new Timbang('search');
         $model->unsetAttributes();  // clear any default values
         //delet all
@@ -169,15 +169,23 @@ class TimbangController extends Controller {
         }
         if (isset($_GET['Timbang'])) {
             $model->attributes = $_GET['Timbang'];
+
+            if (!empty($model->tanggal_timbang1)) {
+                $dt = explode(" - ", $model->tanggal_timbang1);
+                $start = $dt[0];
+                $end = $dt[1];
+                $criteria->addCondition('tanggal_timbang1 >= "' . $start . '" and tanggal_timbang1 <= "' . $end . '"');
+            }
+
             if ($model->customer_id == 0) {
                 unset($model->customer_id);
             }
-            if ($model->kode == "") {
-                unset($model->kode);
-            }
-            if ($model->nomor_polisi == "") {
-                unset($model->nomor_polisi);
-            }
+//            if ($model->kode == "") {
+//                unset($model->kode);
+//            }
+//            if ($model->nomor_polisi == "") {
+//                unset($model->nomor_polisi);
+//            }
         }
 
         $this->render('index', array(
@@ -191,10 +199,10 @@ class TimbangController extends Controller {
 
         $criteria = new CDbCriteria;
         if (!empty($customer_id))
-        $criteria->compare('t.customer_id', $customer_id, true);
+            $criteria->compare('t.customer_id', $customer_id, true);
         if (!empty($nomor_polisi))
-        $criteria->compare('nomor_polisi', $nomor_polisi, true);
-        
+            $criteria->compare('nomor_polisi', $nomor_polisi, true);
+
         $model = Timbang::model()->findAll($criteria);
 
         Yii::app()->request->sendFile('Data Transaksi Timbang -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(

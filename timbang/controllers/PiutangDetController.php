@@ -74,15 +74,21 @@ class PiutangDetController extends Controller {
         if (isset($_POST['PiutangDet'])) {
             for ($i = 0; $i <= count($_POST['piutang_id']); $i++) {
                 if (isset($_POST['bayar'][$i]) and $_POST['bayar'][$i] > 0) {
+                    if (isset($_POST['lunas'][$i])) {
+                        $updatePiutang = Piutang::model()->findByPk($_POST['piutang_id'][$i]);
+                        $updatePiutang->lunas = 1;
+                        $updatePiutang->save();
+                    }
                     $bayar = new PiutangDet;
                     $bayar->attributes = $_POST['PiutangDet'];
                     $bayar->tanggal = $_POST['PiutangDet']['tanggal'];
-                    $bayar->credit = $_POST['bayar'][$i];
+                    $bayar->credit = $_POST['bayar'][$i] - $_POST['bunga'][$i];
+                    $bayar->bunga = $_POST['bunga'][$i];
                     $bayar->piutang_id = $_POST['piutang_id'][$i];
                     $bayar->save();
                 }
             }
-             Yii::app()->user->setFlash('sukses','Data berhasil disimpan');
+            Yii::app()->user->setFlash('sukses', 'Data berhasil disimpan');
         }
 
         $this->render('create', array(
@@ -150,9 +156,9 @@ class PiutangDetController extends Controller {
             }
             if (!empty($model->piutang_id))
                 $criteria->addCondition('Piutang.customer_id = "' . $model->piutang_id . '"');
-        
-             $criteria->addCondition('t.debet = 0 or t.debet is null');
-            }
+
+            $criteria->addCondition('t.debet = 0 or t.debet is null');
+        }
 
         $this->render('index', array(
             'model' => $model,

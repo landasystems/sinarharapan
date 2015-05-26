@@ -144,7 +144,9 @@
                     </div>
                 </div>
                 <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span12', 'prepend' => 'Rp', 'readOnly' => true)); ?>
-
+                <?php
+                echo $form->radioButtonListRow($model, 'lunas', Piutang::model()->ArrLunas());
+                ?>
             </div></div>
 
 
@@ -183,9 +185,7 @@
 
                 <td style="width:80px; text-align: "><b>No Truck</b></td>
                 <td style="width:80px; text-align: ">fgdfg</td>
-
             </tr>
-
         </table>
         <hr>
         <p style="text-align:center;font-size: 11.5px;"></p>
@@ -214,17 +214,14 @@
         calculate();
     });
 
-    $("body").on("click", ".radio", function() {
-        var id = $(this).find("input").val();
-
-        if (id == "pupuk") {
-            $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:");
-        }
-        else {
-            $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:none");
-        }
-
+    $("#Piutang_type_0").click(function(event) {
+        $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:none");
     });
+
+    $("#Piutang_type_1").click(function(event) {
+        $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:");
+    });
+
     $("#Piutang_customer_id").on("change", function() {
         //var name = $("#Registration_guest_user_id").val();
         //  alert(name);

@@ -19,13 +19,13 @@
                     <legend>Pengaturan Data</legend>
                 </fieldset>
 
-                <?php echo $form->textFieldRow($model, 'harga_pupuk', array('class' => 'angka span10', 'prepend' => 'Rp')); ?>
+                <?php echo $form->textFieldRow($model, 'harga_pupuk', array('class' => 'angka span10', 'prepend' => 'Rp', 'append' => '/ Kw')); ?>
 
-                <?php echo $form->textFieldRow($model, 'harga_tebu', array('class' => 'angka span10', 'prepend' => 'Rp')); ?>
+                <?php echo $form->textFieldRow($model, 'harga_tebu', array('class' => 'angka span10', 'prepend' => 'Rp', 'append' => '/ Kw')); ?>
 
                 <?php echo $form->textFieldRow($model, 'bunga', array('class' => 'angka span10', 'append' => '%', 'style' => 'width:45px;')); ?>
 
-                <?php echo $form->textFieldRow($model, 'rafaksi', array('class' => 'angka span5', 'append' => 'Kg')); ?>
+                <?php echo $form->textFieldRow($model, 'rafaksi', array('class' => 'angka span5', 'append' => 'kw')); ?>
 
                 <?php echo $form->textFieldRow($model, 'solar', array('class' => 'angka span10', 'prepend' => 'Rp')); ?>
 

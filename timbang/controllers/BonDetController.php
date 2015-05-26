@@ -67,17 +67,17 @@ class BonDetController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
+          $model = new BonDet;
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['BonDet'])) {
-            for ($i = 0; $i < count($_POST['bon_id']); $i++) {
+            for ($i = 0; $i <= count($_POST['bon_id']); $i++) {
                 if ($_POST['bayar'][$i] > 0) {
                     $model = new BonDet;
                     $model->tanggal = $_POST['BonDet']['tanggal'];
                     $model->credit = $_POST['bayar'][$i];
                     $model->bon_id = $_POST['bon_id'][$i];
-//                $model->induk_id = $model->piutang_id;
                     $model->save();
                 }
                 $i++;

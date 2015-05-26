@@ -79,7 +79,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         'kode',
         array(
             'type' => 'raw',
-            'header'=>'Customer',
+            'header' => 'Customer',
             'name' => 'customer_id',
             'value' => '$data->namaCustomer',
         ),
@@ -88,13 +88,13 @@ $this->widget('bootstrap.widgets.TbGridView', array(
 //        'netto',
         array(
             'type' => 'raw',
-            'header'=>'Netto (Kg)',
+            'header' => 'Netto (Kg)',
             'name' => 'netto',
             'value' => '$data->netto',
         ),
         array(
             'type' => 'raw',
-            'header'=>'Total',
+            'header' => 'Total',
             'name' => 'total',
             'value' => '$data->totalRp',
         ),

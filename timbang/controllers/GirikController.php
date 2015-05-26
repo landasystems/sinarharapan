@@ -124,13 +124,14 @@ class GirikController extends Controller {
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
+            
+            $det = PerawatanTrukDet::model()->deleteAll(array('condition' => 'girik_id=' . $id));
             $this->loadModel($id)->delete();
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        }
-        else
+        } else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -168,13 +169,13 @@ class GirikController extends Controller {
             'model' => $model,
         ));
     }
-    
-     public function actionGenerateExcel() {
+
+    public function actionGenerateExcel() {
         $tanggal = $_GET['tanggal'];
         $nomor_girik = $_GET['nomor_girik'];
         $sopir_id = $_GET['sopir_id'];
         $truk_id = $_GET['truk_id'];
-        
+
         $criteria = new CDbCriteria;
         if (!empty($tanggal)) {
             $dt = explode(" - ", $tanggal);
@@ -183,19 +184,18 @@ class GirikController extends Controller {
             $criteria->addCondition('tanggal >= "' . $start . '" and tanggal <= "' . $end . '"');
         }
         if (!empty($nomor_girik))
-        $criteria->compare('nomor_girik', $nomor_girik, true);
+            $criteria->compare('nomor_girik', $nomor_girik, true);
         if (!empty($sopir_id))
-        $criteria->compare('sopir_id', $sopir_id, true);
+            $criteria->compare('sopir_id', $sopir_id, true);
         if (!empty($truk_id))
-        $criteria->compare('truk_id', $truk_id, true);
-        
+            $criteria->compare('truk_id', $truk_id, true);
+
         $model = Girik::model()->findAll($criteria);
 
         Yii::app()->request->sendFile('Data Girik -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
                     'model' => $model
                         ), true)
         );
-        
     }
 
     public function actionGetListSopir() {

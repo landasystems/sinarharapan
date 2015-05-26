@@ -114,7 +114,7 @@
                     </div>
                 </div>
                 <div class="control-group ">
-                    <label class="control-label" for="eselon">Telepon</label>
+                    <label class="control-label" for="telepon">Telepon</label>
                     <div class="controls">
                         <input class="span12" maxlength="19" readonly="1" name="" id="telpon" type="text" value="<?php echo isset($model->Piutang->Customer->telepon) ? $model->Piutang->Customer->telepon : "-"; ?>">
                     </div>

@@ -116,20 +116,20 @@
                     <label class="control-label" for="Piutang_jumlah_pupuk">Jumlah Pupuk</label>
                     <div class="controls">
                         <div class="input-append">
-                            <input class="span12 angka" name="Piutang[jumlah_pupuk]" id="Piutang_jumlah_pupuk" type="text">
+                            <input class="span12 angka" name="Piutang[jumlah_pupuk]" id="Piutang_jumlah_pupuk" type="text" value="<?php echo $model->jumlah_pupuk; ?>">
                             <span class="add-on">Kg</span>
                         </div>
                         <?php
                         $pupuk = 0;
-                        if($model->isNewRecord == true){
+                        if ($model->isNewRecord == true) {
                             $pupuk = $bunga->harga_pupuk;
-                        }else if($model->jumlah_pupuk > 0){
+                        } else if ($model->jumlah_pupuk > 0) {
                             $pupuk = $model->sub_total / $model->jumlah_pupuk;
                         }
                         ?>
                         <div class="input-prepend">
-                            <input class="span12 angka" name="harga_pupuk" id="harga_pupuk" type="text" value="<?php echo $pupuk; ?>">
                             <span class="add-on">Rp</span>
+                            <input class="span12 angka" style="width:100px;" name="harga_pupuk" id="harga_pupuk" type="text" value="<?php echo $pupuk; ?>">
                         </div>
                     </div>
                 </div>
@@ -207,11 +207,11 @@
     $("body").on("keyup", "#Piutang_bunga", function() {
         calculate();
     });
-    
+
     $("body").on("keyup", "#Piutang_jumlah_pupuk, #harga_pupuk", function() {
-       var jumlah = parseInt($("#Piutang_jumlah_pupuk").val()) * parseInt($("#harga_pupuk").val());
-       $("#Piutang_sub_total").val(jumlah);
-       calculate();
+        var jumlah = parseInt($("#Piutang_jumlah_pupuk").val()) * parseInt($("#harga_pupuk").val());
+        $("#Piutang_sub_total").val(jumlah);
+        calculate();
     });
 
     $("body").on("click", ".radio", function() {

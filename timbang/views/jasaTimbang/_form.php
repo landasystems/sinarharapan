@@ -63,8 +63,6 @@
             </div>
         </div>
 
-
-
         <?php echo $form->textFieldRow($model, 'nomor_polisi', array('class' => 'span2', 'maxlength' => 25)); ?>
 
         <fieldset>
@@ -72,7 +70,7 @@
         </fieldset>
         <?php echo $form->textFieldRow($model, 'kode', array('class' => 'span2', 'maxlength' => 25, 'hint' => '<span aria-hidden="true" class="entypo-icon-info-circle"></span> Kosongkan kode, untuk generate otomatis')); ?>
         <div class="row-fluid">
-            <div class="span3">
+            <div class="span4">
                 <div class="control-group ">
                     <label class="control-label" for="JasaTimbang_police_number">Tanggal Berat 1</label>
                     <div class="controls">
@@ -103,13 +101,13 @@
                                 )
                         );
                         ?>
-                        
+
                         <?php // echo $form->textFieldRow($model, 'berat_timbang2', array('class' => 'span3', 'labelOptions' => array('label' => false))); ?>
 
                     </div>
                 </div>
             </div>
-            <div class="span6">
+            <div class="span4">
 
                 <div class="control-group ">
                     <label class="control-label" for="JasaTimbang_police_number">Berat 1</label>
@@ -141,6 +139,8 @@
 
                     </div>
                 </div>
+            </div>
+            <div class="span4">
                 <div class="control-group ">
                     <label class="control-label" for="JasaTimbang_police_number">Netto</label>
                     <div class="controls">
@@ -278,22 +278,22 @@
         var berat2 = parseInt($("#JasaTimbang_berat_timbang2").val());
         var rafaksi = parseInt($("#JasaTimbang_rafaksi").val());
         var harga = parseInt($("#JasaTimbang_harga").val());
-        var netto = (berat1*100) - (berat2*100) - rafaksi;
+        var netto = (berat1 * 100) - (berat2 * 100) - rafaksi;
         var total = netto * harga;
         $("#JasaTimbang_netto").val(netto);
         $("#JasaTimbang_total").val(total);
     }
 
-    $("body").on("keyup", "#JasaTimbang_berat_timbang1", function () {
+    $("body").on("keyup", "#JasaTimbang_berat_timbang1", function() {
         calculate();
     });
-    $("body").on("keyup", "#JasaTimbang_berat_timbang2", function () {
+    $("body").on("keyup", "#JasaTimbang_berat_timbang2", function() {
         calculate();
     });
-    $("body").on("keyup", "#JasaTimbang_rafaksi", function () {
+    $("body").on("keyup", "#JasaTimbang_rafaksi", function() {
         calculate();
     });
-    $("body").on("keyup", "#JasaTimbang_harga", function () {
+    $("body").on("keyup", "#JasaTimbang_harga", function() {
         calculate();
     });
 </script>

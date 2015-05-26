@@ -43,6 +43,7 @@
         <legend>
             <p class="note">Fields dengan <span class="required">*</span> harus di isi.</p>
         </legend>
+        <div class="alert alert-success" role="alert"><?php echo Yii::app()->user->getFlash('sukses'); ?></div>
         <style>
             .form-horizontal .control-label {
                 float: left;
@@ -155,21 +156,21 @@
         <div id="list"></div>
 
         <?php if (!isset($_GET['v'])) { ?>        <div class="form-actions">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'submit',
-                    'type' => 'primary',
-                    'icon' => 'ok white',
-                    'label' => $model->isNewRecord ? 'Simpan' : 'Simpan',
-                ));
-                ?>
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'reset',
-                    'icon' => 'remove',
-                    'label' => 'Reset',
-                ));
-                ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'submit',
+                'type' => 'primary',
+                'icon' => 'ok white',
+                'label' => $model->isNewRecord ? 'Simpan' : 'Simpan',
+            ));
+            ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'reset',
+                'icon' => 'remove',
+                'label' => 'Reset',
+            ));
+            ?>
             </div>
         <?php } ?>    </fieldset>
 
@@ -184,25 +185,25 @@
     <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
         <tr>
             <td style="text-align: left;"><b>Tanggal</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo date("d M Y", strtotime($model->tanggal));?></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo date("d M Y", strtotime($model->tanggal)); ?></td>
             <td style="width:80px; text-align: "></td>
             <td style="text-align: "></td>
         </tr>
         <tr>
             <td style="text-align: left;"><b>Customer</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Piutang->Customer->nama) ? $model->Piutang->Customer->nama : "-";?></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Piutang->Customer->nama) ? $model->Piutang->Customer->nama : "-"; ?></td>
             <td style="width:80px; text-align: "><b></b></td>
             <td style="text-align: "></td>
         </tr>
         <tr>
             <td style="text-align: left;"><b>Hutang</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Piutang->total) ? landa()->rp($model->Piutang->total) : "-";?></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Piutang->total) ? landa()->rp($model->Piutang->total) : "-"; ?></td>
             <td style="width:80px; text-align: "><b></b></td>
             <td style="text-align: "></td>
         </tr>
         <tr>
             <td style="text-align: left;"><b>Bayar</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->credit) ? landa()->rp($model->credit) : "-";?></td>
+            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->credit) ? landa()->rp($model->credit) : "-"; ?></td>
             <td style="width:80px; text-align: "></td>
             <td style="text-align: "></td>
         </tr>

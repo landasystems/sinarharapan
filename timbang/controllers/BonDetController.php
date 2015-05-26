@@ -73,18 +73,16 @@ class BonDetController extends Controller {
 
         if (isset($_POST['BonDet'])) {
             for ($i = 0; $i <= count($_POST['bon_id']); $i++) {
-                if ($_POST['bayar'][$i] > 0) {
-                    $model = new BonDet;
-                    $model->tanggal = $_POST['BonDet']['tanggal'];
-                    $model->credit = $_POST['bayar'][$i];
-                    $model->bon_id = $_POST['bon_id'][$i];
-                    $model->save();
+                if (isset($_POST['bayar'][$i]) and $_POST['bayar'][$i] > 0) {
+                    $det = new BonDet;
+                    $det->attributes = $_POST['BonDet'];
+                    $det->tanggal = $_POST['BonDet']['tanggal'];
+                    $det->credit = $_POST['bayar'][$i];
+                    $det->bon_id = $_POST['bon_id'][$i];
+                    $det->save();
                 }
-                $i++;
             }
-            $model->attributes = $_POST['BonDet'];
-            if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
+            Yii::app()->user->setFlash('sukses','Data berhasil disimpan');
         }
 
         $this->render('create', array(

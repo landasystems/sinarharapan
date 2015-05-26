@@ -43,7 +43,7 @@
         <legend>
             <p class="note">Fields dengan <span class="required">*</span> harus di isi.</p>
         </legend>
-
+        <div class="alert alert-success" role="alert"><?php echo Yii::app()->user->getFlash('sukses'); ?></div>
         <style>
             .form-horizontal .control-label {
                 float: left;

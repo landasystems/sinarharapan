@@ -73,7 +73,7 @@ class PiutangDetController extends Controller {
 
         if (isset($_POST['PiutangDet'])) {
             for ($i = 0; $i <= count($_POST['piutang_id']); $i++) {
-                if (!empty($_POST['bayar'][$i])) {
+                if (isset($_POST['bayar'][$i]) and $_POST['bayar'][$i] > 0) {
                     $bayar = new PiutangDet;
                     $bayar->attributes = $_POST['PiutangDet'];
                     $bayar->tanggal = $_POST['PiutangDet']['tanggal'];
@@ -81,11 +81,8 @@ class PiutangDetController extends Controller {
                     $bayar->piutang_id = $_POST['piutang_id'][$i];
                     $bayar->save();
                 }
-                $i++;
             }
-            logs($bayar);
-//            if ($model->save())
-//                $this->redirect(array('view', 'id' => $model->id));
+             Yii::app()->user->setFlash('sukses','Data berhasil disimpan');
         }
 
         $this->render('create', array(

@@ -80,24 +80,23 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'name' => 'customer_id',
             'value' => '$data->customer',
         ),
-        
         'jaminan',
         'deskripsi',
         array(
             'name' => 'tanggal',
-            'value' => '$data->tanggalTimbang',
+            'value' => 'date("d M Y",strtotime($data->tanggal))',
         ),
 //        'tanggal',
         'type',
         /*
           'sub_total',
-          'bunga',*/
+          'bunga', */
         array(
             'name' => 'total',
             'value' => 'landa()->rp($data->total)',
         ),
 //          'total',
-         /* 'status',
+        /* 'status',
           'created_user_id',
           'created',
           'modified',

@@ -68,24 +68,24 @@ class PiutangDetController extends Controller {
      */
     public function actionCreate() {
         $model = new PiutangDet;
-
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['PiutangDet'])) {
-            for ($i = 0; $i < count($_POST['piutang_id']); $i++) {
-                if ($_POST['bayar'][$i] > 0) {
-                    $model->tanggal = $_POST['PiutangDet']['tanggal'];
-                    $model->credit = $_POST['bayar'][$i];
-                    $model->piutang_id = $_POST['piutang_id'][$i];
-//                $model->induk_id = $model->piutang_id;
-                    $model->save();
+            for ($i = 0; $i <= count($_POST['piutang_id']); $i++) {
+                if (!empty($_POST['bayar'][$i])) {
+                    $bayar = new PiutangDet;
+                    $bayar->attributes = $_POST['PiutangDet'];
+                    $bayar->tanggal = $_POST['PiutangDet']['tanggal'];
+                    $bayar->credit = $_POST['bayar'][$i];
+                    $bayar->piutang_id = $_POST['piutang_id'][$i];
+                    $bayar->save();
                 }
                 $i++;
             }
-            $model->attributes = $_POST['PiutangDet'];
-            if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
+            logs($bayar);
+//            if ($model->save())
+//                $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('create', array(
@@ -153,7 +153,9 @@ class PiutangDetController extends Controller {
             }
             if (!empty($model->piutang_id))
                 $criteria->addCondition('Piutang.customer_id = "' . $model->piutang_id . '"');
-        }
+        
+             $criteria->addCondition('t.debet = 0 or t.debet is null');
+            }
 
         $this->render('index', array(
             'model' => $model,

@@ -51,7 +51,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'piutang-det-grid',
     'dataProvider' => $model->search(),
     'type' => 'striped bordered condensed',
-    'template' => '{summary}{pager}{items}{pager}',
+    'template' => '{pager}{items}{pager}',
     'columns' => array(
         array(
             'header' => 'Tanggal',

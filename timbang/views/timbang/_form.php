@@ -100,9 +100,9 @@
         <fieldset>
             <legend>Info Timbangan</legend>
         </fieldset>
-        <?php echo $form->textFieldRow($model, 'kode', array('class' => 'angka', 'maxlength' => 25,'hint'=>'<span aria-hidden="true" class="entypo-icon-info-circle"></span> Kosongkan kode, untuk generate otomatis')); ?>
+        <?php echo $form->textFieldRow($model, 'kode', array('class' => 'angka', 'maxlength' => 25, 'hint' => '<span aria-hidden="true" class="entypo-icon-info-circle"></span> Kosongkan kode, untuk generate otomatis')); ?>
         <div class="row-fluid">
-            <div class="span3">
+            <div class="span4">
                 <div class="control-group ">
                     <label class="control-label" for="Timbang_nomor_polisi">Tanggal Berat 1</label>
                     <div class="controls">
@@ -132,7 +132,7 @@
                     </div>
                 </div>
             </div>
-            <div class="span6">
+            <div class="span4">
                 <div class="control-group ">
                     <label class="control-label">Berat 1</label>
                     <div class="controls">
@@ -163,6 +163,8 @@
 
                     </div>
                 </div>
+            </div>
+            <div class="span4">
                 <div class="control-group ">
                     <label class="control-label" for="Timbang_nomor_polisi">Netto</label>
                     <div class="controls">
@@ -321,7 +323,7 @@
         var berat2 = parseInt($("#Timbang_berat_timbang2").val());
         var rafaksi = parseInt($("#Timbang_rafaksi").val());
         var harga = parseInt($("#Timbang_harga").val());
-        var netto = (berat1*100) - (berat2*100) - rafaksi;
+        var netto = (berat1 * 100) - (berat2 * 100) - rafaksi;
         var total = netto * harga;
         $("#Timbang_netto").val(netto);
         $("#Timbang_total").val(total);

@@ -28,7 +28,7 @@ $this->beginWidget('zii.widgets.CPortlet', array(
 $this->widget('bootstrap.widgets.TbMenu', array(
 	'type'=>'pills',
 	'items'=>array(
-		array('label'=>'Tambah', 'icon'=>'icon-plus', 'url'=>Yii::app()->controller->createUrl('create'), 'linkOptions'=>array()),
+		array('label'=>'Tambah', 'icon'=>'icon-plus', 'url'=>Yii::app()->controller->createUrl('create'), 'linkOptions'=>array(), 'visible' => landa()->checkAccess('perawatan', 'c')),
                 array('label'=>'List Data', 'icon'=>'icon-th-list', 'url'=>Yii::app()->controller->createUrl('index'),'active'=>true, 'linkOptions'=>array()),
 		array('label'=>'Pencarian & Export Excel', 'icon'=>'icon-search', 'url'=>'#', 'linkOptions'=>array('class'=>'search-button')),
 	),
@@ -45,7 +45,16 @@ $this->endWidget();
 </div><!-- search-form -->
 
 
-<?php $this->widget('bootstrap.widgets.TbGridView',array(
+<?php 
+$button='';
+if (landa()->checkAccess("perawatan", 'r'))
+    $button .= '{view} ';
+if (landa()->checkAccess("perawatan", 'u'))
+    $button .= '{update} ';
+if (landa()->checkAccess("perawatan", 'd'))
+    $button .= '{delete}';
+
+$this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'perawatan-truk-grid',
 	'dataProvider'=>$model->search(),
         'type'=>'striped bordered condensed',
@@ -74,7 +83,7 @@ $this->endWidget();
 		*/
        array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
-			'template' => '{view} {update} {delete}',
+			'template' => $button,
 			'buttons' => array(
 			      'view' => array(
 					'label'=> 'Lihat',

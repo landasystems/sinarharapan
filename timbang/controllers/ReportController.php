@@ -19,12 +19,28 @@ class ReportController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // u
-                'actions' => array('index', 'update'),
-                'expression' => 'app()->controller->isValidAccess(1,"u")'
+                'actions' => array('trsCustomer'),
+                'expression' => 'app()->controller->isValidAccess("trsCustomer","r")'
+            ),
+            array('allow', // u
+                'actions' => array('trsSopir'),
+                'expression' => 'app()->controller->isValidAccess("trSopir","r")'
+            ),
+            array('allow', // u
+                'actions' => array('trsKendaraan'),
+                'expression' => 'app()->controller->isValidAccess("prKendaraan","r")'
+            ),
+            array('allow', // u
+                'actions' => array('rekapHutCustomer'),
+                'expression' => 'app()->controller->isValidAccess("rkpCostumer","r")'
+            ),
+            array('allow', // u
+                'actions' => array('rekapBonSopir'),
+                'expression' => 'app()->controller->isValidAccess("rkpSopir","r")'
             ),
             array('allow', // d
-                'actions' => array('index', 'delete'),
-                'expression' => 'app()->controller->isValidAccess(1,"d")'
+                'actions' => array('rekapKendaraan'),
+                'expression' => 'app()->controller->isValidAccess(rkpKendaraan,"r")'
             )
         );
     }

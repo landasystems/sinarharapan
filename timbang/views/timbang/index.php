@@ -27,7 +27,7 @@ $this->beginWidget('zii.widgets.CPortlet', array(
 $this->widget('bootstrap.widgets.TbMenu', array(
     'type' => 'pills',
     'items' => array(
-        array('label' => 'Tambah', 'icon' => 'icon-plus', 'url' => Yii::app()->controller->createUrl('create'), 'linkOptions' => array()),
+        array('label' => 'Tambah', 'icon' => 'icon-plus', 'url' => Yii::app()->controller->createUrl('create'), 'linkOptions' => array(),'visible' => landa()->checkAccess('timbang', 'c')),
         array('label' => 'List Data', 'icon' => 'icon-th-list', 'url' => Yii::app()->controller->createUrl('index'), 'active' => true, 'linkOptions' => array()),
         array('label' => 'Pencarian & Export Excel', 'icon' => 'icon-search', 'url' => '#', 'linkOptions' => array('class' => 'search-button')),
     ),
@@ -46,6 +46,14 @@ $this->endWidget();
 </div><!-- search-form -->
 
 <?php
+$button='';
+if (landa()->checkAccess("timbang", 'r'))
+    $button .= '{view} ';
+if (landa()->checkAccess("timbang", 'u'))
+    $button .= '{update} ';
+if (landa()->checkAccess("timbang", 'd'))
+    $button .= '{delete}';
+
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id' => 'chargeAdditional-form',
     'enableAjaxValidation' => false,
@@ -111,7 +119,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
          */
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{view} {update} {delete}',
+            'template' => $button,
             'buttons' => array(
                 'view' => array(
                     'label' => 'Lihat',

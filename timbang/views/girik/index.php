@@ -27,7 +27,7 @@ $this->beginWidget('zii.widgets.CPortlet', array(
 $this->widget('bootstrap.widgets.TbMenu', array(
     'type' => 'pills',
     'items' => array(
-        array('label' => 'Tambah', 'icon' => 'icon-plus', 'url' => Yii::app()->controller->createUrl('create'), 'linkOptions' => array()),
+        array('label' => 'Tambah', 'icon' => 'icon-plus', 'url' => Yii::app()->controller->createUrl('create'), 'linkOptions' => array(), 'visible' => landa()->checkAccess('storGir', 'c')),
         array('label' => 'List Data', 'icon' => 'icon-th-list', 'url' => Yii::app()->controller->createUrl('index'), 'active' => true, 'linkOptions' => array()),
         array('label' => 'Pencarian & Export Excel', 'icon' => 'icon-search', 'url' => '#', 'linkOptions' => array('class' => 'search-button')),
     ),
@@ -47,6 +47,13 @@ $this->endWidget();
 
 
 <?php
+$button='';
+if (landa()->checkAccess("storGir", 'r'))
+    $button .= '{view} ';
+if (landa()->checkAccess("storGir", 'u'))
+    $button .= '{update}';
+if (landa()->checkAccess("storGir", 'd'))
+    $button .= '{delete}';
 $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'girik-grid',
     'dataProvider' => $model->search(),
@@ -100,7 +107,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
          */
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{view} {update} {delete}',
+            'template' => $button,
             'buttons' => array(
                 'view' => array(
                     'label' => 'Lihat',

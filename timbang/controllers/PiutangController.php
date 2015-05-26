@@ -22,20 +22,20 @@ class PiutangController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // c
-                'actions' => array('index', 'create'),
-                'expression' => 'app()->controller->isValidAccess(1,"c")'
+                'actions' => array('create'),
+                'expression' => 'app()->controller->isValidAccess("pinjaman","c")'
             ),
             array('allow', // r
                 'actions' => array('index', 'view'),
-                'expression' => 'app()->controller->isValidAccess(1,"r")'
+                'expression' => 'app()->controller->isValidAccess("pinjaman","r")'
             ),
             array('allow', // u
-                'actions' => array('index', 'update'),
-                'expression' => 'app()->controller->isValidAccess(1,"u")'
+                'actions' => array('update'),
+                'expression' => 'app()->controller->isValidAccess("pinjaman","u")'
             ),
             array('allow', // d
-                'actions' => array('index', 'delete'),
-                'expression' => 'app()->controller->isValidAccess(1,"d")'
+                'actions' => array('delete'),
+                'expression' => 'app()->controller->isValidAccess("pinjaman","d")'
             )
         );
     }

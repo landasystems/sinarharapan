@@ -103,7 +103,7 @@
             <div class="span5">
                 <?php echo $form->textFieldRow($model, 'nomor_girik', array('class' => 'span6')); ?>
 
-                <?php echo $form->textFieldRow($model, 'berat', array('class' => 'angka span12', 'append' => 'Kg', 'onkeyup' => 'calculate()')); ?>
+                <?php echo $form->textFieldRow($model, 'berat', array('class' => 'angka span12', 'append' => 'Kw', 'onkeyup' => 'calculate()')); ?>
 
                 <?php echo $form->textFieldRow($model, 'ongkos', array('class' => 'angka span12', 'prepend' => 'Rp', 'onkeyup' => 'calculate()', 'value' => $ongkos, 'append' => '/ Kw')); ?>
 
@@ -179,7 +179,7 @@
 </div>
 <script type="text/javascript">
     function calculate() {
-        var berat = parseFloat($("#Girik_berat").val() / 1000);
+        var berat = parseFloat($("#Girik_berat").val());
         var ongkos = parseInt($("#Girik_ongkos").val());
         var solar = parseInt($("#Girik_solar").val());
         var persentasi_truk = parseFloat($("#fee_truk").val());

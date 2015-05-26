@@ -40,9 +40,11 @@
     ));
     $pengaturan = Pengaturan::model()->findByPk(1);
     if ($model->isNewRecord == TRUE) {
+        $solar = (!empty($pengaturan->solar)) ? $pengaturan->solar : 0;
         $ongkos = (!empty($pengaturan->ongkos_sopir)) ? $pengaturan->ongkos_sopir : 0;
     } else {
         $ongkos = $model->ongkos;
+        $solar = $model->solar;
     }
     ?>
     <fieldset>
@@ -53,6 +55,7 @@
         <div class="row-fluid">
             <?php echo $form->errorSummary($model, 'Opps!!!', null, array('class' => 'alert alert-error span12')); ?>
             <div class="span5">
+                <legend>Data Sopir</legend>
                 <?php
                 echo $form->datepickerRow(
                         $model, 'tanggal', array(
@@ -101,6 +104,7 @@
                 </div>
             </div>
             <div class="span5">
+                <legend>Data Girik</legend>
                 <?php echo $form->textFieldRow($model, 'nomor_girik', array('class' => 'span6')); ?>
 
                 <?php echo $form->textFieldRow($model, 'berat', array('class' => 'angka span12', 'append' => 'Kw', 'onkeyup' => 'calculate()')); ?>
@@ -109,7 +113,7 @@
 
                 <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span12', 'prepend' => 'Rp', 'readonly' => true)); ?>
 
-                <?php echo $form->textFieldRow($model, 'solar', array('class' => 'angka span12', 'prepend' => 'Rp', 'value' => (!empty($pengaturan->solar)) ? $pengaturan->solar : 0, 'onkeyup' => 'calculate()')); ?>
+                <?php echo $form->textFieldRow($model, 'solar', array('class' => 'angka span12', 'prepend' => 'Rp', 'value' => $solar, 'onkeyup' => 'calculate()')); ?>
 
                 <?php echo $form->textFieldRow($model, 'fee_sopir', array('class' => 'angka span12', 'prepend' => 'Rp', 'readonly' => true,)); ?>
                 <input type="hidden" id="fee_sopir" value="<?php echo (!empty($pengaturan->persentasi_sopir)) ? ($pengaturan->persentasi_sopir / 100) : 0; ?>">

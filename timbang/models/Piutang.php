@@ -55,7 +55,7 @@ class Piutang extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'Customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
-            'Pengaturan' => array(self::BELONGS_TO, 'Pengaturan', 'bunga'),
+//            'Pengaturan' => array(self::BELONGS_TO, 'Pengaturan', 'bunga'),
         );
     }
 
@@ -131,9 +131,9 @@ class Piutang extends CActiveRecord {
         return (!empty($this->Customer->nama)) ? $this->Customer->nama : '-';
     }
 
-    public function getTanggalTimbang() {
-        return (!empty(date('d-m-Y', strtotime($this->tanggal)))) ? date('d-m-Y', strtotime($this->tanggal)) : '-';
-    }
+//    public function getTanggalTimbang() {
+//        return (!empty(date('d-m-Y', strtotime($this->tanggal)))) ? date('d-m-Y', strtotime($this->tanggal)) : '-';
+//    }
 
     public function arrPinjaman() {
         $terpal = array('uang' => 'Uang', 'pupuk' => 'Pupuk');

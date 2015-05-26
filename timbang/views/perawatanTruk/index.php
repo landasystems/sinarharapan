@@ -75,7 +75,7 @@ $this->widget('bootstrap.widgets.TbGridView',array(
                 array(
                     'header' => 'Total',
                     'name' => 'total',
-                    'value' => '$data->totalCredit',
+                    'value' => '$data->totalDebet',
                 ),
 		/*
 		'created',

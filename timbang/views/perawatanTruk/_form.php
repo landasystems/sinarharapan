@@ -152,7 +152,7 @@
                                             <td>
                                                 <div class="input-prepend">
                                                     <span class="add-on">Rp</span>
-                                                    <input class="angka span12" name="subTotalDet[]" id="subTotalDet" type="text" readonly="true" value="<?php echo $val->credit ?>" >
+                                                    <input class="angka span12" name="subTotalDet[]" id="subTotalDet" type="text" readonly="true" value="<?php echo $val->debet ?>" >
                                                 </div>
                                             </td>
                                             <?php
@@ -168,7 +168,7 @@
                                             ?>
                                         </tr>
                                         <?php
-                                        $total += $val->credit;
+                                        $total += $val->debet;
                                         $no++;
                                     }
                                     ?>

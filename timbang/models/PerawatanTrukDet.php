@@ -51,6 +51,7 @@ class PerawatanTrukDet extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'PerawatanTruk' => array(self::BELONGS_TO, 'PerawatanTruk', 'perawatan_truk_id'),
+            'Girik' => array(self::BELONGS_TO, 'Girik', 'girik_id'),
         );
     }
 
@@ -61,6 +62,7 @@ class PerawatanTrukDet extends CActiveRecord {
         return array(
             'id' => 'ID',
             'perawatan_truk_id' => 'Perawatan Truk',
+            'girik_id' => 'Girik',
             'keterangan' => 'Keterangan',
             'harga' => 'Harga',
             'qty' => 'Qty',
@@ -91,6 +93,7 @@ class PerawatanTrukDet extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('perawatan_truk_id', $this->perawatan_truk_id);
+        $criteria->compare('girik_id', $this->girik_id);
         $criteria->compare('keterangan', $this->keterangan, true);
         $criteria->compare('harga', $this->harga);
         $criteria->compare('qty', $this->qty);

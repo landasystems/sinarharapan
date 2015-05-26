@@ -13,6 +13,7 @@
                 <th style="text-align:center">Keterangan</th>
                 <th style="text-align:center;width: 20%">Debet</th>
                 <th style="text-align:center;width: 20%">Credit</th>
+                <th style="text-align:center;width: 20%">Saldo</th>
             </tr>
         </thead>
         <tbody>
@@ -31,22 +32,14 @@
                 <td></td>
                 <td>Saldo Awal</td>
                 <?php
-                if ($balance > 0) {
-                    if (isset($export)) {
-                        echo '<td style="text-align:right">' . $balance . '</td>';
-                        echo '<td></td>';
-                    } else {
-                        echo '<td style="text-align:right">' . landa()->rp($balance) . '</td>';
-                        echo '<td></td>';
-                    }
+                if (isset($export)) {
+                    echo '<td></td>';
+                    echo '<td></td>';
+                    echo '<td style="text-align:right">' . $balance . '</td>';
                 } else {
-                    if (isset($export)) {
-                        echo '<td></td>';
-                        echo '<td style="text-align:right">' . $balance . '</td>';
-                    } else {
-                        echo '<td></td>';
-                        echo '<td style="text-align:right">' . landa()->rp($balance) . '</td>';
-                    }
+                    echo '<td></td>';
+                    echo '<td></td>';
+                    echo '<td style="text-align:right">' . landa()->rp($balance) . '</td>';
                 }
                 ?>
             </tr>
@@ -54,15 +47,17 @@
             $debet = 0;
             $credit = 0;
             $monYear = '';
+            $saldo = 0;
 
             $mPiutang = BonDet::model()->findAll(array(
                 'with' => 'Bon.Sopir',
-                'order'=>'t.tanggal',
+                'order' => 't.tanggal',
                 'condition' => 'Sopir.is_delete = 0 AND Sopir.id=' . $sopir . ' AND (t.tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND t.tanggal<="' . date('Y-m-d', strtotime($end)) . '")'
             ));
             foreach ($mPiutang as $val) {
                 $sDate = ($monYear == date("F Y", strtotime($val->tanggal))) ? "" : date("F Y", strtotime($val->tanggal));
                 $monYear = date("F Y", strtotime($val->tanggal));
+                $saldo += $balance + $val->debet - $val->credit;
                 echo '<tr>';
                 echo '<td style="text-align:center;width:10%">' . $sDate . '</td>';
                 echo '<td style="text-align:center;width:5%">' . date('d', strtotime($val->tanggal)) . '</td>';
@@ -70,14 +65,17 @@
                 if (isset($export) && $export = 1) {
                     echo '<td style="text-align:right">' . $val->debet . '</td>';
                     echo '<td style="text-align:right">' . $val->credit . '</td>';
+                    echo '<td style="text-align:right">' . $saldo . '</td>';
                 } else {
                     echo '<td style="text-align:right">' . landa()->rp($val->debet) . '</td>';
                     echo '<td style="text-align:right">' . landa()->rp($val->credit) . '</td>';
+                    echo '<td style="text-align:right">' . landa()->rp($saldo) . '</td>';
                 }
                 echo '</tr>';
 
                 $debet += $val->debet;
                 $credit += $val->credit;
+                
             }
             ?>
         </tbody>
@@ -87,9 +85,11 @@
                 <?php if (isset($export) && $export = 1) { ?>
                     <th style="text-align:right !important"><?php echo $debet; ?></th>
                     <th style="text-align:right !important"><?php echo $credit; ?></th>
+                    <th style="text-align:right !important"><?php echo $saldo; ?></th>
                 <?php } else { ?>
                     <th style="text-align:right !important"><?php echo landa()->rp($debet); ?></th>
                     <th style="text-align:right !important"><?php echo landa()->rp($credit); ?></th>
+                    <th style="text-align:right !important"><?php echo landa()->rp($saldo); ?></th>
                     <?php } ?>
             </tr>
         </tfoot>

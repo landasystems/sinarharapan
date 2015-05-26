@@ -1,7 +1,7 @@
 <?php
-$this->setPageTitle('Bons');
+$this->setPageTitle('Bon');
 $this->breadcrumbs = array(
-    'Bons',
+    'Bon',
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -27,7 +27,7 @@ $this->beginWidget('zii.widgets.CPortlet', array(
 $this->widget('bootstrap.widgets.TbMenu', array(
     'type' => 'pills',
     'items' => array(
-        array('label' => 'Tambah', 'icon' => 'icon-plus', 'url' => Yii::app()->controller->createUrl('create'), 'linkOptions' => array()),
+        array('label' => 'Tambah', 'icon' => 'icon-plus', 'url' => Yii::app()->controller->createUrl('create'), 'linkOptions' => array(), 'visible' => landa()->checkAccess('bon', 'c')),
         array('label' => 'List Data', 'icon' => 'icon-th-list', 'url' => Yii::app()->controller->createUrl('index'), 'active' => true, 'linkOptions' => array()),
         array('label' => 'Pencarian & Export Excel', 'icon' => 'icon-search', 'url' => '#', 'linkOptions' => array('class' => 'search-button')),
     ),
@@ -47,28 +47,31 @@ $this->endWidget();
 
 
 <?php
+$button='';
+if (landa()->checkAccess("bon", 'r'))
+    $button .= '{view} ';
+if (landa()->checkAccess("bon", 'u'))
+    $button .= '{update} ';
+if (landa()->checkAccess("bon", 'd'))
+    $button .= '{delete}';
 $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'bon-grid',
     'dataProvider' => $model->search(),
     'type' => 'striped bordered condensed',
     'template' => '{items}{pager}{summary}',
     'columns' => array(
-        
         array(
             'name' => 'sopir_id',
             'value' => '$data->sopir',
         ),
-       array(
+        array(
             'name' => 'tanggal',
             'value' => '$data->tgl',
-            
         ),
-       array(
+        array(
             'name' => 'total',
             'value' => '$data->rptotal',
         ),
-     
-        
         'deskripsi',
         /*
           'created_user_id',
@@ -77,7 +80,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
          */
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{view} {update} {delete}',
+            'template' => $button,
             'buttons' => array(
                 'view' => array(
                     'label' => 'Lihat',

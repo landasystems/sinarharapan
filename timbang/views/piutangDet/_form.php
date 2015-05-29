@@ -151,7 +151,7 @@
                                 <?php
                                 $subTotal = isset($model->Piutang->sub_total) ? $model->Piutang->sub_total : 0;
                                 $bunga = isset($model->Piutang->bunga) ? $model->Piutang->bunga : 0;
-                                echo $subTotal * ($bunga / 100)
+                                echo landa()->rp($subTotal * ($bunga / 100));
                                 ?>
                         </div>
                     </div>

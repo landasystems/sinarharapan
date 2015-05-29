@@ -82,8 +82,7 @@ class PiutangDetController extends Controller {
                     $bayar = new PiutangDet;
                     $bayar->attributes = $_POST['PiutangDet'];
                     $bayar->tanggal = $_POST['PiutangDet']['tanggal'];
-                    $bayar->credit = $_POST['bayar'][$i] - $_POST['bunga'][$i];
-                    $bayar->bunga = $_POST['bunga'][$i];
+                    $bayar->credit = $_POST['bayar'][$i];
                     $bayar->piutang_id = $_POST['piutang_id'][$i];
                     $bayar->save();
                 }

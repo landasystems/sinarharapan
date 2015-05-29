@@ -145,7 +145,8 @@
                 </div>
                 <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span12', 'prepend' => 'Rp', 'readOnly' => true)); ?>
                 <?php
-                echo $form->radioButtonListRow($model, 'lunas', Piutang::model()->ArrLunas());
+                if($model->isNewRecord == false)
+                    echo $form->radioButtonListRow($model, 'lunas', Piutang::model()->ArrLunas());
                 ?>
             </div></div>
 

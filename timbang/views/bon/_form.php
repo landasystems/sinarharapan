@@ -81,7 +81,10 @@
                 <?php echo $form->textAreaRow($model, 'deskripsi', array('rows' => 3, 'cols' => 50, 'class' => 'span20')); ?>
                 <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span10', 'prepend' => 'Rp')); ?>
 
-
+                <?php
+                if($model->isNewRecord == false)
+                    echo $form->radioButtonListRow($model, 'lunas', Piutang::model()->ArrLunas());
+                ?>
             </div></div>
 
 

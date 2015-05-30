@@ -39,7 +39,6 @@ class PiutangController extends Controller {
             )
         );
     }
-    
 
     /**
      * Displays a particular model.
@@ -82,14 +81,14 @@ class PiutangController extends Controller {
             $model->attributes = $_POST['Piutang'];
             $model->customer_id = $_POST['Piutang']['customer_id'];
             $model->jumlah_pupuk = $_POST['Piutang']['jumlah_pupuk'];
-            if ($model->save()){
+            if ($model->save()) {
                 $pituangDet = new PiutangDet;
                 $pituangDet->piutang_id = $model->id;
                 $pituangDet->tanggal = $model->tanggal;
-                $pituangDet->debet= $model->total;
+                $pituangDet->debet = $model->total;
                 $pituangDet->save();
                 $this->redirect(array('view', 'id' => $model->id));
-        }
+            }
         }
 
         $this->render('create', array(
@@ -112,9 +111,11 @@ class PiutangController extends Controller {
             $model->attributes = $_POST['Piutang'];
             $model->customer_id = $_POST['Piutang']['customer_id'];
             $model->jumlah_pupuk = $_POST['Piutang']['jumlah_pupuk'];
-            PiutangDet::model()->updateAll(array('debet'=>$_POST['Piutang']['total'],'tanggal'=>$_POST['Piutang']['tanggal']),'piutang_id='.$id);
-            if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
+            if ($model->save()) {
+                $piutangDet = PiutangDet::model()->find(array('condition' => 'piutang_id = ' . $id, 'order' => 'id ASC'));
+                $piutangDet->debet = $model->total;
+                $piutangDet->save();
+            }
         }
 
         $this->render('update', array(
@@ -131,12 +132,11 @@ class PiutangController extends Controller {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
             $this->loadModel($id)->delete();
-            PiutangDet::model()->deleteAll('piutang_id='.$id);
+            PiutangDet::model()->deleteAll('piutang_id=' . $id);
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        }
-        else
+        } else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -147,17 +147,17 @@ class PiutangController extends Controller {
         $criteria = new CDbCriteria();
         $model = new Piutang('search');
         $model->unsetAttributes();  // clear any default values
-        
+
         if (isset($_POST['delete']) && isset($_POST['ceckbox'])) {
             foreach ($_POST['ceckbox'] as $data) {
                 $a = $this->loadModel($data);
-                if (!empty($a)){
+                if (!empty($a)) {
                     $a->delete();
-                    PiutangDet::model()->deleteAll('piutang_id='.$data);
+                    PiutangDet::model()->deleteAll('piutang_id=' . $data);
                 }
             }
-            }
-           
+        }
+
         if (isset($_GET['Piutang'])) {
             $model->attributes = $_GET['Piutang'];
 
@@ -165,24 +165,23 @@ class PiutangController extends Controller {
             if ($model->customer_id == 0) {
                 unset($model->customer_id);
             }
-            
         }
 
         $this->render('index', array(
             'model' => $model,
         ));
     }
-    
+
     public function actionGenerateExcel() {
         $type = $_GET['type'];
         $customer_id = $_GET['customer_id'];
 
         $criteria = new CDbCriteria;
         if (!empty($type))
-        $criteria->compare('type', $type, true);
+            $criteria->compare('type', $type, true);
         if (!empty($customer_id))
-        $criteria->compare('customer_id', $customer_id, true);
-        
+            $criteria->compare('customer_id', $customer_id, true);
+
         $model = Piutang::model()->findAll($criteria);
 
         Yii::app()->request->sendFile('Data Transaksi Pinjaman -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(

@@ -17,7 +17,7 @@
 
         <div class="row-fluid">
             <div class="span6">
-
+                <legend>Detail Sopir</legend>
                 <?php echo $form->errorSummary($model, 'Opps!!!', null, array('class' => 'alert alert-error span12')); ?>
 
 
@@ -69,7 +69,8 @@
                 </div>
 
             </div>
-            <div class="span6 img-polaroid" style="padding: 15px">
+            <div class="span6">
+                <legend>Detail Bon</legend>
                 <?php
                 echo $form->datepickerRow(
                         $model, 'tanggal', array(

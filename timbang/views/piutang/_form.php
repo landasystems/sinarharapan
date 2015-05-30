@@ -49,8 +49,7 @@
 
         <div class="row-fluid">
             <div class="span5">
-
-
+                <legend>Detail Customer</legend>
                 <?php
                 $idcustomer = isset($model->customer_id) ? $model->customer_id : 0;
                 $namaCustomer = isset($model->Customer->nama) ? $model->Customer->nama : 0;
@@ -101,6 +100,7 @@
                 <?php echo $form->textFieldRow($model, 'deskripsi', array('class' => 'span12', 'maxlength' => 255)); ?>
             </div>
             <div class="span5">
+                <legend>Detail Pinjaman</legend>
                 <?php
                 echo $form->datepickerRow(
                         $model, 'tanggal', array(
@@ -145,10 +145,11 @@
                 </div>
                 <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span12', 'prepend' => 'Rp', 'readOnly' => true)); ?>
                 <?php
-                if($model->isNewRecord == false)
+                if ($model->isNewRecord == false)
                     echo $form->radioButtonListRow($model, 'lunas', Piutang::model()->ArrLunas());
                 ?>
-            </div></div>
+            </div>
+        </div>
 
 
         <?php if (!isset($_GET['v'])) { ?>        <div class="form-actions">
@@ -182,10 +183,31 @@
         <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
             <tr>
                 <td style="text-align: left;"><b>Customer</b></td>
-                <td style="width:80px; text-align: " colspan="2">fgdfg</td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $model->Customer->nama; ?></td>
 
-                <td style="width:80px; text-align: "><b>No Truck</b></td>
-                <td style="width:80px; text-align: ">fgdfg</td>
+                <td style="width:80px; text-align: "><b>Tanggal</b></td>
+                <td style="width:80px; text-align: "><?php echo date("d M Y", strtotime($model->tanggal)) ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>No Tlp</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $model->Customer->telepon; ?></td>
+                
+                <td style="width:80px; text-align: "><b>Pinjaman</b></td>
+                <td style="width:80px; text-align: "><?php echo landa()->rp($model->total); ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>Jaminan</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $model->jaminan; ?></td>
+                
+                <td style="width:80px; text-align: "><b>Bunga</b></td>
+                <td style="width:80px; text-align: "><?php echo landa()->rp($model->sub_total * ($model->bunga / 100)); ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>Keterangan</b></td>
+                <td style="width:80px; text-align: " colspan="2"><?php echo $model->deskripsi; ?></td>
+                
+                <td style="width:80px; text-align: "><b>Total Pinjaman</b></td>
+                <td style="width:80px; text-align: "><?php echo landa()->rp($model->total - $model->sub_total * ($model->bunga / 100)); ?></td>
             </tr>
         </table>
         <hr>

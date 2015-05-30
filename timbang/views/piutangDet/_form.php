@@ -196,8 +196,8 @@
 </div>
 <div class="printNota" id="printNota" style="width:100%;">
     <center style="font-size: 11.5px;"><strong>CV Sinar Harapan</strong></center>
-    <center style="font-size: 11.5px;">Jl. Mayjen Panjaitan No. 62 Malang</center>
-    <center style="font-size: 11.5px;">Telp. (0341) 789555</center>
+   <center style="font-size: 11.5px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
+        <center style="font-size: 11.5px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
     <hr>
     <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
         <tr>

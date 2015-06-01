@@ -251,22 +251,22 @@
 </div>
 <?php if (isset($_GET['v'])) { ?>
     <div class="printNota" id="printNota" style="width:100%;">
-        <center style="font-size: 11.5px;"><strong>CV Sinar Harapan</strong></center>
-        <center style="font-size: 11.5px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
-        <center style="font-size: 11.5px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
+        <center style="font-size: 12px;"><strong>CV Sinar Harapan</strong></center>
+        <center style="font-size: 12px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
+        <center style="font-size: 12px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
         <hr>
         <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
             <tr>
                 <td style="text-align: left;"><b>Tanggal</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo date("d M Y", strtotime($model->tanggal)); ?></td>
-                <td style="width:80px; text-align: "><b>Type Truk</b></td>
-                <td style="text-align: "><?php echo $model->Truk->type ?></td>
+                <td colspan="2"><?php echo date("d M Y", strtotime($model->tanggal)); ?></td>
+                <td ><b>Type Truk</b></td>
+                <td ><?php echo $model->Truk->type ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>Merk Truk</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Truk->merk) ? $model->Truk->merk : "-"; ?></td>
-                <td style="width:80px; text-align: "><b>Nomor Polisi</b></td>
-                <td style="text-align: "><?php echo isset($model->Truk->nomor_polisi) ? $model->Truk->nomor_polisi : "-"; ?></td>
+                <td colspan="2"><?php echo isset($model->Truk->merk) ? $model->Truk->merk : "-"; ?></td>
+                <td ><b>Nomor Polisi</b></td>
+                <td ><?php echo isset($model->Truk->nomor_polisi) ? $model->Truk->nomor_polisi : "-"; ?></td>
             </tr>
         </table>
         <p style="margin-left: 0px; font-size: 12px; text-align: left;"><b>Detail Perawatan</b></p>

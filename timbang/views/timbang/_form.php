@@ -214,33 +214,33 @@
 
 </div>
 <?php if ($model->isNewRecord == false) { ?>
-    <div class="printNota" id="printNota" style="width:310px; width:310px;">
-        <center style="font-size: 11.5px;"><strong>CV Sinar Harapan</strong></center>
-       <center style="font-size: 11.5px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
-        <center style="font-size: 11.5px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
+    <div class="printNota" id="printNota" style="width:100%;">
+        <center style="font-size: 12px;"><strong>CV Sinar Harapan</strong></center>
+       <center style="font-size: 12px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
+        <center style="font-size: 12px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
         <hr>
         <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
             <tr>
                 <td style="text-align: left;"><b>Customer</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo $namaCustomer ?></td>
+                <td  colspan="2"><?php echo $namaCustomer ?></td>
 
-                <td style="width:80px; text-align: "><b>No Truck</b></td>
-                <td style="width:80px; text-align: "><?php echo $model->nomor_polisi ?></td>
+                <td ><b>No Truck</b></td>
+                <td ><?php echo $model->nomor_polisi ?></td>
 
             </tr>
             <tr>
                 <td style="text-align: left;"><b>No Telp</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo $telp ?></td>
+                <td  colspan="2"><?php echo $telp ?></td>
 
-                <td style="width:80px; text-align: "><b>Product</b></td>
-                <td style="width:80px; text-align: "><?php echo $model->produk ?></td>
+                <td ><b>Product</b></td>
+                <td ><?php echo $model->produk ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>Alamat</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo $alamat ?></td>
+                <td  colspan="2"><?php echo $alamat ?></td>
 
-                <td style="width:80px; text-align: "><b>Tanggal</b></td>
-                <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->created)) ?></td>
+                <td ><b>Tanggal</b></td>
+                <td ><?php echo date('d-m-Y', strtotime($model->created)) ?></td>
             </tr>
 
 
@@ -250,34 +250,34 @@
             </tr>
             <tr>
                 <td style="text-align: left;"><b>Timbang 1</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo $model->berat_timbang1 ?> Kg</td>
-                <td style="width:80px; text-align: "></td>
-                <td style="width:80px; text-align: "><b>Date</b></td>
-                <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->tanggal_timbang1)) ?></td>
+                <td  colspan="2"><?php echo $model->berat_timbang1 ?> Kg</td>
+                <td ></td>
+                <td ><b>Date</b></td>
+                <td ><?php echo date('d-m-Y', strtotime($model->tanggal_timbang1)) ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>Timbang 2</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo $model->berat_timbang2 ?> Kg</td>
-                <td style="width:80px; text-align: "></td>
-                <td style="width:80px; text-align: "><b>Date</b></td>
-                <td style="width:80px; text-align: "><?php echo date('d-m-Y', strtotime($model->tanggal_timbang2)) ?></td>
+                <td  colspan="2"><?php echo $model->berat_timbang2 ?> Kg</td>
+                <td ></td>
+                <td ><b>Date</b></td>
+                <td ><?php echo date('d-m-Y', strtotime($model->tanggal_timbang2)) ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>Rafaksi</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo $model->rafaksi ?> Kg</td>
-                <td style="width:80px; text-align: "></td>
-                <td style="width:80px; text-align: "></td>
-                <td style="width:80px; text-align: "></td>
+                <td  colspan="2"><?php echo $model->rafaksi ?> Kg</td>
+                <td ></td>
+                <td ></td>
+                <td ></td>
             </tr>
             <tr>
 
                 <td style="width:80px;">&nbsp;</td>
-                <td style="width:80px; text-align: "><hr></td>
+                <td ><hr></td>
             </tr>
             <tr>
 
                 <td style="width:80px;">&nbsp;</td>
-                <td style="width:80px; text-align: "><?php echo $model->netto ?> Kg</td>
+                <td ><?php echo $model->netto ?> Kg</td>
             </tr>
             <tr>
 

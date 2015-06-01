@@ -195,33 +195,33 @@
 
 </div>
 <div class="printNota" id="printNota" style="width:100%;">
-    <center style="font-size: 11.5px;"><strong>CV Sinar Harapan</strong></center>
-   <center style="font-size: 11.5px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
-        <center style="font-size: 11.5px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
+    <center style="font-size: 12px;"><strong>CV Sinar Harapan</strong></center>
+   <center style="font-size: 12px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
+        <center style="font-size: 12px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
     <hr>
     <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
         <tr>
             <td style="text-align: left;"><b>Tanggal</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo date("d M Y", strtotime($model->tanggal)); ?></td>
-            <td style="width:80px; text-align: "></td>
+            <td  colspan="2"><?php echo date("d M Y", strtotime($model->tanggal)); ?></td>
+            <td ></td>
             <td style="text-align: "></td>
         </tr>
         <tr>
             <td style="text-align: left;"><b>Customer</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Piutang->Customer->nama) ? $model->Piutang->Customer->nama : "-"; ?></td>
-            <td style="width:80px; text-align: "><b></b></td>
+            <td  colspan="2"><?php echo isset($model->Piutang->Customer->nama) ? $model->Piutang->Customer->nama : "-"; ?></td>
+            <td ><b></b></td>
             <td style="text-align: "></td>
         </tr>
         <tr>
             <td style="text-align: left;"><b>Hutang</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Piutang->total) ? landa()->rp($model->Piutang->total) : "-"; ?></td>
-            <td style="width:80px; text-align: "><b></b></td>
+            <td  colspan="2"><?php echo isset($model->Piutang->total) ? landa()->rp($model->Piutang->total) : "-"; ?></td>
+            <td ><b></b></td>
             <td style="text-align: "></td>
         </tr>
         <tr>
             <td style="text-align: left;"><b>Bayar</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->credit) ? landa()->rp($model->credit) : "-"; ?></td>
-            <td style="width:80px; text-align: "></td>
+            <td  colspan="2"><?php echo isset($model->credit) ? landa()->rp($model->credit) : "-"; ?></td>
+            <td ></td>
             <td style="text-align: "></td>
         </tr>
     </table>

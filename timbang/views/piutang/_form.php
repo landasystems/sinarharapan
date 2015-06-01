@@ -175,39 +175,39 @@
 
 </div>
 <?php if ($model->isNewRecord == false) { ?>
-    <div class="printNota" id="printNota" style="width:310px; width:310px;">
-        <center style="font-size: 11.5px;"><strong>CV Sinar Harapan</strong></center>
-        <center style="font-size: 11.5px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
-        <center style="font-size: 11.5px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
+    <div class="printNota" id="printNota" style="width:100%;">
+        <center style="font-size: 12px;"><strong>CV Sinar Harapan</strong></center>
+        <center style="font-size: 12px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
+        <center style="font-size: 12px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
         <hr>
         <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
             <tr>
                 <td style="text-align: left;"><b>Customer</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo $model->Customer->nama; ?></td>
+                <td colspan="2"><?php echo $model->Customer->nama; ?></td>
 
-                <td style="width:80px; text-align: "><b>Tanggal</b></td>
-                <td style="width:80px; text-align: "><?php echo date("d M Y", strtotime($model->tanggal)) ?></td>
+                <td ><b>Tanggal</b></td>
+                <td ><?php echo date("d M Y", strtotime($model->tanggal)) ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>No Tlp</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo $model->Customer->telepon; ?></td>
+                <td  colspan="2"><?php echo $model->Customer->telepon; ?></td>
                 
-                <td style="width:80px; text-align: "><b>Pinjaman</b></td>
-                <td style="width:80px; text-align: "><?php echo landa()->rp($model->total); ?></td>
+                <td ><b>Pinjaman</b></td>
+                <td ><?php echo landa()->rp($model->total); ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>Jaminan</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo $model->jaminan; ?></td>
+                <td  colspan="2"><?php echo $model->jaminan; ?></td>
                 
-                <td style="width:80px; text-align: "><b>Bunga</b></td>
-                <td style="width:80px; text-align: "><?php echo landa()->rp($model->sub_total * ($model->bunga / 100)); ?></td>
+                <td ><b>Bunga</b></td>
+                <td ><?php echo landa()->rp($model->sub_total * ($model->bunga / 100)); ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>Keterangan</b></td>
-                <td style="width:80px; text-align: " colspan="2"><?php echo $model->deskripsi; ?></td>
+                <td  colspan="2"><?php echo $model->deskripsi; ?></td>
                 
-                <td style="width:80px; text-align: "><b>Total Pinjaman</b></td>
-                <td style="width:80px; text-align: "><?php echo landa()->rp($model->total - $model->sub_total * ($model->bunga / 100)); ?></td>
+                <td ><b>Total Pinjaman</b></td>
+                <td ><?php echo landa()->rp($model->total - $model->sub_total * ($model->bunga / 100)); ?></td>
             </tr>
         </table>
         <hr>

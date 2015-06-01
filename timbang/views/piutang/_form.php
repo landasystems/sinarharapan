@@ -176,42 +176,52 @@
 </div>
 <?php if ($model->isNewRecord == false) { ?>
     <div class="printNota" id="printNota" style="width:100%;">
-        <center style="font-size: 12px;"><strong>CV Sinar Harapan</strong></center>
-        <center style="font-size: 12px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
-        <center style="font-size: 12px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
+        <center style="font-size: 14pt;"><strong>CV SINAR HARAPAN</strong><br>
+            ALAMAT 1 JL. MAYJEN PANJAITAN NO. 62 MALANG <br>
+            TELP. (0341) 789555<br>
+            ALAMAT 2 JL. RAYA GATOT SUBROTO, TALOK</center>
         <hr>
-        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
+        <br>
+        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 13pt;  width:100%;">
             <tr>
-                <td style="text-align: left;"><b>Customer</b></td>
-                <td colspan="2"><?php echo $model->Customer->nama; ?></td>
-
-                <td ><b>Tanggal</b></td>
-                <td ><?php echo date("d M Y", strtotime($model->tanggal)) ?></td>
+                <td ><b>TANGGAL</b></td>
+                <td >: <?php echo date("d M Y", strtotime($model->tanggal)) ?></td>
             </tr>
             <tr>
-                <td style="text-align: left;"><b>No Tlp</b></td>
-                <td  colspan="2"><?php echo $model->Customer->telepon; ?></td>
-                
-                <td ><b>Pinjaman</b></td>
-                <td ><?php echo landa()->rp($model->total); ?></td>
+                <td ><b>PETUGAS</b></td>
+                <td >: <?php echo ISSET($model->Petugas->name) ? $model->Petugas->name : "-"; ?></td>
             </tr>
             <tr>
-                <td style="text-align: left;"><b>Jaminan</b></td>
-                <td  colspan="2"><?php echo $model->jaminan; ?></td>
-                
-                <td ><b>Bunga</b></td>
-                <td ><?php echo landa()->rp($model->sub_total * ($model->bunga / 100)); ?></td>
+                <td style="text-align: left;"><b>CUSTOMER</b></td>
+                <td colspan="2">: <?php echo $model->Customer->nama; ?></td>
             </tr>
             <tr>
-                <td style="text-align: left;"><b>Keterangan</b></td>
-                <td  colspan="2"><?php echo $model->deskripsi; ?></td>
-                
-                <td ><b>Total Pinjaman</b></td>
-                <td ><?php echo landa()->rp($model->total - $model->sub_total * ($model->bunga / 100)); ?></td>
+                <td style="text-align: left;"><b>TELEPON</b></td>
+                <td  colspan="2">: <?php echo $model->Customer->telepon; ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>JAMINAN</b></td>
+                <td  colspan="2">: <?php echo $model->jaminan; ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>KETERANGAN</b></td>
+                <td  colspan="2">: <?php echo $model->deskripsi; ?></td>
+            </tr>
+            <tr>
+                <td ><b>PINJAMAN</b></td>
+                <td >: <?php echo landa()->rp($model->total); ?></td>
+            </tr>
+            <tr>
+                <td ><b>BUNGA</b></td>
+                <td >: <?php echo landa()->rp($model->sub_total * ($model->bunga / 100)); ?></td>
+            </tr>
+            <tr>
+                <td ><b>TOTAL</b></td>
+                <td >: <?php echo landa()->rp($model->total - $model->sub_total * ($model->bunga / 100)); ?></td>
             </tr>
         </table>
+        <br>
         <hr>
-        <p style="text-align:center;font-size: 11.5px;"></p>
     </div>
 <?php } ?>
 <script>

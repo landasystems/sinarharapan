@@ -54,6 +54,7 @@ class Piutang extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'Petugas' => array(self::BELONGS_TO, 'User', 'created_user_id'),
             'Customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
 //            'Pengaturan' => array(self::BELONGS_TO, 'Pengaturan', 'bunga'),
         );

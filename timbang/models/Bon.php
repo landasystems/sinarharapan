@@ -49,6 +49,7 @@ class Bon extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'Sopir' => array(self::BELONGS_TO, 'Sopir', 'sopir_id'),
+            'Petugas' => array(self::BELONGS_TO, 'User', 'created_user_id'),
         );
     }
 

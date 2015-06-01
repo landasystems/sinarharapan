@@ -214,90 +214,73 @@
 
 </div>
 <?php if ($model->isNewRecord == false) { ?>
-    <div class="printNota" id="printNota" style="width:100%;">
-        <center style="font-size: 12px;"><strong>CV Sinar Harapan</strong></center>
-       <center style="font-size: 12px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
-        <center style="font-size: 12px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
+    <div class="printNota" id="printNota" style="width:100%; ">
+        <center style="font-size: 14pt;"><strong>CV SINAR HARAPAN</strong><br>
+            ALAMAT 1 JL. MAYJEN PANJAITAN NO. 62 MALANG <br>
+            TELP. (0341) 789555<br>
+            ALAMAT 2 JL. RAYA GATOT SUBROTO, TALOK</center>
         <hr>
-        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
+        <br>
+        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 13pt;  width:100%;">
             <tr>
-                <td style="text-align: left;"><b>Customer</b></td>
-                <td  colspan="2"><?php echo $namaCustomer ?></td>
+                <td style="text-align: left;"><b>CUSTOMER</b></td>
+                <td>: <?php echo $model->Customer->nama ?></td>
 
-                <td ><b>No Truck</b></td>
-                <td ><?php echo $model->nomor_polisi ?></td>
-
+                <td><b>TANGGAL</b></td>
+                <td>: <?php echo date('d-m-Y', strtotime($model->created)) ?></td>
             </tr>
             <tr>
-                <td style="text-align: left;"><b>No Telp</b></td>
-                <td  colspan="2"><?php echo $telp ?></td>
+                <td style="text-align: left;"><b>TELEPON</b></td>
+                <td>: <?php echo $model->Customer->telepon ?></td>
 
-                <td ><b>Product</b></td>
-                <td ><?php echo $model->produk ?></td>
+                <td><b>PRODUK</b></td>
+                <td>: <?php echo $model->produk ?></td>
             </tr>
             <tr>
-                <td style="text-align: left;"><b>Alamat</b></td>
-                <td  colspan="2"><?php echo $alamat ?></td>
+                <td><b>ALAMAT</b></td>
+                <td>: <?php echo $model->Customer->alamat ?></td>
 
-                <td ><b>Tanggal</b></td>
-                <td ><?php echo date('d-m-Y', strtotime($model->created)) ?></td>
+                <td><b>PLAT NOMOR</b></td>
+                <td>: <?php echo $model->nomor_polisi ?></td>
             </tr>
-
-
-
             <tr style="height: 20px;">
-                <td colspan="6"><hr style="border-top: 3px double #8c8b8b;"></td>
+                <td colspan="5"><hr style="border-top: 1px double #000;"></td>
             </tr>
             <tr>
-                <td style="text-align: left;"><b>Timbang 1</b></td>
-                <td  colspan="2"><?php echo $model->berat_timbang1 ?> Kg</td>
+                <td style="text-align: left;"><b>TIMBANG 1</b></td>
+                <td>: <?php echo $model->berat_timbang1 ?> Kg</td>
+                
+                <td><b>TANGGAL</b></td>
+                <td>: <?php echo date('d-m-Y', strtotime($model->tanggal_timbang1)) ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>TIMBANG 2</b></td>
+                <td>: <?php echo $model->berat_timbang2 ?> Kg</td>
+                
+                <td><b>TANGGAL</b></td>
+                <td>: <?php echo date('d-m-Y', strtotime($model->tanggal_timbang2)) ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>RAFAKSI</b></td>
+                <td  colspan="2">: <?php echo $model->rafaksi ?> Kw</td>
                 <td ></td>
-                <td ><b>Date</b></td>
-                <td ><?php echo date('d-m-Y', strtotime($model->tanggal_timbang1)) ?></td>
-            </tr>
-            <tr>
-                <td style="text-align: left;"><b>Timbang 2</b></td>
-                <td  colspan="2"><?php echo $model->berat_timbang2 ?> Kg</td>
-                <td ></td>
-                <td ><b>Date</b></td>
-                <td ><?php echo date('d-m-Y', strtotime($model->tanggal_timbang2)) ?></td>
-            </tr>
-            <tr>
-                <td style="text-align: left;"><b>Rafaksi</b></td>
-                <td  colspan="2"><?php echo $model->rafaksi ?> Kg</td>
-                <td ></td>
                 <td ></td>
                 <td ></td>
             </tr>
             <tr>
-
-                <td style="width:80px;">&nbsp;</td>
-                <td ><hr></td>
+                <td ><b>NETTO</b></td>
+                <td >: <?php echo $model->netto ?> Kw</td>
             </tr>
             <tr>
-
-                <td style="width:80px;">&nbsp;</td>
-                <td ><?php echo $model->netto ?> Kg</td>
+                <td colspan="5" ALIGN="RIGHT">Juru Timbang</td>
             </tr>
             <tr>
-
-                <td style="width:80px; text-align:right " colspan="5">Juru Timbang</td>
-
+                <td colspan="5" style="height:80px;">&nbsp;</td>
             </tr>
             <tr>
-
-                <td style="width:80px; text-align:right " colspan="5">&nbsp;</td>
-
-            </tr>
-            <tr>
-
-
                 <td style="width:80px; text-align:right " colspan="5">_____________</td>
-
             </tr>
         </table>
-        <hr>
-        <p style="text-align:center;font-size: 11.5px;"></p>
     </div>
 <?php } ?>
 <script>

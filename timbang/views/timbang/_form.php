@@ -216,9 +216,8 @@
 <?php if ($model->isNewRecord == false) { ?>
     <div class="printNota" id="printNota" style="width:100%; ">
         <center style="font-size: 14pt;"><strong>CV SINAR HARAPAN</strong><br>
-            ALAMAT 1 JL. MAYJEN PANJAITAN NO. 62 MALANG <br>
-            TELP. (0341) 789555<br>
-            ALAMAT 2 JL. RAYA GATOT SUBROTO, TALOK</center>
+            ALAMAT 1 JL. MAYJEN PANJAITAN <br> NO. 62 MALANG TELP. (0341) 789555<br>
+            ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
         <hr>
         <br>
         <table class="printTable" id="nota" style="margin : 0 auto; font-size: 13pt;  width:100%;">
@@ -249,14 +248,14 @@
             <tr>
                 <td style="text-align: left;"><b>TIMBANG 1</b></td>
                 <td>: <?php echo $model->berat_timbang1 ?> Kg</td>
-                
+
                 <td><b>TANGGAL</b></td>
                 <td>: <?php echo date('d-m-Y', strtotime($model->tanggal_timbang1)) ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>TIMBANG 2</b></td>
                 <td>: <?php echo $model->berat_timbang2 ?> Kg</td>
-                
+
                 <td><b>TANGGAL</b></td>
                 <td>: <?php echo date('d-m-Y', strtotime($model->tanggal_timbang2)) ?></td>
             </tr>

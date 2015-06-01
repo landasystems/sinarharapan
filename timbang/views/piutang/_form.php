@@ -177,9 +177,8 @@
 <?php if ($model->isNewRecord == false) { ?>
     <div class="printNota" id="printNota" style="width:100%;">
         <center style="font-size: 14pt;"><strong>CV SINAR HARAPAN</strong><br>
-            ALAMAT 1 JL. MAYJEN PANJAITAN NO. 62 MALANG <br>
-            TELP. (0341) 789555<br>
-            ALAMAT 2 JL. RAYA GATOT SUBROTO, TALOK</center>
+            ALAMAT 1 JL. MAYJEN PANJAITAN <br> NO. 62 MALANG TELP. (0341) 789555<br>
+            ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
         <hr>
         <br>
         <table class="printTable" id="nota" style="margin : 0 auto; font-size: 13pt;  width:100%;">
@@ -209,7 +208,7 @@
             </tr>
             <tr>
                 <td ><b>PINJAMAN</b></td>
-                <td >: <?php echo landa()->rp($model->total); ?></td>
+                <td >: <?php echo landa()->rp($model->sub_total); ?></td>
             </tr>
             <tr>
                 <td ><b>BUNGA</b></td>
@@ -217,7 +216,7 @@
             </tr>
             <tr>
                 <td ><b>TOTAL</b></td>
-                <td >: <?php echo landa()->rp($model->total - $model->sub_total * ($model->bunga / 100)); ?></td>
+                <td >: <?php echo landa()->rp($model->total); ?></td>
             </tr>
         </table>
         <br>

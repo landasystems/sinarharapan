@@ -139,7 +139,7 @@
                     <label class="control-label" for="Piutang_bunga">Bunga</label>
                     <div class="controls">
                         <div class="input-append">
-                            <input class="angka span12" value="<?php echo (isset($model->bunga)) ? $model->bunga : $bunga->bunga ?>" name="Piutang[bunga]" id="Piutang_bunga" type="text"><span class="add-on">%</span>
+                            <input class="angka span12" onkeyup="calculate()" value="<?php echo (isset($model->bunga)) ? $model->bunga : $bunga->bunga ?>" name="Piutang[bunga]" id="Piutang_bunga" type="text"><span class="add-on">%</span>
                         </div>
                     </div>
                 </div>

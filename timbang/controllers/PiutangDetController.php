@@ -72,22 +72,26 @@ class PiutangDetController extends Controller {
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['PiutangDet'])) {
-            for ($i = 0; $i <= count($_POST['piutang_id']); $i++) {
-                if (isset($_POST['bayar'][$i]) and $_POST['bayar'][$i] > 0) {
-                    if (isset($_POST['lunas'][$i])) {
-                        $updatePiutang = Piutang::model()->findByPk($_POST['piutang_id'][$i]);
-                        $updatePiutang->lunas = 1;
-                        $updatePiutang->save();
+            if (isset($_POST['piutang_id'])) {
+                for ($i = 0; $i <= count($_POST['piutang_id']); $i++) {
+                    if (isset($_POST['bayar'][$i]) and $_POST['bayar'][$i] > 0) {
+                        if (isset($_POST['lunas'][$i])) {
+                            $updatePiutang = Piutang::model()->findByPk($_POST['piutang_id'][$i]);
+                            $updatePiutang->lunas = 1;
+                            $updatePiutang->save();
+                        }
+                        $bayar = new PiutangDet;
+                        $bayar->attributes = $_POST['PiutangDet'];
+                        $bayar->tanggal = $_POST['PiutangDet']['tanggal'];
+                        $bayar->credit = $_POST['bayar'][$i];
+                        $bayar->piutang_id = $_POST['piutang_id'][$i];
+                        $bayar->save();
                     }
-                    $bayar = new PiutangDet;
-                    $bayar->attributes = $_POST['PiutangDet'];
-                    $bayar->tanggal = $_POST['PiutangDet']['tanggal'];
-                    $bayar->credit = $_POST['bayar'][$i];
-                    $bayar->piutang_id = $_POST['piutang_id'][$i];
-                    $bayar->save();
                 }
+                Yii::app()->user->setFlash('sukses', 'Data berhasil disimpan');
+            } else {
+                Yii::app()->user->setFlash('sukses', 'Pastikan customer memiliki pinjaman yang belum lunas');
             }
-            Yii::app()->user->setFlash('sukses', 'Data berhasil disimpan');
         }
 
         $this->render('create', array(

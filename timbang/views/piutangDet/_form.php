@@ -196,10 +196,10 @@
 </div>
 <div class="printNota" id="printNota" style="width:100%;">
     <center style="font-size: 8pt;"><strong>CV SINAR HARAPAN</strong><br>
-        ALAMAT 1 JL. MAYJEN PANJAITAN <br> NO. 62 MALANG TELP. (0341) 789555<br>
-        ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
-    <hr>
-    <br>
+            ALAMAT 1 JL. SUMBER PASIR <br> PAKIS - MALANG TELP. (0341) 789555<br>
+            ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
+        <hr>
+        <br>
     <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
         <tr>
             <td style="text-align: left;"><b>TANGGAL</b></td>

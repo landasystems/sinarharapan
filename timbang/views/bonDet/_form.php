@@ -204,7 +204,7 @@
         </tr>
         <tr>
             <td style="text-align: left;"><b>TELEPON</b></td>
-            <td  colspan="2">: <?php echo $model->Bon->Sopir->telepon; ?></td>
+            <td  colspan="2">: <?php echo isset($model->Bon->Sopir->telepon) ? $model->Bon->Sopir->telepon : "-"; ?></td>
         </tr>
         <tr>
             <td style="text-align: left;"><b>BON</b></td>

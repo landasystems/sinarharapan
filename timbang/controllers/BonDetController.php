@@ -72,22 +72,26 @@ class BonDetController extends Controller {
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['BonDet'])) {
-            for ($i = 0; $i <= count($_POST['bon_id']); $i++) {
-                if (isset($_POST['bayar'][$i]) and $_POST['bayar'][$i] > 0) {
-                    if (isset($_POST['lunas'][$i])) {
-                        $updateBon = Bon::model()->findByPk($_POST['bon_id'][$i]);
-                        $updateBon->lunas = 1;
-                        $updateBon->save();
+            if (isset($_POST['bon_id'])) {
+                for ($i = 0; $i <= count($_POST['bon_id']); $i++) {
+                    if (isset($_POST['bayar'][$i]) and $_POST['bayar'][$i] > 0) {
+                        if (isset($_POST['lunas'][$i])) {
+                            $updateBon = Bon::model()->findByPk($_POST['bon_id'][$i]);
+                            $updateBon->lunas = 1;
+                            $updateBon->save();
+                        }
+                        $det = new BonDet;
+                        $det->attributes = $_POST['BonDet'];
+                        $det->tanggal = $_POST['BonDet']['tanggal'];
+                        $det->credit = $_POST['bayar'][$i];
+                        $det->bon_id = $_POST['bon_id'][$i];
+                        $det->save();
                     }
-                    $det = new BonDet;
-                    $det->attributes = $_POST['BonDet'];
-                    $det->tanggal = $_POST['BonDet']['tanggal'];
-                    $det->credit = $_POST['bayar'][$i];
-                    $det->bon_id = $_POST['bon_id'][$i];
-                    $det->save();
                 }
+                Yii::app()->user->setFlash('sukses', 'Data berhasil disimpan');
+            } else {
+                Yii::app()->user->setFlash('sukses', 'Pastikan sopir memiliki bon yang belum lunas');
             }
-            Yii::app()->user->setFlash('sukses', 'Data berhasil disimpan');
         }
 
         $this->render('create', array(

@@ -146,5 +146,22 @@ class JasaTimbang extends CActiveRecord {
     public function getTotalRp() {
         return landa()->rp($this->total);
     }
+    
+    public function behaviors() {
+        return array(
+            'timestamps' => array(
+                'class' => 'zii.behaviors.CTimestampBehavior',
+                'createAttribute' => 'created',
+                'updateAttribute' => 'modified',
+                'setUpdateOnCreate' => true,
+            ),
+        );
+    }
+
+    protected function beforeValidate() {
+        if (empty($this->created_user_id))
+            $this->created_user_id = Yii::app()->user->id;
+        return parent::beforeValidate();
+    }
 
 }

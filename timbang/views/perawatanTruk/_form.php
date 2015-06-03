@@ -251,22 +251,27 @@
 </div>
 <?php if (isset($_GET['v'])) { ?>
     <div class="printNota" id="printNota" style="width:100%;">
-        <center style="font-size: 12px;"><strong>CV Sinar Harapan</strong></center>
-        <center style="font-size: 12px;">Alamat 1 Jl. Mayjen Panjaitan No. 62 Malang Telp. (0341) 789555</center>
-        <center style="font-size: 12px;">Alamat 2 Jl. Raya Gatot Subroto, Talok</center>
+        <center style="font-size: 14pt;"><strong>CV SINAR HARAPAN</strong><br>
+            ALAMAT 1 JL. MAYJEN PANJAITAN <br> NO. 62 MALANG TELP. (0341) 789555<br>
+            ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
         <hr>
-        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
+        <br>
+        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11pt;  width:100%;">
             <tr>
-                <td style="text-align: left;"><b>Tanggal</b></td>
+                <td style="text-align: left;"><b>TANGGAL</b></td>
                 <td colspan="2"><?php echo date("d M Y", strtotime($model->tanggal)); ?></td>
-                <td ><b>Type Truk</b></td>
-                <td ><?php echo $model->Truk->type ?></td>
             </tr>
             <tr>
-                <td style="text-align: left;"><b>Merk Truk</b></td>
+                <td ><b>TYPE TRUK</b></td>
+                <td colspan="2"><?php echo $model->Truk->type ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>MERK</b></td>
                 <td colspan="2"><?php echo isset($model->Truk->merk) ? $model->Truk->merk : "-"; ?></td>
-                <td ><b>Nomor Polisi</b></td>
-                <td ><?php echo isset($model->Truk->nomor_polisi) ? $model->Truk->nomor_polisi : "-"; ?></td>
+            </tr>
+            <tr>
+                <td ><b>PLAT NOMOR</b></td>
+                <td colspan="2"><?php echo isset($model->Truk->nomor_polisi) ? $model->Truk->nomor_polisi : "-"; ?></td>
             </tr>
         </table>
         <p style="margin-left: 0px; font-size: 12px; text-align: left;"><b>Detail Perawatan</b></p>
@@ -277,11 +282,9 @@
         </style>
         <table width="100%" id="table" style="font-size: 12px;">
             <tr>
-                <td><b>No</b></td>
-                <td><b>Keterangan</b></td>
-                <td><b>Jumlah</b></td>
-                <td><b>Harga</b></td>
-                <td><b>Sub Total</b></td>
+                <td><b>KET</b></td>
+                <td><b>HARGA</b></td>
+                <td><b>SUB TOTAL</b></td>
             </tr>
             <?php
             if (empty($detail)) {
@@ -293,9 +296,7 @@
                 $total = 0;
                 foreach ($detail as $val) {
                     echo '<tr>';
-                    echo '<td>' . $no . '</td>';
-                    echo '<td>' . $val->keterangan . '</td>';
-                    echo '<td>' . $val->qty . '</td>';
+                    echo '<td>' . $val->keterangan . ' ('.$val->qty.')</td>';
                     echo '<td>' . landa()->rp($val->harga) . '</td>';
                     echo '<td>' . landa()->rp($val->credit) . '</td>';
                     echo '</tr>';
@@ -305,12 +306,11 @@
             }
             ?>
             <tr>
-                <td colspan="4" style="text-align: right;"><b>Total</b></td>
+                <td colspan="2" style="text-align: right;"><b>Total</b></td>
                 <td><?php echo landa()->rp($total) ?></td>
             </tr>
         </table>
         <hr>
-        <p style="text-align:center;font-size: 11.5px;"></p>
     </div>
 <?php } ?>
 <script>
@@ -329,7 +329,7 @@
     }
     function calculate() {
         var total = 0;
-        $(".ket").each(function () {
+        $(".ket").each(function() {
             var harga = parseInt($(this).parent().parent().find("#hargaDet").val());
             var jumlah = parseInt($(this).parent().parent().find("#jumlahDet").val());
             var subtotal = harga * jumlah;

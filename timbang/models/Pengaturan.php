@@ -16,109 +16,121 @@
  * @property string $created
  * @property string $modified
  */
-class Pengaturan extends CActiveRecord
-{
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return '{{pengaturan}}';
-	}
+class Pengaturan extends CActiveRecord {
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('harga_pupuk, harga_tebu, solar, created_user_id', 'numerical', 'integerOnly'=>true),
-			array('bunga, rafaksi, persentasi_sopir, persentasi_truk', 'numerical'),
-			array('modified', 'length', 'max'=>45),
-			array('created', 'safe'),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('id, harga_pupuk, harga_tebu, bunga, rafaksi, solar, persentasi_sopir, persentasi_truk, created_user_id, created, modified', 'safe', 'on'=>'search'),
-		);
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName() {
+        return '{{pengaturan}}';
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules() {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('harga_pupuk, harga_tebu, solar, created_user_id', 'numerical', 'integerOnly' => true),
+            array('bunga, rafaksi, persentasi_sopir, persentasi_truk', 'numerical'),
+            array('modified', 'length', 'max' => 45),
+            array('created', 'safe'),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, harga_pupuk, harga_tebu, bunga, rafaksi, solar, persentasi_sopir, persentasi_truk, created_user_id, created, modified', 'safe', 'on' => 'search'),
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id' => 'ID',
-			'harga_pupuk' => 'Harga Pupuk',
-			'harga_tebu' => 'Harga Tebu',
-			'bunga' => 'Bunga',
-			'rafaksi' => 'Rafaksi',
-			'solar' => 'Solar',
-			'persentasi_sopir' => 'Sopir',
-			'persentasi_truk' => 'Kendaraan',
-			'created_user_id' => 'Created User',
-			'created' => 'Created',
-			'modified' => 'Modified',
-		);
-	}
+    /**
+     * @return array relational rules.
+     */
+    public function relations() {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+        );
+    }
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels() {
+        return array(
+            'id' => 'ID',
+            'harga_pupuk' => 'Harga Pupuk',
+            'harga_tebu' => 'Harga Tebu',
+            'bunga' => 'Bunga',
+            'rafaksi' => 'Rafaksi',
+            'solar' => 'Solar',
+            'persentasi_sopir' => 'Sopir',
+            'persentasi_truk' => 'Kendaraan',
+            'created_user_id' => 'Created User',
+            'created' => 'Created',
+            'modified' => 'Modified',
+        );
+    }
 
-		$criteria=new CDbCriteria;
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search() {
+        // @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('harga_pupuk',$this->harga_pupuk);
-		$criteria->compare('harga_tebu',$this->harga_tebu);
-		$criteria->compare('bunga',$this->bunga);
-		$criteria->compare('rafaksi',$this->rafaksi);
-		$criteria->compare('solar',$this->solar);
-		$criteria->compare('persentasi_sopir',$this->persentasi_sopir);
-		$criteria->compare('persentasi_truk',$this->persentasi_truk);
-		$criteria->compare('created_user_id',$this->created_user_id);
-		$criteria->compare('created',$this->created,true);
-		$criteria->compare('modified',$this->modified,true);
+        $criteria = new CDbCriteria;
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-                        'sort' => array('defaultOrder' => 'id DESC')
-		));
-	}
+        $criteria->compare('id', $this->id);
+        $criteria->compare('harga_pupuk', $this->harga_pupuk);
+        $criteria->compare('harga_tebu', $this->harga_tebu);
+        $criteria->compare('bunga', $this->bunga);
+        $criteria->compare('rafaksi', $this->rafaksi);
+        $criteria->compare('solar', $this->solar);
+        $criteria->compare('persentasi_sopir', $this->persentasi_sopir);
+        $criteria->compare('persentasi_truk', $this->persentasi_truk);
+        $criteria->compare('created_user_id', $this->created_user_id);
+        $criteria->compare('created', $this->created, true);
+        $criteria->compare('modified', $this->modified, true);
 
-	/**
-	 * Returns the static model of the specified AR class.
-	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * @param string $className active record class name.
-	 * @return Pengaturan the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+            'sort' => array('defaultOrder' => 'id DESC')
+        ));
+    }
+
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return Pengaturan the static model class
+     */
+    public static function model($className = __CLASS__) {
+        return parent::model($className);
+    }
+
+    public function behaviors() {
+        return array(
+            'timestamps' => array(
+                'class' => 'zii.behaviors.CTimestampBehavior',
+                'createAttribute' => 'created',
+                'updateAttribute' => 'modified',
+                'setUpdateOnCreate' => true,
+            ),
+        );
+    }
+
+    protected function beforeValidate() {
+        if (empty($this->created_user_id))
+            $this->created_user_id = Yii::app()->user->id;
+        return parent::beforeValidate();
+    }
+
 }

@@ -195,41 +195,44 @@
         <br>
         <table class="printTable" id="nota" style="margin : 0 auto; font-size: 13pt;  width:100%;">
             <tr>
-                <td style="text-align: left;"><b>CUSTOMER</b></td>
-                <td>: <?php echo $model->customer ?></td>
-
                 <td><b>TANGGAL</b></td>
-                <td>: <?php echo date('d-m-Y', strtotime($model->created)) ?></td>
+                <td colspan="3">: <?php echo date('d-m-Y', strtotime($model->created)) ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>CUSTOMER</b></td>
+                <td colspan="3">: <?php echo $model->customer ?></td>                
             </tr>
             <tr>
                 <td style="text-align: left;"><b>TELEPON</b></td>
-                <td>: <?php echo $model->telepon ?></td>
-
-                <td><b>PRODUK</b></td>
-                <td>: <?php echo $model->produk ?></td>
+                <td colspan="3">: <?php echo $model->telepon ?></td>
             </tr>
             <tr>
                 <td><b>ALAMAT</b></td>
-                <td>: <?php echo $model->alamat ?></td>
-
+                <td colspan="3">: <?php echo $model->alamat ?></td>
+            </tr>
+            <tr>
                 <td><b>PLAT NOMOR</b></td>
-                <td>: <?php echo $model->nomor_polisi ?></td>
+                <td colspan="3">: <?php echo $model->nomor_polisi ?></td>
+            </tr>
+            <tr>
+                <td><b>PRODUK</b></td>
+                <td colspan="3">: <?php echo $model->produk ?></td>
             </tr>
             <tr style="height: 20px;">
-                <td colspan="5"><hr style="border-top: 1px double #000;"></td>
+                <td colspan="4"><hr style="border-top: 1px double #000;"></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>TIMBANG 1</b></td>
                 <td>: <?php echo $model->berat_timbang1 ?> Kg</td>
 
-                <td><b>TANGGAL</b></td>
+                <td><b>TGL</b></td>
                 <td>: <?php echo date('d-m-Y', strtotime($model->tanggal_timbang1)) ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>TIMBANG 2</b></td>
                 <td>: <?php echo $model->berat_timbang2 ?> Kg</td>
 
-                <td><b>TANGGAL</b></td>
+                <td><b>TGL</b></td>
                 <td>: <?php echo date('d-m-Y', strtotime($model->tanggal_timbang2)) ?></td>
             </tr>
             <tr>

@@ -155,11 +155,11 @@ class Timbang extends CActiveRecord {
             ),
         );
     }
-
-    protected function beforeValidate() {
-        if (empty($this->created_user_id))
-            $this->created_user_id = Yii::app()->user->id;
-        return parent::beforeValidate();
-    }
+//
+//    protected function beforeValidate() {
+//        if (empty($this->created_user_id))
+//            $this->created_user_id = Yii::app()->user->id;
+//        return parent::beforeValidate();
+//    }
 
 }

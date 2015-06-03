@@ -176,19 +176,15 @@
 </div>
 <?php if ($model->isNewRecord == false) { ?>
     <div class="printNota" id="printNota" style="width:100%;">
-        <center style="font-size: 14pt;"><strong>CV SINAR HARAPAN</strong><br>
+        <center style="font-size: 8pt;"><strong>CV SINAR HARAPAN</strong><br>
             ALAMAT 1 JL. MAYJEN PANJAITAN <br> NO. 62 MALANG TELP. (0341) 789555<br>
             ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
         <hr>
         <br>
-        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 13pt;  width:100%;">
+        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11pt;  width:100%;">
             <tr>
                 <td ><b>TANGGAL</b></td>
                 <td >: <?php echo date("d M Y", strtotime($model->tanggal)) ?></td>
-            </tr>
-            <tr>
-                <td ><b>PETUGAS</b></td>
-                <td >: <?php echo ISSET($model->Petugas->name) ? $model->Petugas->name : "-"; ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>CUSTOMER</b></td>
@@ -203,7 +199,7 @@
                 <td  colspan="2">: <?php echo $model->jaminan; ?></td>
             </tr>
             <tr>
-                <td style="text-align: left;"><b>KETERANGAN</b></td>
+                <td style="text-align: left;" valign="top"><b>KETERANGAN</b></td>
                 <td  colspan="2">: <?php echo $model->deskripsi; ?></td>
             </tr>
             <tr>
@@ -217,6 +213,15 @@
             <tr>
                 <td ><b>TOTAL</b></td>
                 <td >: <?php echo landa()->rp($model->total); ?></td>
+            </tr>
+            <tr>
+                <td colspan="2"><br></td>
+            </tr>
+            <tr>
+                <td style="height: 75px;" colspan="2" align="right" valign="top"><b>PETUGAS</b></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right"><?php echo ISSET($model->Petugas->name) ? $model->Petugas->name : "-"; ?></td>
             </tr>
         </table>
         <br>

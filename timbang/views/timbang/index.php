@@ -96,7 +96,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
 //        'netto',
         array(
             'type' => 'raw',
-            'header' => 'Netto (Kg)',
+            'header' => 'Netto (Kw)',
             'name' => 'netto',
             'value' => '$data->netto',
         ),

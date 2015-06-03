@@ -148,38 +148,43 @@
 
 </div>
 <div class="printNota" id="printNota" style="width:100%;">
-    <center style="font-size: 11.5px;"><strong>CV Sinar Harapan</strong></center>
-    <center style="font-size: 11.5px;">Jl. Mayjen Panjaitan No. 62 Malang</center>
-    <center style="font-size: 11.5px;">Telp. (0341) 789555</center>
+    <center style="font-size: 14pt;"><strong>CV SINAR HARAPAN</strong><br>
+        ALAMAT 1 JL. MAYJEN PANJAITAN <br> NO. 62 MALANG TELP. (0341) 789555<br>
+        ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
     <hr>
-    <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
+    <br>
+    <table class="printTable" id="nota" style="margin : 0 auto; font-size: 13pt;  width:100%;">
         <tr>
-            <td style="text-align: left;"><b>Tanggal</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo date("d M Y", strtotime($model->tanggal));?></td>
-            <td style="width:80px; text-align: "><b>Berat</b></td>
-            <td style="text-align: "><?php echo $model->berat?> Kg</td>
+            <td style="text-align: left;"><b>TANGGAL</b></td>
+            <td colspan="2">: <?php echo date("d M Y", strtotime($model->tanggal)); ?></td>
         </tr>
         <tr>
-            <td style="text-align: left;"><b>Sopir</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Sopir->nama) ? $model->Sopir->nama : "-";?></td>
-            <td style="width:80px; text-align: "><b>Solar</b></td>
-            <td style="text-align: "><?php echo landa()->rp($model->solar)?></td>
+            <td style="text-align: left;"><b>NO GIRIK</b></td>
+            <td  colspan="2">: <?php echo $model->nomor_girik ?></td>
         </tr>
         <tr>
-            <td style="text-align: left;"><b>Truk</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Truk->nama) ? $model->Truk->nama : "-";?></td>
-            <td style="width:80px; text-align: "><b>Ongkos Sopir</b></td>
-            <td style="text-align: "><?php echo landa()->rp($model->fee_sopir);?></td>
+            <td style="text-align: left;"><b>SOPIR</b></td>
+            <td  colspan="2">: <?php echo isset($model->Sopir->nama) ? $model->Sopir->nama : "-"; ?></td>
         </tr>
         <tr>
-            <td style="text-align: left;"><b>No Girik</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo $model->nomor_girik?></td>
-            <td style="width:80px; text-align: "></td>
-            <td style="text-align: "></td>
+            <td style="text-align: left;"><b>TRUK</b></td>
+            <td  colspan="2">: <?php echo isset($model->Truk->nama) ? $model->Truk->nama : "-"; ?></td>
+        </tr>
+        <tr>
+            <td ><b>BERAT</b></td>
+            <td >: <?php echo $model->berat ?> Kg</td>
+        </tr>
+        <tr>
+            <td><b>SOLAR</b></td>
+            <td>: <?php echo landa()->rp($model->solar) ?></td>
+        </tr>
+        <tr>
+            <td ><b>ONGKOS SOPIR</b></td>
+            <td >: <?php echo landa()->rp($model->fee_sopir); ?></td>
         </tr>
     </table>
+    <br>
     <hr>
-    <p style="text-align:center;font-size: 11.5px;"></p>
 </div>
 <script type="text/javascript">
     function calculate() {

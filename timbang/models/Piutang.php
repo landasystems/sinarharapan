@@ -40,7 +40,7 @@ class Piutang extends CActiveRecord {
             array('deskripsi', 'length', 'max' => 255),
             array('type', 'length', 'max' => 5),
 //            array('status', 'length', 'max' => 11),
-            array('tanggal, created, modified', 'safe'),
+            array('lunas, tanggal, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, customer_id, jaminan, deskripsi, tanggal, type,jumlah_pupuk, sub_total, bunga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
@@ -54,6 +54,7 @@ class Piutang extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'Petugas' => array(self::BELONGS_TO, 'User', 'created_user_id'),
             'Customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
 //            'Pengaturan' => array(self::BELONGS_TO, 'Pengaturan', 'bunga'),
         );
@@ -137,6 +138,11 @@ class Piutang extends CActiveRecord {
 
     public function arrPinjaman() {
         $terpal = array('uang' => 'Uang', 'pupuk' => 'Pupuk');
+        return $terpal;
+    }
+    
+    public function arrLunas() {
+        $terpal = array('0' => 'Belum Lunas', '1' => 'Lunas');
         return $terpal;
     }
 

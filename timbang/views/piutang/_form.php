@@ -49,8 +49,7 @@
 
         <div class="row-fluid">
             <div class="span5">
-
-
+                <legend>Detail Customer</legend>
                 <?php
                 $idcustomer = isset($model->customer_id) ? $model->customer_id : 0;
                 $namaCustomer = isset($model->Customer->nama) ? $model->Customer->nama : 0;
@@ -101,6 +100,7 @@
                 <?php echo $form->textFieldRow($model, 'deskripsi', array('class' => 'span12', 'maxlength' => 255)); ?>
             </div>
             <div class="span5">
+                <legend>Detail Pinjaman</legend>
                 <?php
                 echo $form->datepickerRow(
                         $model, 'tanggal', array(
@@ -144,8 +144,12 @@
                     </div>
                 </div>
                 <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span12', 'prepend' => 'Rp', 'readOnly' => true)); ?>
-
-            </div></div>
+                <?php
+                if ($model->isNewRecord == false)
+                    echo $form->radioButtonListRow($model, 'lunas', Piutang::model()->ArrLunas());
+                ?>
+            </div>
+        </div>
 
 
         <?php if (!isset($_GET['v'])) { ?>        <div class="form-actions">
@@ -171,24 +175,52 @@
 
 </div>
 <?php if ($model->isNewRecord == false) { ?>
-    <div class="printNota" id="printNota" style="width:310px; width:310px;">
-        <center style="font-size: 11.5px;"><strong>CV Sinar Harapan</strong></center>
-        <center style="font-size: 11.5px;">Jl. Mayjen Panjaitan No. 62 Malang</center>
-        <center style="font-size: 11.5px;">Telp. (0341) 789555</center>
+    <div class="printNota" id="printNota" style="width:100%;">
+        <center style="font-size: 14pt;"><strong>CV SINAR HARAPAN</strong><br>
+            ALAMAT 1 JL. MAYJEN PANJAITAN <br> NO. 62 MALANG TELP. (0341) 789555<br>
+            ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
         <hr>
-        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
+        <br>
+        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 13pt;  width:100%;">
             <tr>
-                <td style="text-align: left;"><b>Customer</b></td>
-                <td style="width:80px; text-align: " colspan="2">fgdfg</td>
-
-                <td style="width:80px; text-align: "><b>No Truck</b></td>
-                <td style="width:80px; text-align: ">fgdfg</td>
-
+                <td ><b>TANGGAL</b></td>
+                <td >: <?php echo date("d M Y", strtotime($model->tanggal)) ?></td>
             </tr>
-
+            <tr>
+                <td ><b>PETUGAS</b></td>
+                <td >: <?php echo ISSET($model->Petugas->name) ? $model->Petugas->name : "-"; ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>CUSTOMER</b></td>
+                <td colspan="2">: <?php echo $model->Customer->nama; ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>TELEPON</b></td>
+                <td  colspan="2">: <?php echo $model->Customer->telepon; ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>JAMINAN</b></td>
+                <td  colspan="2">: <?php echo $model->jaminan; ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>KETERANGAN</b></td>
+                <td  colspan="2">: <?php echo $model->deskripsi; ?></td>
+            </tr>
+            <tr>
+                <td ><b>PINJAMAN</b></td>
+                <td >: <?php echo landa()->rp($model->sub_total); ?></td>
+            </tr>
+            <tr>
+                <td ><b>BUNGA</b></td>
+                <td >: <?php echo landa()->rp($model->sub_total * ($model->bunga / 100)); ?></td>
+            </tr>
+            <tr>
+                <td ><b>TOTAL</b></td>
+                <td >: <?php echo landa()->rp($model->total); ?></td>
+            </tr>
         </table>
+        <br>
         <hr>
-        <p style="text-align:center;font-size: 11.5px;"></p>
     </div>
 <?php } ?>
 <script>
@@ -214,17 +246,14 @@
         calculate();
     });
 
-    $("body").on("click", ".radio", function() {
-        var id = $(this).find("input").val();
-
-        if (id == "pupuk") {
-            $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:");
-        }
-        else {
-            $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:none");
-        }
-
+    $("#Piutang_type_0").click(function(event) {
+        $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:none");
     });
+
+    $("#Piutang_type_1").click(function(event) {
+        $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:");
+    });
+
     $("#Piutang_customer_id").on("change", function() {
         //var name = $("#Registration_guest_user_id").val();
         //  alert(name);

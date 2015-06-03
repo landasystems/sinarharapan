@@ -109,8 +109,13 @@ class BonController extends Controller {
 
         if (isset($_POST['Bon'])) {
             $model->attributes = $_POST['Bon'];
-            if ($model->save())
-                BonDet::model()->updateAll(array('debet' => $_POST['Bon']['total'], 'tanggal' => $_POST['Bon']['tanggal']), 'debet > 0 AND bon_id=' . $id);
+            if ($model->save()) {
+                $bondDet = BonDet::model()->find(array('condition' => 'bon_id = ' . $id, 'order' => 'id ASC'));
+                $bondDet->debet = $model->total;
+                $bondDet->save();
+                
+            }
+//            BonDet::model()->updateAll(array('debet' => $_POST['Bon']['total'], 'tanggal' => $_POST['Bon']['tanggal']), 'debet > 0 AND bon_id=' . $id);
 
             $this->redirect(array('view', 'id' => $model->id));
         }
@@ -129,7 +134,7 @@ class BonController extends Controller {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
             $this->loadModel($id)->delete();
-            BonDet::model()->deleteAll('bon_id='.$id);
+            BonDet::model()->deleteAll('bon_id=' . $id);
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));

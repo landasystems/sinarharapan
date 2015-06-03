@@ -100,25 +100,15 @@ class JasaTimbang extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
+        
+        if (!empty($this->tanggal_timbang1)) {
+            $dt = explode(" - ", $this->tanggal_timbang1);
+            $start = $dt[0];
+            $end = $dt[1];
+            $criteria->addCondition('tanggal_timbang1 >= "' . $start . '" and tanggal_timbang1 <= "' . $end . '"');
+        }
 
-        $criteria->compare('id', $this->id);
-        $criteria->compare('kode', $this->kode, true);
         $criteria->compare('customer', $this->customer, true);
-        $criteria->compare('telepon', $this->telepon, true);
-        $criteria->compare('alamat', $this->alamat, true);
-        $criteria->compare('nomor_polisi', $this->nomor_polisi, true);
-        $criteria->compare('produk', $this->produk, true);
-        $criteria->compare('tanggal_timbang1', $this->tanggal_timbang1, true);
-        $criteria->compare('berat_timbang1', $this->berat_timbang1);
-        $criteria->compare('tanggal_timbang2', $this->tanggal_timbang2, true);
-        $criteria->compare('berat_timbang2', $this->berat_timbang2);
-        $criteria->compare('rafaksi', $this->rafaksi);
-        $criteria->compare('netto', $this->netto);
-        $criteria->compare('harga', $this->harga);
-        $criteria->compare('total', $this->total);
-        $criteria->compare('created_user_id', $this->created_user_id);
-        $criteria->compare('created', $this->created, true);
-        $criteria->compare('modified', $this->modified, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

@@ -67,13 +67,18 @@ class BonDetController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-          $model = new BonDet;
+        $model = new BonDet;
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['BonDet'])) {
             for ($i = 0; $i <= count($_POST['bon_id']); $i++) {
                 if (isset($_POST['bayar'][$i]) and $_POST['bayar'][$i] > 0) {
+                    if (isset($_POST['lunas'][$i])) {
+                        $updateBon = Bon::model()->findByPk($_POST['bon_id'][$i]);
+                        $updateBon->lunas = 1;
+                        $updateBon->save();
+                    }
                     $det = new BonDet;
                     $det->attributes = $_POST['BonDet'];
                     $det->tanggal = $_POST['BonDet']['tanggal'];
@@ -82,7 +87,7 @@ class BonDetController extends Controller {
                     $det->save();
                 }
             }
-            Yii::app()->user->setFlash('sukses','Data berhasil disimpan');
+            Yii::app()->user->setFlash('sukses', 'Data berhasil disimpan');
         }
 
         $this->render('create', array(

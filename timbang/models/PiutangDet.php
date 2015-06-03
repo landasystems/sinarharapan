@@ -48,6 +48,7 @@ class PiutangDet extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'Petugas' => array(self::BELONGS_TO, 'User', 'created_user_id'),
             'Piutang' => array(self::BELONGS_TO, 'Piutang', 'piutang_id'),
         );
     }

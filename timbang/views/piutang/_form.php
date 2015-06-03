@@ -218,7 +218,10 @@
                 <td colspan="2"><br></td>
             </tr>
             <tr>
-                <td style="height: 75px;" colspan="2" align="right" valign="top"><b>PETUGAS</b></td>
+                <td colspan="2" align="right" valign="top"><b>PETUGAS</b></td>
+            </tr>
+            <tr>
+                <td height="70" colspan="2"></td>
             </tr>
             <tr>
                 <td colspan="2" align="right"><?php echo ISSET($model->Petugas->name) ? $model->Petugas->name : "-"; ?></td>
@@ -238,28 +241,28 @@
         var total = jumlah + (sBunga * jumlah);
         $("#Piutang_total").val(total);
     }
-    $("body").on("keyup", "#Piutang_sub_total", function() {
+    $("body").on("keyup", "#Piutang_sub_total", function () {
         calculate();
     });
-    $("body").on("keyup", "#Piutang_bunga", function() {
+    $("body").on("keyup", "#Piutang_bunga", function () {
         calculate();
     });
 
-    $("body").on("keyup", "#Piutang_jumlah_pupuk, #harga_pupuk", function() {
+    $("body").on("keyup", "#Piutang_jumlah_pupuk, #harga_pupuk", function () {
         var jumlah = parseInt($("#Piutang_jumlah_pupuk").val()) * parseInt($("#harga_pupuk").val());
         $("#Piutang_sub_total").val(jumlah);
         calculate();
     });
 
-    $("#Piutang_type_0").click(function(event) {
+    $("#Piutang_type_0").click(function (event) {
         $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:none");
     });
 
-    $("#Piutang_type_1").click(function(event) {
+    $("#Piutang_type_1").click(function (event) {
         $("#Piutang_jumlah_pupuk").parent().parent().parent().attr("style", "display:");
     });
 
-    $("#Piutang_customer_id").on("change", function() {
+    $("#Piutang_customer_id").on("change", function () {
         //var name = $("#Registration_guest_user_id").val();
         //  alert(name);
 
@@ -267,7 +270,7 @@
             url: "<?php echo url('customer/getDetail'); ?>",
             type: "POST",
             data: {id: $(this).val()},
-            success: function(data) {
+            success: function (data) {
 
                 obj = JSON.parse(data);
                 $("#telpon").val(obj.telpon);

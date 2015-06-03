@@ -255,7 +255,7 @@
                 <td colspan="4" ALIGN="RIGHT">PETUGAS</td>
             </tr>
             <tr>
-                <td colspan="4" style="height:80px;">&nbsp;</td>
+                <td colspan="4" style="height:70px;">&nbsp;</td>
             </tr>
             <tr>
                 <td style="width:80px; text-align:right " colspan="4"><?php echo isset($model->Petugas->name) ? $model->Petugas->name : "-"; ?><br><hr></td>

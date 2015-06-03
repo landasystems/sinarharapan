@@ -189,7 +189,7 @@
         ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
     <hr>
     <br>
-    <table class="printTable" id="nota" style="margin : 0 auto; font-size: 13pt;  width:100%;">
+    <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11pt;  width:100%;">
         <tr>
             <td style="text-align: left;"><b>TANGGAL</b></td>
             <td  colspan="2">: <?php echo date("d M Y", strtotime($model->tanggal)); ?></td>

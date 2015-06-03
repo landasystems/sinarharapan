@@ -128,5 +128,22 @@ class Sopir extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+    
+    public function behaviors() {
+        return array(
+            'timestamps' => array(
+                'class' => 'zii.behaviors.CTimestampBehavior',
+                'createAttribute' => 'created',
+                'updateAttribute' => 'modified',
+                'setUpdateOnCreate' => true,
+            ),
+        );
+    }
+
+    protected function beforeValidate() {
+        if (empty($this->created_user_id))
+            $this->created_user_id = Yii::app()->user->id;
+        return parent::beforeValidate();
+    }
 
 }

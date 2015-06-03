@@ -73,6 +73,10 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'value' => '$data->rptotal',
         ),
         'deskripsi',
+        array(
+            'name' => 'lunas',
+            'value' => '($data->lunas == 0) ? "Belum Lunas" : "Lunas"',
+        ),
         /*
           'created_user_id',
           'created',

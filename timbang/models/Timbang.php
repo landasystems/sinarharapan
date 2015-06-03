@@ -56,6 +56,7 @@ class Timbang extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'Customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
+            'Petugas' => array(self::BELONGS_TO, 'User', 'created_user_id'),
         );
     }
 

@@ -148,7 +148,7 @@
 
 </div>
 <div class="printNota" id="printNota" style="width:100%;">
-    <center style="font-size: 14pt;"><strong>CV SINAR HARAPAN</strong><br>
+    <center style="font-size: 8pt;"><strong>CV SINAR HARAPAN</strong><br>
         ALAMAT 1 JL. MAYJEN PANJAITAN <br> NO. 62 MALANG TELP. (0341) 789555<br>
         ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
     <hr>

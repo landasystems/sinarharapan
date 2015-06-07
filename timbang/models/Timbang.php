@@ -56,6 +56,7 @@ class Timbang extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'Customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
+            'Petugas' => array(self::BELONGS_TO, 'User', 'created_user_id'),
         );
     }
 
@@ -102,22 +103,14 @@ class Timbang extends CActiveRecord {
         $criteria->with = array('Customer');
         $criteria->together = true;
 
-        $criteria->compare('id', $this->id);
-        $criteria->compare('kode', $this->kode);
+        if (!empty($this->tanggal_timbang1)) {
+            $dt = explode(" - ", $this->tanggal_timbang1);
+            $start = $dt[0];
+            $end = $dt[1];
+            $criteria->addCondition('tanggal_timbang1 >= "' . $start . '" and tanggal_timbang1 <= "' . $end . '"');
+        }
+        
         $criteria->compare('t.customer_id', $this->customer_id, true);
-        $criteria->compare('nomor_polisi', $this->nomor_polisi, true);
-        $criteria->compare('produk', $this->produk, true);
-        $criteria->compare('tanggal_timbang1', $this->tanggal_timbang1, true);
-        $criteria->compare('berat_timbang1', $this->berat_timbang1);
-        $criteria->compare('tanggal_timbang2', $this->tanggal_timbang2, true);
-        $criteria->compare('berat_timbang2', $this->berat_timbang2);
-        $criteria->compare('rafaksi', $this->rafaksi);
-        $criteria->compare('netto', $this->netto);
-        $criteria->compare('harga', $this->harga);
-        $criteria->compare('total', $this->total);
-        $criteria->compare('created_user_id', $this->created_user_id);
-        $criteria->compare('created', $this->created, true);
-        $criteria->compare('modified', $this->modified, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -134,6 +127,7 @@ class Timbang extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+
     protected function beforeValidate() {
         if (empty($this->created_user_id)) {
             $this->created_user_id = Yii::app()->user->id;
@@ -143,12 +137,30 @@ class Timbang extends CActiveRecord {
         }
         return parent::beforeValidate();
     }
-    
-    public function getNamaCustomer(){
-        return (isset($this->Customer->nama)) ? $this->Customer->nama :'';
+
+    public function getNamaCustomer() {
+        return (isset($this->Customer->nama)) ? $this->Customer->nama : '';
     }
-    public function getTotalRp(){
+
+    public function getTotalRp() {
         return landa()->rp($this->total);
     }
+    
+    public function behaviors() {
+        return array(
+            'timestamps' => array(
+                'class' => 'zii.behaviors.CTimestampBehavior',
+                'createAttribute' => 'created',
+                'updateAttribute' => 'modified',
+                'setUpdateOnCreate' => true,
+            ),
+        );
+    }
+//
+//    protected function beforeValidate() {
+//        if (empty($this->created_user_id))
+//            $this->created_user_id = Yii::app()->user->id;
+//        return parent::beforeValidate();
+//    }
 
 }

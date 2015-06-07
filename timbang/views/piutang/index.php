@@ -27,7 +27,7 @@ $this->beginWidget('zii.widgets.CPortlet', array(
 $this->widget('bootstrap.widgets.TbMenu', array(
     'type' => 'pills',
     'items' => array(
-        array('label' => 'Tambah', 'icon' => 'icon-plus', 'url' => Yii::app()->controller->createUrl('create'), 'linkOptions' => array()),
+        array('label' => 'Tambah', 'icon' => 'icon-plus', 'url' => Yii::app()->controller->createUrl('create'), 'linkOptions' => array(), 'visible' => landa()->checkAccess('pinjaman', 'c')),
         array('label' => 'List Data', 'icon' => 'icon-th-list', 'url' => Yii::app()->controller->createUrl('index'), 'active' => true, 'linkOptions' => array()),
         array('label' => 'Pencarian & Export Excel', 'icon' => 'icon-search', 'url' => '#', 'linkOptions' => array('class' => 'search-button')),
     ),
@@ -45,6 +45,13 @@ $this->endWidget();
     ?>
 </div><!-- search-form -->
 <?php
+$button='';
+if (landa()->checkAccess("pinjaman", 'r'))
+    $button .= '{view} ';
+if (landa()->checkAccess("pinjaman", 'u'))
+    $button .= '{update} ';
+if (landa()->checkAccess("pinjaman", 'd'))
+    $button .= '{delete}';
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id' => 'chargeAdditional-form',
     'enableAjaxValidation' => false,
@@ -76,35 +83,40 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                 'value' => '$data->id',
             ),
         ),
+        
+        array(
+            'name' => 'tanggal',
+            'value' => 'date("d M Y",strtotime($data->tanggal))',
+        ),
         array(
             'name' => 'customer_id',
             'value' => '$data->customer',
         ),
-        
         'jaminan',
         'deskripsi',
-        array(
-            'name' => 'tanggal',
-            'value' => '$data->tanggalTimbang',
-        ),
 //        'tanggal',
         'type',
         /*
           'sub_total',
-          'bunga',*/
+          'bunga', */
         array(
             'name' => 'total',
             'value' => 'landa()->rp($data->total)',
         ),
+        
+        array(
+            'name' => 'lunas',
+            'value' => '($data->lunas == 0) ? "Belum Lunas" : "Lunas"',
+        ),
 //          'total',
-         /* 'status',
+        /* 'status',
           'created_user_id',
           'created',
           'modified',
          */
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{view} {update} {delete}',
+            'template' => $button,
             'buttons' => array(
                 'view' => array(
                     'label' => 'Lihat',

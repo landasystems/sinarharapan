@@ -40,7 +40,7 @@ class Piutang extends CActiveRecord {
             array('deskripsi', 'length', 'max' => 255),
             array('type', 'length', 'max' => 5),
 //            array('status', 'length', 'max' => 11),
-            array('tanggal, created, modified', 'safe'),
+            array('lunas, tanggal, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, customer_id, jaminan, deskripsi, tanggal, type,jumlah_pupuk, sub_total, bunga, total, created_user_id, created, modified', 'safe', 'on' => 'search'),
@@ -54,8 +54,9 @@ class Piutang extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'Petugas' => array(self::BELONGS_TO, 'User', 'created_user_id'),
             'Customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
-            'Pengaturan' => array(self::BELONGS_TO, 'Pengaturan', 'bunga'),
+//            'Pengaturan' => array(self::BELONGS_TO, 'Pengaturan', 'bunga'),
         );
     }
 
@@ -131,12 +132,17 @@ class Piutang extends CActiveRecord {
         return (!empty($this->Customer->nama)) ? $this->Customer->nama : '-';
     }
 
-    public function getTanggalTimbang() {
-        return (!empty(date('d-m-Y', strtotime($this->tanggal)))) ? date('d-m-Y', strtotime($this->tanggal)) : '-';
-    }
+//    public function getTanggalTimbang() {
+//        return (!empty(date('d-m-Y', strtotime($this->tanggal)))) ? date('d-m-Y', strtotime($this->tanggal)) : '-';
+//    }
 
     public function arrPinjaman() {
         $terpal = array('uang' => 'Uang', 'pupuk' => 'Pupuk');
+        return $terpal;
+    }
+    
+    public function arrLunas() {
+        $terpal = array('0' => 'Belum Lunas', '1' => 'Lunas');
         return $terpal;
     }
 
@@ -148,6 +154,23 @@ class Piutang extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+    
+    public function behaviors() {
+        return array(
+            'timestamps' => array(
+                'class' => 'zii.behaviors.CTimestampBehavior',
+                'createAttribute' => 'created',
+                'updateAttribute' => 'modified',
+                'setUpdateOnCreate' => true,
+            ),
+        );
+    }
+
+    protected function beforeValidate() {
+        if (empty($this->created_user_id))
+            $this->created_user_id = Yii::app()->user->id;
+        return parent::beforeValidate();
     }
 
 }

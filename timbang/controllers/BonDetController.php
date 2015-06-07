@@ -22,20 +22,20 @@ class BonDetController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // c
-                'actions' => array('index', 'create'),
-                'expression' => 'app()->controller->isValidAccess(1,"c")'
+                'actions' => array('create'),
+                'expression' => 'app()->controller->isValidAccess("bayarBon","c")'
             ),
             array('allow', // r
                 'actions' => array('index', 'view'),
-                'expression' => 'app()->controller->isValidAccess(1,"r")'
+                'expression' => 'app()->controller->isValidAccess("bayarBon","r")'
             ),
             array('allow', // u
-                'actions' => array('index', 'update'),
-                'expression' => 'app()->controller->isValidAccess(1,"u")'
+                'actions' => array('update'),
+                'expression' => 'app()->controller->isValidAccess("bayarBon","u")'
             ),
             array('allow', // d
-                'actions' => array('index', 'delete'),
-                'expression' => 'app()->controller->isValidAccess(1,"d")'
+                'actions' => array('delete'),
+                'expression' => 'app()->controller->isValidAccess("bayarBon","d")'
             )
         );
     }
@@ -68,24 +68,30 @@ class BonDetController extends Controller {
      */
     public function actionCreate() {
         $model = new BonDet;
-
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['BonDet'])) {
-            for ($i = 0; $i < count($_POST['bon_id']); $i++) {
-                if ($_POST['bayar'][$i] > 0) {
-                    $model->tanggal = $_POST['BonDet']['tanggal'];
-                    $model->credit = $_POST['bayar'][$i];
-                    $model->bon_id = $_POST['bon_id'][$i];
-//                $model->induk_id = $model->piutang_id;
-                    $model->save();
+            if (isset($_POST['bon_id'])) {
+                for ($i = 0; $i <= count($_POST['bon_id']); $i++) {
+                    if (isset($_POST['bayar'][$i]) and $_POST['bayar'][$i] > 0) {
+                        if (isset($_POST['lunas'][$i])) {
+                            $updateBon = Bon::model()->findByPk($_POST['bon_id'][$i]);
+                            $updateBon->lunas = 1;
+                            $updateBon->save();
+                        }
+                        $det = new BonDet;
+                        $det->attributes = $_POST['BonDet'];
+                        $det->tanggal = $_POST['BonDet']['tanggal'];
+                        $det->credit = $_POST['bayar'][$i];
+                        $det->bon_id = $_POST['bon_id'][$i];
+                        $det->save();
+                    }
                 }
-                $i++;
+                Yii::app()->user->setFlash('sukses', 'Data berhasil disimpan');
+            } else {
+                Yii::app()->user->setFlash('sukses', 'Pastikan sopir memiliki bon yang belum lunas');
             }
-            $model->attributes = $_POST['BonDet'];
-            if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('create', array(
@@ -159,11 +165,11 @@ class BonDetController extends Controller {
             'model' => $model,
         ));
     }
-    
-      public function actionGenerateExcel() {
+
+    public function actionGenerateExcel() {
         $tanggal = $_GET['tanggal'];
         $bon_id = $_GET['bon_id'];
-        
+
         $criteria = new CDbCriteria;
         if (!empty($tanggal)) {
             $dt = explode(" - ", $tanggal);
@@ -172,17 +178,16 @@ class BonDetController extends Controller {
             $criteria->addCondition('t.tanggal >= "' . $start . '" and t.tanggal <= "' . $end . '"');
         }
         if (!empty($bon_id))
-            $criteria->addCondition('Bon.sopir_id = "' . $bon_id. '"');
-        
+            $criteria->addCondition('Bon.sopir_id = "' . $bon_id . '"');
+
         $criteria->addCondition('t.debet = 0 or t.debet is null');
-        
+
         $model = BonDet::model()->findAll($criteria);
 
         Yii::app()->request->sendFile('Data Bayar Bon -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
                     'model' => $model
                         ), true)
         );
-        
     }
 
     /**

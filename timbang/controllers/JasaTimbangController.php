@@ -22,20 +22,20 @@ class JasaTimbangController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // c
-                'actions' => array('index', 'create'),
-                'expression' => 'app()->controller->isValidAccess(1,"c")'
+                'actions' => array('create'),
+                'expression' => 'app()->controller->isValidAccess("jstimbang","c")'
             ),
             array('allow', // r
                 'actions' => array('index', 'view'),
-                'expression' => 'app()->controller->isValidAccess(1,"r")'
+                'expression' => 'app()->controller->isValidAccess("jstimbang","r")'
             ),
             array('allow', // u
-                'actions' => array('index', 'update'),
-                'expression' => 'app()->controller->isValidAccess(1,"u")'
+                'actions' => array('update'),
+                'expression' => 'app()->controller->isValidAccess("jstimbang","u")'
             ),
             array('allow', // d
-                'actions' => array('index', 'delete'),
-                'expression' => 'app()->controller->isValidAccess(1,"d")'
+                'actions' => array('delete'),
+                'expression' => 'app()->controller->isValidAccess("jstimbang","d")'
             )
         );
     }
@@ -101,9 +101,9 @@ class JasaTimbangController extends Controller {
 
         if (isset($_POST['JasaTimbang'])) {
             $model->attributes = $_POST['JasaTimbang'];
-             $model->telepon = $_POST['JasaTimbang']['telepon'];
+            $model->telepon = $_POST['JasaTimbang']['telepon'];
             $model->alamat = $_POST['JasaTimbang']['alamat'];
-              if (!empty($_POST['JasaTimbang']['kode'])) {
+            if (!empty($_POST['JasaTimbang']['kode'])) {
                 $model->kode = $_POST['JasaTimbang']['kode'];
             } else {
                 $forkode = Timbang::model()->findAll(array('order' => 'id desc', 'limit' => 1));
@@ -137,8 +137,7 @@ class JasaTimbangController extends Controller {
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        }
-        else
+        } else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
 
@@ -146,10 +145,10 @@ class JasaTimbangController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-
+        $criteria = new CDbCriteria();
         $model = new JasaTimbang('search');
         $model->unsetAttributes();  // clear any default values
-         //delet all
+        //delet all
         if (isset($_POST['delete']) && isset($_POST['ceckbox'])) {
             foreach ($_POST['ceckbox'] as $data) {
                 $a = $this->loadModel($data);
@@ -160,8 +159,7 @@ class JasaTimbangController extends Controller {
         if (isset($_GET['JasaTimbang'])) {
             $model->attributes = $_GET['JasaTimbang'];
 
-
-           if ($model->customer == "") {
+            if ($model->customer == "") {
                 unset($model->customer);
             }
         }
@@ -170,21 +168,20 @@ class JasaTimbangController extends Controller {
             'model' => $model,
         ));
     }
-    
+
     public function actionGenerateExcel() {
         $customer = $_GET['customer'];
-        
+
         $criteria = new CDbCriteria;
         if (!empty($customer))
-        $criteria->compare('customer', $customer, true);
-        
+            $criteria->compare('customer', $customer, true);
+
         $model = JasaTimbang::model()->findAll($criteria);
 
         Yii::app()->request->sendFile('Data Transaksi Jasa Timbang -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
                     'model' => $model
                         ), true)
         );
-        
     }
 
     /**

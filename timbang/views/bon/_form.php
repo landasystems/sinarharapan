@@ -1,3 +1,30 @@
+<style type="text/css">
+
+    #printNota{display: none;}
+
+</style>
+<style type="text/css" media="print">
+    body {visibility:hidden;}
+    #printNota{
+        visibility:visible;
+        display: block; 
+        position: absolute;top: 0;left: 0;float: left;
+        padding:0px;
+    } 
+</style>
+<script>
+    function printDiv(divName)
+    {
+        var w = window.open();
+        var css = '<style media="print">body{ margin-top:0 !important}</style>';
+        var printContents = '<div style="width:100%;" class="printNota"><center>' + $("#" + divName + "").html() + '</center></div>';
+
+        $(w.document.body).html(css + printContents);
+        w.print();
+        w.window.close();
+    }
+
+</script>
 <div class="form">
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -17,7 +44,7 @@
 
         <div class="row-fluid">
             <div class="span6">
-
+                <legend>Detail Sopir</legend>
                 <?php echo $form->errorSummary($model, 'Opps!!!', null, array('class' => 'alert alert-error span12')); ?>
 
 
@@ -69,7 +96,8 @@
                 </div>
 
             </div>
-            <div class="span6 img-polaroid" style="padding: 15px">
+            <div class="span6">
+                <legend>Detail Bon</legend>
                 <?php
                 echo $form->datepickerRow(
                         $model, 'tanggal', array(
@@ -81,32 +109,72 @@
                 <?php echo $form->textAreaRow($model, 'deskripsi', array('rows' => 3, 'cols' => 50, 'class' => 'span20')); ?>
                 <?php echo $form->textFieldRow($model, 'total', array('class' => 'angka span10', 'prepend' => 'Rp')); ?>
 
-
+                <?php
+                if ($model->isNewRecord == false)
+                    echo $form->radioButtonListRow($model, 'lunas', Piutang::model()->ArrLunas());
+                ?>
             </div></div>
 
 
         <?php if (!isset($_GET['v'])) { ?>        <div class="form-actions">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'submit',
-                    'type' => 'primary',
-                    'icon' => 'ok white',
-                    'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
-                ));
-                ?>
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'buttonType' => 'reset',
-                    'icon' => 'remove',
-                    'label' => 'Reset',
-                ));
-                ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'submit',
+                'type' => 'primary',
+                'icon' => 'ok white',
+                'label' => $model->isNewRecord ? 'Tambah' : 'Simpan',
+            ));
+            ?>
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType' => 'reset',
+                'icon' => 'remove',
+                'label' => 'Reset',
+            ));
+            ?>
             </div>
         <?php } ?>    </fieldset>
 
     <?php $this->endWidget(); ?>
 
 </div>
+<?php if ($model->isNewRecord == false) { ?>
+    <div class="printNota" id="printNota" style="width:100%; margin: 0px; padding: 0px;">
+        <center style="font-size: 14pt;"><strong>CV SINAR HARAPAN</strong><br>
+            ALAMAT 1 JL. MAYJEN PANJAITAN <br> NO. 62 MALANG TELP. (0341) 789555<br>
+            ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
+        <hr>
+        <br>
+        <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11pt;  width:100%;">
+            <tr>
+                <td ><b>TANGGAL</b></td>
+                <td >: <?php echo date("d M Y", strtotime($model->tanggal)) ?></td>
+            </tr>
+            <tr>
+                <td ><b>PETUGAS</b></td>
+                <td >: <?php echo isset($model->Petugas->name) ? $model->Petugas->name : "-"; ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>SOPIR</b></td>
+                <td colspan="2">: <?php echo isset($model->Sopir->nama) ? $model->Sopir->nama : "-"; ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>TELEPON</b></td>
+                <td  colspan="2">: <?php echo $model->Sopir->telepon; ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><b>KETERANGAN</b></td>
+                <td  colspan="2">: <?php echo $model->deskripsi; ?></td>
+            </tr>
+            <tr>
+                <td  rowspan="2"><b>TOTAL BON</b></td>
+                <td  rowspan="2">: <?php echo landa()->rp($model->total); ?></td>
+            </tr>
+        </table>
+        <br>
+        <hr>
+    </div>
+<?php } ?>
 <script>
     $("#Bon_sopir_id").on("change", function() {
         //var name = $("#Registration_guest_user_id").val();

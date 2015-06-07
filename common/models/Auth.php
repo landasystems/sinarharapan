@@ -113,35 +113,35 @@ class Auth extends CActiveRecord {
 
         return array(
             array('label' => '<span class="icon16 icomoon-icon-screen"></span>Dashboard', 'url' => array('/dashboard')),
-            array('visible' => landa()->checkAccess('user', 'r'), 'label' => '<span class="icon16 eco-users"></span>User', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
+            array('visible' => (landa()->checkAccess('user', 'r') || landa()->checkAccess('groupUser', 'r')), 'label' => '<span class="icon16 eco-users"></span>User', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('groupUser', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Group User', 'url' => url('landa/roles/user'), 'auth_id' => 'groupUser'),
                     array('visible' => landa()->checkAccess('user', 'r'), 'label' => '<span class="icon16  icomoon-icon-arrow-right"></span>User', 'url' => url('/user'), 'auth_id' => 'user'),
                 )),
-            array('visible' => landa()->checkAccess('customer', 'r'), 'label' => '<span class="icon16  eco-archive-2 "></span>Data Master', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
+            array('visible' => (landa()->checkAccess('customer', 'r') || landa()->checkAccess('sopir', 'r') || landa()->checkAccess('truk', 'r')), 'label' => '<span class="icon16  eco-archive-2 "></span>Data Master', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('customer', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Customer', 'url' => url('/customer'), 'auth_id' => 'customer'),
                     array('visible' => landa()->checkAccess('sopir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Sopir', 'url' => url('/sopir'), 'auth_id' => 'sopir'),
                     array('visible' => landa()->checkAccess('truk', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Truk', 'url' => url('/truk'), 'auth_id' => 'truk'),
                 )),
-            array('visible' => landa()->checkAccess('pinjaman', 'r'), 'label' => '<span class="icon16  icomoon-icon-cart "></span>Transaksi Timbangan', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
+            array('visible' => (landa()->checkAccess('timbang', 'r') || landa()->checkAccess('jstimbang', 'r')), 'label' => '<span class="icon16  icomoon-icon-cart "></span>Transaksi Timbangan', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('timbang', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Timbang', 'url' => url('/timbang'), 'auth_id' => 'timbang'),
                     array('visible' => landa()->checkAccess('jstimbang', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Jasa Timbang', 'url' => url('/jasaTimbang'), 'auth_id' => 'jstimbang'),
                 )),
-            array('visible' => landa()->checkAccess('pinjaman', 'r'), 'label' => '<span class="icon16 entypo-icon-card"></span>Transaksi Customer', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
+            array('visible' => (landa()->checkAccess('pinjaman', 'r') || landa()->checkAccess('bayarPinjaman', 'r')), 'label' => '<span class="icon16 entypo-icon-card"></span>Transaksi Customer', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('pinjaman', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Pinjaman', 'url' => url('/piutang'), 'auth_id' => 'pinjaman'),
                     array('visible' => landa()->checkAccess('bayarPinjaman', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bayar Pinjaman', 'url' => url('/piutangDet'), 'auth_id' => 'bayarPinjaman'),
                 )),
-            array('visible' => landa()->checkAccess('pinjaman', 'r'), 'label' => '<span class="icon16 wpzoom-user-2"></span>Transaksi Supir', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
+            array('visible' => (landa()->checkAccess('bon', 'r') || landa()->checkAccess('bayarBon', 'r') || landa()->checkAccess('storGir', 'r')), 'label' => '<span class="icon16 wpzoom-user-2"></span>Transaksi Supir', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('bon', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bon', 'url' => url('/bon'), 'auth_id' => 'bon'),
-                    array('visible' => landa()->checkAccess('bon', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bayar Bon', 'url' => url('/bonDet'), 'auth_id' => 'bon'),
+                    array('visible' => landa()->checkAccess('bayarBon', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bayar Bon', 'url' => url('/bonDet'), 'auth_id' => 'bayarBon'),
                     array('visible' => landa()->checkAccess('storGir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Stor Girik', 'url' => url('/girik'), 'auth_id' => 'storGir'),
                 )),
             array('visible' => landa()->checkAccess('perawatan', 'r'), 'label' => '<span class="icon16 icomoon-icon-cars"></span>Perawatan Kendaraan', 'url' => url('/perawatanTruk'), 'auth_id' => 'perawatan'),
-            array('visible' => landa()->checkAccess('trsCustomer', 'r'), 'label' => '<span class="icon16  silk-icon-checklist"></span>Laporan', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
+            array('visible' => (landa()->checkAccess('trsCustomer', 'r') || landa()->checkAccess('trSopir', 'r') || landa()->checkAccess('prKendaraan', 'r')), 'label' => '<span class="icon16  silk-icon-checklist"></span>Laporan', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('trsCustomer', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Hutang Customer', 'url' => url('report/trsCustomer'), 'auth_id' => 'trsCustomer'),
                     array('visible' => landa()->checkAccess('trSopir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bon Sopir', 'url' => url('report/trsSopir'), 'auth_id' => 'trSopir'),
                     array('visible' => landa()->checkAccess('prKendaraan', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Kendaraan', 'url' => url('report/trsKendaraan'), 'auth_id' => 'prKendaraan'),
                 )),
-            array('visible' => landa()->checkAccess('rkpCostumer', 'r'), 'label' => '<span class="icon16  eco-article "></span>Rekap', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
+            array('visible' => (landa()->checkAccess('rkpCostumer', 'r') || landa()->checkAccess('rkpSopir', 'r') || landa()->checkAccess('rkpKendaraan', 'r')), 'label' => '<span class="icon16  eco-article "></span>Rekap', 'url' => array('#'), 'submenuOptions' => array('class' => 'sub'), 'items' => array(
                     array('visible' => landa()->checkAccess('rkpCostumer', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Hutang Customer', 'url' => url('report/rekapHutCustomer'), 'auth_id' => 'rkpCostumer'),
                     array('visible' => landa()->checkAccess('rkpSopir', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Bon Sopir', 'url' => url('report/rekapBonSopir'), 'auth_id' => 'rkpSopir'),
                     array('visible' => landa()->checkAccess('rkpKendaraan', 'r'), 'label' => '<span class="icon16 icomoon-icon-arrow-right"></span>Kendaraan', 'url' => url('report/rekapKendaraan'), 'auth_id' => 'rkpKendaraan'),

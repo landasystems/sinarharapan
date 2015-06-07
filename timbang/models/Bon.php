@@ -34,7 +34,7 @@ class Bon extends CActiveRecord {
             array('deskripsi', 'length', 'max' => 255),
             array('sopir_id, tanggal, total', 'required'),
 //            array('status', 'length', 'max' => 11),
-            array('tanggal, created, modified', 'safe'),
+            array('lunas, tanggal, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, sopir_id, tanggal, deskripsi, total, status, created_user_id, created, modified', 'safe', 'on' => 'search'),
@@ -49,6 +49,7 @@ class Bon extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'Sopir' => array(self::BELONGS_TO, 'Sopir', 'sopir_id'),
+            'Petugas' => array(self::BELONGS_TO, 'User', 'created_user_id'),
         );
     }
 
@@ -111,6 +112,11 @@ class Bon extends CActiveRecord {
     public function getRptotal() {
         return landa()->rp($this->total);
     }
+    
+    public function arrLunas() {
+        $terpal = array('0' => 'Belum Lunas', '1' => 'Lunas');
+        return $terpal;
+    }
 
     public function search() {
         // @todo Please modify the following code to remove attributes that should not be searched.
@@ -141,6 +147,23 @@ class Bon extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+    
+    public function behaviors() {
+        return array(
+            'timestamps' => array(
+                'class' => 'zii.behaviors.CTimestampBehavior',
+                'createAttribute' => 'created',
+                'updateAttribute' => 'modified',
+                'setUpdateOnCreate' => true,
+            ),
+        );
+    }
+
+    protected function beforeValidate() {
+        if (empty($this->created_user_id))
+            $this->created_user_id = Yii::app()->user->id;
+        return parent::beforeValidate();
     }
 
 }

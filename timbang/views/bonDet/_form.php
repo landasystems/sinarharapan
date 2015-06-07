@@ -43,7 +43,13 @@
         <legend>
             <p class="note">Fields dengan <span class="required">*</span> harus di isi.</p>
         </legend>
-
+        <?php
+        if (isset($_POST['BonDet'])) {
+            ?>
+            <div class="alert alert-success" role="alert"><?php echo Yii::app()->user->getFlash('sukses'); ?></div>
+            <?php
+        }
+        ?>
         <style>
             .form-horizontal .control-label {
                 float: left;
@@ -178,38 +184,39 @@
 
 </div>
 <div class="printNota" id="printNota" style="width:100%;">
-    <center style="font-size: 11.5px;"><strong>CV Sinar Harapan</strong></center>
-    <center style="font-size: 11.5px;">Jl. Mayjen Panjaitan No. 62 Malang</center>
-    <center style="font-size: 11.5px;">Telp. (0341) 789555</center>
+    <center style="font-size: 14pt;"><strong>CV SINAR HARAPAN</strong><br>
+        ALAMAT 1 JL. MAYJEN PANJAITAN <br> NO. 62 MALANG TELP. (0341) 789555<br>
+        ALAMAT 2 JL. RAYA GATOT SUBROTO <br> TALOK</center>
     <hr>
-    <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11px;  width:100%;">
+    <br>
+    <table class="printTable" id="nota" style="margin : 0 auto; font-size: 11pt;  width:100%;">
         <tr>
-            <td style="text-align: left;"><b>Tanggal</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo date("d M Y", strtotime($model->tanggal)); ?></td>
-            <td style="width:80px; text-align: "></td>
-            <td style="text-align: "></td>
+            <td style="text-align: left;"><b>TANGGAL</b></td>
+            <td  colspan="2">: <?php echo date("d M Y", strtotime($model->tanggal)); ?></td>
         </tr>
         <tr>
-            <td style="text-align: left;"><b>Sopir</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Bon->Sopir->nama) ? $model->Bon->Sopir->nama : "-"; ?></td>
-            <td style="width:80px; text-align: "><b></b></td>
-            <td style="text-align: "></td>
+            <td style="text-align: left;"><b>PETUGAS</b></td>
+            <td  colspan="2">: <?php echo ISSET($model->Petugas->name) ? $model->Petugas->name : "-"; ?></td>
         </tr>
         <tr>
-            <td style="text-align: left;"><b>Hutang</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->Bon->total) ? landa()->rp($model->Bon->total) : "-"; ?></td>
-            <td style="width:80px; text-align: "><b></b></td>
-            <td style="text-align: "></td>
+            <td style="text-align: left;"><b>SOPIR</b></td>
+            <td  colspan="2">: <?php echo isset($model->Bon->Sopir->nama) ? $model->Bon->Sopir->nama : "-"; ?></td>
         </tr>
         <tr>
-            <td style="text-align: left;"><b>Bayar</b></td>
-            <td style="width:80px; text-align: " colspan="2"><?php echo isset($model->credit) ? landa()->rp($model->credit) : "-"; ?></td>
-            <td style="width:80px; text-align: "></td>
-            <td style="text-align: "></td>
+            <td style="text-align: left;"><b>TELEPON</b></td>
+            <td  colspan="2">: <?php echo isset($model->Bon->Sopir->telepon) ? $model->Bon->Sopir->telepon : "-"; ?></td>
+        </tr>
+        <tr>
+            <td style="text-align: left;"><b>BON</b></td>
+            <td  colspan="2">: <?php echo isset($model->Bon->total) ? landa()->rp($model->Bon->total) : "-"; ?></td>
+        </tr>
+        <tr>
+            <td style="text-align: left;"><b>BAYAR</b></td>
+            <td  colspan="2">: <?php echo isset($model->credit) ? landa()->rp($model->credit) : "-"; ?></td>
         </tr>
     </table>
+    <br>
     <hr>
-    <p style="text-align:center;font-size: 11.5px;"></p>
 </div>
 <script>
     $("#supir").on("change", function() {

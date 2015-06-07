@@ -48,6 +48,7 @@ class PiutangDet extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'Petugas' => array(self::BELONGS_TO, 'User', 'created_user_id'),
             'Piutang' => array(self::BELONGS_TO, 'Piutang', 'piutang_id'),
         );
     }
@@ -115,6 +116,23 @@ class PiutangDet extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+    
+    public function behaviors() {
+        return array(
+            'timestamps' => array(
+                'class' => 'zii.behaviors.CTimestampBehavior',
+                'createAttribute' => 'created',
+                'updateAttribute' => 'modified',
+                'setUpdateOnCreate' => true,
+            ),
+        );
+    }
+
+    protected function beforeValidate() {
+        if (empty($this->created_user_id))
+            $this->created_user_id = Yii::app()->user->id;
+        return parent::beforeValidate();
     }
 
 }

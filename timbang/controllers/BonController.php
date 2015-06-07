@@ -22,20 +22,20 @@ class BonController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // c
-                'actions' => array('index', 'create'),
-                'expression' => 'app()->controller->isValidAccess(1,"c")'
+                'actions' => array('create'),
+                'expression' => 'app()->controller->isValidAccess("bon","c")'
             ),
             array('allow', // r
                 'actions' => array('index', 'view'),
-                'expression' => 'app()->controller->isValidAccess(1,"r")'
+                'expression' => 'app()->controller->isValidAccess("bon","r")'
             ),
             array('allow', // u
-                'actions' => array('index', 'update'),
-                'expression' => 'app()->controller->isValidAccess(1,"u")'
+                'actions' => array('update'),
+                'expression' => 'app()->controller->isValidAccess("bon","u")'
             ),
             array('allow', // d
-                'actions' => array('index', 'delete'),
-                'expression' => 'app()->controller->isValidAccess(1,"d")'
+                'actions' => array('delete'),
+                'expression' => 'app()->controller->isValidAccess("bon","d")'
             )
         );
     }
@@ -109,8 +109,13 @@ class BonController extends Controller {
 
         if (isset($_POST['Bon'])) {
             $model->attributes = $_POST['Bon'];
-            if ($model->save())
-                BonDet::model()->updateAll(array('debet' => $_POST['Bon']['total'], 'tanggal' => $_POST['Bon']['tanggal']), 'debet > 0 AND bon_id=' . $id);
+            if ($model->save()) {
+                $bondDet = BonDet::model()->find(array('condition' => 'bon_id = ' . $id, 'order' => 'id ASC'));
+                $bondDet->debet = $model->total;
+                $bondDet->save();
+                
+            }
+//            BonDet::model()->updateAll(array('debet' => $_POST['Bon']['total'], 'tanggal' => $_POST['Bon']['tanggal']), 'debet > 0 AND bon_id=' . $id);
 
             $this->redirect(array('view', 'id' => $model->id));
         }
@@ -129,7 +134,7 @@ class BonController extends Controller {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
             $this->loadModel($id)->delete();
-            BonDet::model()->deleteAll('bon_id='.$id);
+            BonDet::model()->deleteAll('bon_id=' . $id);
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));

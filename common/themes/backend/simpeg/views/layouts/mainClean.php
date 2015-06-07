@@ -16,7 +16,6 @@
         $cs = Yii::app()->getClientScript();
         $cs->registerCoreScript('jquery');
         $cs->registerCssFile(bt() . '/css/main.css');
-        $cs->registerCssFile(bt() . '/css/icons.css');
         ?>     
 
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/apple-touch-icon-144-precomposed.png" />

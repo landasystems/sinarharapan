@@ -16,7 +16,6 @@
         landa()->loginRequired();
         $cs = Yii::app()->getClientScript();
         $cs->registerCoreScript('jquery');
-        $cs->registerCssFile(bt() . '/css/icons.css');
         $cs->registerCssFile(bt() . '/css/main.css');
         ?>     
 
@@ -85,15 +84,8 @@
                                         <li class="menu">
                                             <?php
                                             $user = User::model()->findByPk(user()->id);
-                                            if ($user->roles_id == -1) {
-                                                $type = 'user';
-                                            } else {
-                                                if ($user->Roles->is_allow_login == 0) {
-                                                    $type = 'guest';
-                                                } else {
-                                                    $type = 'user';
-                                                }
-                                            }
+                                            $type = 'user';
+
                                             $this->widget('zii.widgets.CMenu', array(
                                                 'items' => array(
                                                     array('visible' => true, 'label' => '<span class="icon16 icomoon-icon-user-3"></span>Edit profile', 'url' => url('user/updateProfile') . '?type=' . $type),
@@ -169,12 +161,6 @@
                 <div class="contentwrapper"><!--Content wrapper-->
                     <div class="heading">
                         <h3><?php echo CHtml::encode($this->pageTitle); ?></h3>                    
-                        <div class="search">
-                            <?php
-                            if (app()->name == 'Sistem Manajemen Timbang')
-                                $this->widget('common.extensions.landa.widgets.LandaSearch', array('url' => url('sopir/searchJson'), 'class' => 'input-text'));
-                            ?>
-                        </div>
 
                         <?php if (isset($this->breadcrumbs)): ?>
                             <?php

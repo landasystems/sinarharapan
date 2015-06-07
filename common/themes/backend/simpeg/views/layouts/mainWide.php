@@ -19,7 +19,6 @@
 
         $cs = Yii::app()->getClientScript();
         $cs->registerCoreScript('jquery');
-        $cs->registerCssFile(bt() . '/css/icons.css');
         $cs->registerCssFile(bt() . '/css/main.css');
         ?>     
 

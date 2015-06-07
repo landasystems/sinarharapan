@@ -107,7 +107,7 @@ return array(
         'clientName'=>$clientName,
         'id' => '1',
         'urlImg' => $rootUrl . 'images/',
-        'pathImg' => (isset($pathImg)) ? $pathImg : $root . 'taro_simpeg/www/' . $client . '/images/',
+        'pathImg' => (isset($pathImg)) ? $pathImg : $root . '/timbang/www/' . $client . '/images/',
         'menu' => $menu,
     ),
 );

@@ -35,7 +35,7 @@ class Pengaturan extends CActiveRecord {
             array('harga_pupuk, harga_tebu, solar, created_user_id', 'numerical', 'integerOnly' => true),
             array('bunga, rafaksi, persentasi_sopir, persentasi_truk', 'numerical'),
             array('modified', 'length', 'max' => 45),
-            array('created', 'safe'),
+            array('created, ongkos_sopir', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, harga_pupuk, harga_tebu, bunga, rafaksi, solar, persentasi_sopir, persentasi_truk, created_user_id, created, modified', 'safe', 'on' => 'search'),

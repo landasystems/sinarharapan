@@ -67,6 +67,7 @@ class PengaturanController extends Controller
 		if(isset($_POST['Pengaturan']))
 		{
 			$model->attributes=$_POST['Pengaturan'];
+                        $model->ongkos_sopir = $_POST['Pengaturan']['ongkos_sopir'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -91,6 +92,7 @@ class PengaturanController extends Controller
 		if(isset($_POST['Pengaturan']))
 		{
 			$model->attributes=$_POST['Pengaturan'];
+                        $model->ongkos_sopir = $_POST['Pengaturan']['ongkos_sopir'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}

@@ -29,7 +29,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     <?php
     $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'success', 'icon' => 'entypo-icon-export', 'label' => 'Export Excel',
         'htmlOptions' => array(
-            'onclick' => 'excel()'
+            'name' => 'export',
+            'onclick' => 'chgAction()'
     )));
     ?>     
     <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'button', 'icon' => 'icon-remove-sign white', 'label' => 'Reset', 'htmlOptions' => array('class' => 'btnreset btn-small'))); ?>
@@ -53,9 +54,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         });
     })
 
-    function excel() {
-        var customer = $("#JasaTimbang_customer").val();
-        window.open("<?php echo url('jasaTimbang/GenerateExcel') ?>?customer=" + customer);
+</script>
+<script type="text/javascript">
+    function chgAction()
+    {
+        document.getElementById("search-jasa-timbang-form").action = "<?php echo Yii::app()->createUrl('jasaTimbang/GenerateExcel'); ?>";
+        document.getElementById("search-jasa-timbang-form").submit();
+
     }
 </script>
 

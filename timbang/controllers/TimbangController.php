@@ -194,19 +194,12 @@ class TimbangController extends Controller {
     }
 
     public function actionGenerateExcel() {
-        $customer_id = $_GET['customer_id'];
-        $nomor_polisi = $_GET['nomor_polisi'];
-
-        $criteria = new CDbCriteria;
-        if (!empty($customer_id))
-            $criteria->compare('t.customer_id', $customer_id, true);
-        if (!empty($nomor_polisi))
-            $criteria->compare('nomor_polisi', $nomor_polisi, true);
-
-        $model = Timbang::model()->findAll($criteria);
+        $model = new Timbang;
+        $model->attributes = $_GET['Timbang'];
+        $data = $model->search(true);
 
         Yii::app()->request->sendFile('Data Transaksi Timbang -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
-                    'model' => $model
+                    'model' => $data
                         ), true)
         );
     }

@@ -96,26 +96,32 @@ class Timbang extends CActiveRecord {
      * @return CActiveDataProvider the data provider that can return the models
      * based on the search/filter conditions.
      */
-    public function search() {
+    public function search($export = null) {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
-        $criteria->with = array('Customer');
-        $criteria->together = true;
+//        $criteria->with = array('Customer');
+//        $criteria->together = true;
 
         if (!empty($this->tanggal_timbang1)) {
             $dt = explode(" - ", $this->tanggal_timbang1);
             $start = $dt[0];
             $end = $dt[1];
-            $criteria->addCondition('tanggal_timbang1 >= "' . $start . '" and tanggal_timbang1 <= "' . $end . '"');
+            $criteria->addCondition('tanggal_timbang1 between "' . $start . '" and "' . $end . '"');
+//            $criteria->addCondition('tanggal_timbang1 >= "' . $start . '" and tanggal_timbang1 <= "' . $end . '"');
         }
-        
-        $criteria->compare('t.customer_id', $this->customer_id, true);
-
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-            'sort' => array('defaultOrder' => 't.id DESC')
-        ));
+        if (!empty($_GET['Timbang']['customer_id'])) {
+            $criteria->compare('customer_id', $this->customer_id);
+        }
+        if (empty($export)) {
+            $data = new CActiveDataProvider($this, array(
+                'criteria' => $criteria,
+                'sort' => array('defaultOrder' => 'id DESC')
+            ));
+        } else {
+            $data = Timbang::model()->findAll($criteria);
+        }
+        return $data;
     }
 
     /**
@@ -145,7 +151,14 @@ class Timbang extends CActiveRecord {
     public function getTotalRp() {
         return landa()->rp($this->total);
     }
-    
+
+    public function getTglTimbang() {
+        return date('d M Y', strtotime($this->tanggal_timbang1));
+    }
+    public function getTglTimbang2() {
+        return date('d M Y', strtotime($this->tanggal_timbang2));
+    }
+
     public function behaviors() {
         return array(
             'timestamps' => array(
@@ -156,11 +169,11 @@ class Timbang extends CActiveRecord {
             ),
         );
     }
+
 //
 //    protected function beforeValidate() {
 //        if (empty($this->created_user_id))
 //            $this->created_user_id = Yii::app()->user->id;
 //        return parent::beforeValidate();
 //    }
-
 }

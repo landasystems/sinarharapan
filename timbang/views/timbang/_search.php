@@ -64,7 +64,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     <?php
     $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'success', 'icon' => 'entypo-icon-export', 'label' => 'Export Excel',
         'htmlOptions' => array(
-            'onclick' => 'excel()'
+            'name' => 'export',
+            'onClick' => 'chgAction()',
     )));
     ?>   
     <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'button', 'icon' => 'icon-remove-sign white', 'label' => 'Reset', 'htmlOptions' => array('class' => 'btnreset btn-small'))); ?>
@@ -87,11 +88,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             });
         });
     })
+</script>
+<script type="text/javascript">
+    function chgAction()
+    {
+        document.getElementById("search-timbang-form").action = "<?php echo Yii::app()->createUrl('timbang/GenerateExcel'); ?>";
+        document.getElementById("search-timbang-form").submit();
 
-    function excel() {
-        var customer_id = $("#Timbang_customer_id").val();
-        var nomor_polisi = $("#Timbang_nomor_polisi").val();
-        window.open("<?php echo url('timbang/GenerateExcel') ?>?customer_id=" + customer_id + "&nomor_polisi=" + nomor_polisi);
     }
 </script>
 

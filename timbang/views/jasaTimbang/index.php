@@ -96,6 +96,12 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
         array(
             'type' => 'raw',
+            'header' => 'Tanggal Timbang 1',
+            'name' => 'total',
+            'value' => '$data->tanggalTimbang',
+        ),
+        array(
+            'type' => 'raw',
             'header' => 'Total',
             'name' => 'total',
             'value' => '$data->totalRp',

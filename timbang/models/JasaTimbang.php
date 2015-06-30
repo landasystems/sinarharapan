@@ -97,7 +97,7 @@ class JasaTimbang extends CActiveRecord {
      * @return CActiveDataProvider the data provider that can return the models
      * based on the search/filter conditions.
      */
-    public function search() {
+    public function search($export = null) {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
@@ -106,15 +106,21 @@ class JasaTimbang extends CActiveRecord {
             $dt = explode(" - ", $this->tanggal_timbang1);
             $start = $dt[0];
             $end = $dt[1];
-            $criteria->addCondition('tanggal_timbang1 >= "' . $start . '" and tanggal_timbang1 <= "' . $end . '"');
+            $criteria->addCondition('tanggal_timbang1 between "' . $start . '" and "' . $end . '"');
+//            $criteria->addCondition('tanggal_timbang1 >= "' . $start . '" and tanggal_timbang1 <= "' . $end . '"');
         }
 
         $criteria->compare('customer', $this->customer, true);
 
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-            'sort' => array('defaultOrder' => 'id DESC')
-        ));
+          if (empty($export)) {
+            $data = new CActiveDataProvider($this, array(
+                'criteria' => $criteria,
+                'sort' => array('defaultOrder' => 'id DESC')
+            ));
+        } else {
+            $data = JasaTimbang::model()->findAll($criteria);
+        }
+        return $data;
     }
 
     /**
@@ -140,9 +146,12 @@ class JasaTimbang extends CActiveRecord {
 ////        return (isset($this->Customer->nama)) ? $this->Customer->nama : '';
 //    }
 //
-//    public function getTanggalTimbang() {
-////        return (!empty(date('d-m-Y', strtotime($this->tanggal_timbang1)))) ? date('d-m-Y', strtotime($this->tanggal_timbang1)) : '-';
-//    }
+    public function getTanggalTimbang() {
+        return (!empty(date('d M Y', strtotime($this->tanggal_timbang1)))) ? date('d M Y', strtotime($this->tanggal_timbang1)) : '-';
+    }
+    public function getTanggalTimbang2() {
+        return (!empty(date('d M Y', strtotime($this->tanggal_timbang1)))) ? date('d M Y', strtotime($this->tanggal_timbang1)) : '-';
+    }
 
     public function getTotalRp() {
         return landa()->rp($this->total);

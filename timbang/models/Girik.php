@@ -85,6 +85,10 @@ class Girik extends CActiveRecord {
     public function getSopir() {
         return (!empty($this->Sopir->nama)) ? $this->Sopir->nama : '-';
     }
+    
+    public function getPlatnomor() {
+        return (!empty($this->Truk->nomor_polisi)) ? $this->Truk->nomor_polisi : '-';
+    }
 
     public function getTruk() {
         return (!empty($this->Truk->nama)) ? $this->Truk->nama : '-';

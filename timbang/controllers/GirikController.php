@@ -124,7 +124,7 @@ class GirikController extends Controller {
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
-            
+
             $det = PerawatanTrukDet::model()->deleteAll(array('condition' => 'girik_id=' . $id));
             $this->loadModel($id)->delete();
 
@@ -183,6 +183,7 @@ class GirikController extends Controller {
             $end = $dt[1];
             $criteria->addCondition('tanggal >= "' . $start . '" and tanggal <= "' . $end . '"');
         }
+
         if (!empty($nomor_girik))
             $criteria->compare('nomor_girik', $nomor_girik, true);
         if (!empty($sopir_id))
@@ -193,7 +194,8 @@ class GirikController extends Controller {
         $model = Girik::model()->findAll($criteria);
 
         Yii::app()->request->sendFile('Data Girik -' . date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
-                    'model' => $model
+                    'model' => $model,
+                    'tanggal' => date("d M Y", strtotime($start)) . " - " . date("d M Y", strtotime($end)),
                         ), true)
         );
     }

@@ -263,7 +263,7 @@
             </tr>
             <tr>
                 <td ><b>TYPE TRUK</b></td>
-                <td colspan="2"><?php echo $model->Truk->type ?></td>
+                <td colspan="2"><?php echo isset($model->Truk->type) ? $model->Truk->type : "-" ?></td>
             </tr>
             <tr>
                 <td style="text-align: left;"><b>MERK</b></td>
@@ -296,7 +296,7 @@
                 $total = 0;
                 foreach ($detail as $val) {
                     echo '<tr>';
-                    echo '<td>' . $val->keterangan . ' ('.$val->qty.')</td>';
+                    echo '<td>' . $val->keterangan . ' (' . $val->qty . ')</td>';
                     echo '<td>' . landa()->rp($val->harga) . '</td>';
                     echo '<td>' . landa()->rp($val->credit) . '</td>';
                     echo '</tr>';

@@ -64,7 +64,7 @@ $this->widget('bootstrap.widgets.TbGridView',array(
 		array(
                     'header' => 'Truk',
                     'name' => 'truk_id',
-                    'value' => '$data->Truk->nama',
+                    'value' => 'isset($data->Truk->nama) ? $data->Truk->nama : "-"',
                 ),
 		array(
                     'header' => 'Tanggal',

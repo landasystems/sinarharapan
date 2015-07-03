@@ -79,6 +79,12 @@ class GirikController extends Controller {
                 $det->keterangan = 'Setor girik tanggal ' . $model->tanggal;
                 $det->credit = $model->fee_truk;
                 $det->save();
+
+                $credit = new BonDet;
+                $credit->girik_id = $model->id;
+                $credit->tanggal = $model->tanggal;
+                $credit->credit = $model->fee_sopir;
+                $credit->save();
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }
@@ -107,6 +113,13 @@ class GirikController extends Controller {
                 $det->keterangan = 'Setor girik tanggal ' . $model->tanggal;
                 $det->credit = $model->fee_truk;
                 $det->save();
+
+                $credit = BonDet::model()->find(array('condition' => 'girik_id = ' . $model->id));
+                $credit->girik_id = $model->id;
+                $credit->tanggal = $model->tanggal;
+                $credit->credit = $model->fee_sopir;
+                $credit->save();
+
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }
@@ -114,6 +127,18 @@ class GirikController extends Controller {
         $this->render('update', array(
             'model' => $model,
         ));
+    }
+
+    public function actionMigrasi() {
+        $girik = Girik::model()->findAll();
+        foreach ($girik as $model) {
+            $credit = new BonDet;
+            $credit->girik_id = $model->id;
+            $credit->tanggal = $model->tanggal;
+            $credit->credit = $model->fee_sopir;
+            $credit->save();
+        }
+         $this->redirect(array('view'));
     }
 
     /**

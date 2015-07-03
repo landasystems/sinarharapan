@@ -1,9 +1,14 @@
+<?php
+$sp = Sopir::model()->findByPk($sopir);
+?>
 <div id="printArea">
     <table width="100%">
         <tr>
             <td  style="text-align: center" colspan="6"><h2>Laporan Transaksi Sopir</h2>
-                <h4><?php echo date('d M Y', strtotime($start)) . " - " . date('d M Y', strtotime($end)); ?></h4>
-                <hr></td>
+                <h4>Nama Sopir : <?php echo isset($sp->nama) ? $sp->nama : "-"?></h4>
+                <h4>Periode : <?php echo date('d M Y', strtotime($start)) . " - " . date('d M Y', strtotime($end)); ?></h4>
+                <hr>
+            </td>
         </tr>   
     </table>
     <table class="table table-bordered table" border="1">
@@ -18,10 +23,9 @@
         </thead>
         <tbody>
             <?php
-            $mBalance = BonDet::model()->find(array(
-                'with' => 'Bon.Sopir',
+            $mBalance = BonDet::model()->with('Bon','Girik')->find(array(
                 'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                'condition' => 'Sopir.id=' . $sopir . ' AND t.tanggal<"' . date('Y-m-d', strtotime($start)) . '"',
+                'condition' => '(Bon.sopir_id=' . $sopir . ' and Bon.id = t.bon_id) or (Girik.sopir_id = ' . $sopir . ' and Girik.id = t.girik_id) AND t.tanggal<"' . date('Y-m-d', strtotime($start)) . '"',
             ));
             $salDebet = (!empty($mBalance->sumDebet)) ? $mBalance->sumDebet : 0;
             $salCredit = (!empty($mBalance->sumCredit)) ? $mBalance->sumCredit : 0;
@@ -49,19 +53,19 @@
             $monYear = '';
             $saldo = 0;
 
-            $mPiutang = BonDet::model()->findAll(array(
-                'with' => 'Bon.Sopir',
+            $mPiutang = BonDet::model()->with('Bon', 'Girik')->findAll(array(
                 'order' => 't.tanggal',
-                'condition' => 'Sopir.is_delete = 0 AND Sopir.id=' . $sopir . ' AND (t.tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND t.tanggal<="' . date('Y-m-d', strtotime($end)) . '")'
+                'condition' => '(Bon.sopir_id=' . $sopir . ' and Bon.id = t.bon_id) or (Girik.sopir_id = ' . $sopir . ' and Girik.id = t.girik_id) AND (t.tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND t.tanggal<="' . date('Y-m-d', strtotime($end)) . '")'
             ));
             foreach ($mPiutang as $val) {
                 $sDate = ($monYear == date("F Y", strtotime($val->tanggal))) ? "" : date("F Y", strtotime($val->tanggal));
                 $monYear = date("F Y", strtotime($val->tanggal));
+
                 $saldo += $balance + $val->debet - $val->credit;
                 echo '<tr>';
                 echo '<td style="text-align:center;width:10%">' . $sDate . '</td>';
                 echo '<td style="text-align:center;width:5%">' . date('d', strtotime($val->tanggal)) . '</td>';
-                echo '<td>' . $val->Bon->deskripsi . '</td>';
+                echo '<td>' . ((isset($val->Bon->deskripsi)) ? $val->Bon->deskripsi : " Stor Girik Tgl " . date("d M Y", strtotime($val->tanggal))) . '</td>';
                 if (isset($export) && $export = 1) {
                     echo '<td style="text-align:right">' . $val->debet . '</td>';
                     echo '<td style="text-align:right">' . $val->credit . '</td>';
@@ -72,10 +76,9 @@
                     echo '<td style="text-align:right">' . landa()->rp($saldo) . '</td>';
                 }
                 echo '</tr>';
-
+                $balance = 0;
                 $debet += $val->debet;
                 $credit += $val->credit;
-                
             }
             ?>
         </tbody>

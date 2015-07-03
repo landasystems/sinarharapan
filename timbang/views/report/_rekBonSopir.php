@@ -29,22 +29,22 @@
             $totDebet = 0;
             $totCredit = 0;
 
-            $mBon = Bon::model()->findAll(array(
-                'with' => 'Sopir',
-                'condition' => 'Sopir.is_delete = 0',
-                'group' => 'sopir_id'
-            ));
+//            $mBon = Bon::model()->findAll(array(
+//                'with' => 'Sopir',
+//                'condition' => 'Sopir.is_delete = 0',
+//                'group' => 'sopir_id'
+//            ));
 
-            foreach ($mBon as $val) {
-                $mBalance = BonDet::model()->find(array(
-                    'with' => 'Bon',
+            $sopir = Sopir::model()->findAll(array('condition' => 'is_delete=0'));
+
+            foreach ($sopir as $val) {
+                $mBalance = BonDet::model()->with('Bon', 'Girik')->find(array(
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => 't.tanggal<"' . date('Y-m-d', strtotime($start)) . '" AND Bon.Sopir_id='.$val->sopir_id,
+                    'condition' => '(Bon.sopir_id=' . $val->id . ' and Bon.id = t.bon_id) or (Girik.sopir_id = ' . $val->id . ' and Girik.id = t.girik_id) AND t.tanggal<"' . date('Y-m-d', strtotime($start)) . '"',
                 ));
-                $mutasi = BonDet::model()->find(array(
-                    'with' => 'Bon',
+                $mutasi = BonDet::model()->with('Bon', 'Girik')->find(array(
                     'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
-                    'condition' => '(t.tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND t.tanggal<="' . date('Y-m-d', strtotime($end)) . '") AND Bon.Sopir_id='.$val->sopir_id,
+                    'condition' => '(Bon.sopir_id=' . $val->id . ' and Bon.id = t.bon_id) or (Girik.sopir_id = ' . $val->id . ' and Girik.id = t.girik_id) AND (t.tanggal>="' . date('Y-m-d', strtotime($start)) . '" AND t.tanggal<="' . date('Y-m-d', strtotime($end)) . '")',
                 ));
                 $sDebet = (!empty($mBalance->sumDebet)) ? $mBalance->sumDebet : 0;
                 $sCredit = (!empty($mBalance->sumCredit)) ? $mBalance->sumCredit : 0;
@@ -54,7 +54,7 @@
                 $saldoAkhir = $saldoAwal + $debet - $credit;
 
                 echo '<tr>';
-                echo '<td>' . $val->Sopir->nama . '</td>';
+                echo '<td>' . $val->nama . '</td>';
                 if (isset($export) && $export = 1) {
                     echo '<td style="text-align:right">' . $saldoAwal . '</td>';
                     echo '<td style="text-align:right">' . $debet . '</td>';

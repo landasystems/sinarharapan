@@ -104,6 +104,8 @@ class BonDet extends CActiveRecord {
             $criteria->addCondition('Bon.sopir_id = "' . $this->piutang_id . '"');
         
         $criteria->addCondition('t.debet = 0 or t.debet is null');
+        
+        $criteria->addCondition('t.girik_id is null');
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

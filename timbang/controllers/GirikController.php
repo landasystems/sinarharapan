@@ -138,7 +138,7 @@ class GirikController extends Controller {
             $credit->credit = $model->fee_sopir;
             $credit->save();
         }
-         $this->redirect(array('view'));
+         $this->redirect(array('site/dashboard'));
     }
 
     /**

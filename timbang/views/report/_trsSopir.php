@@ -14,7 +14,7 @@ $sp = Sopir::model()->findByPk($sopir);
     <table class="table table-bordered table" border="1">
         <thead>
             <tr> 
-                <th style="text-align:center" colspan="2">Tanggal</th>
+                <th style="text-align:center" colspan="2">Tanggalaa</th>
                 <th style="text-align:center">Keterangan</th>
                 <th style="text-align:center;width: 20%">Debet</th>
                 <th style="text-align:center;width: 20%">Credit</th>
@@ -27,8 +27,8 @@ $sp = Sopir::model()->findByPk($sopir);
                 'select' => 'sum(debet) as sumDebet,sum(credit) as sumCredit',
                 'condition' => '(Bon.sopir_id=' . $sopir . ' and Bon.id = t.bon_id) or (Girik.sopir_id = ' . $sopir . ' and Girik.id = t.girik_id) AND t.tanggal<"' . date('Y-m-d', strtotime($start)) . '"',
             ));
-            $salDebet = (!empty($mBalance->sumDebet)) ? $mBalance->sumDebet : 0;
-            $salCredit = (!empty($mBalance->sumCredit)) ? $mBalance->sumCredit : 0;
+            $salDebet = (!empty($mBalance->sumCredit)) ? $mBalance->sumCredit : 0;
+            $salCredit = (!empty($mBalance->sumDebet)) ? $mBalance->sumDebet : 0;
             $balance = $salDebet - $salCredit;
             ?>
             <tr>
@@ -61,24 +61,24 @@ $sp = Sopir::model()->findByPk($sopir);
                 $sDate = ($monYear == date("F Y", strtotime($val->tanggal))) ? "" : date("F Y", strtotime($val->tanggal));
                 $monYear = date("F Y", strtotime($val->tanggal));
 
-                $saldo += $balance + $val->debet - $val->credit;
+                $saldo += $balance + $val->credit - $val->debet;
                 echo '<tr>';
                 echo '<td style="text-align:center;width:10%">' . $sDate . '</td>';
                 echo '<td style="text-align:center;width:5%">' . date('d', strtotime($val->tanggal)) . '</td>';
                 echo '<td>' . ((isset($val->Bon->deskripsi)) ? $val->Bon->deskripsi : " Stor Girik Tgl " . date("d M Y", strtotime($val->tanggal))) . '</td>';
                 if (isset($export) && $export = 1) {
-                    echo '<td style="text-align:right">' . $val->debet . '</td>';
                     echo '<td style="text-align:right">' . $val->credit . '</td>';
+                    echo '<td style="text-align:right">' . $val->debet . '</td>';
                     echo '<td style="text-align:right">' . $saldo . '</td>';
                 } else {
-                    echo '<td style="text-align:right">' . landa()->rp($val->debet) . '</td>';
                     echo '<td style="text-align:right">' . landa()->rp($val->credit) . '</td>';
+                    echo '<td style="text-align:right">' . landa()->rp($val->debet) . '</td>';
                     echo '<td style="text-align:right">' . landa()->rp($saldo) . '</td>';
                 }
                 echo '</tr>';
                 $balance = 0;
-                $debet += $val->debet;
-                $credit += $val->credit;
+                $debet += $val->credit;
+                $credit += $val->debet;
             }
             ?>
         </tbody>
